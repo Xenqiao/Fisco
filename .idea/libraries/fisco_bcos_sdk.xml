@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="fisco-bcos-sdk">
+    <CLASSES />
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/src/main/resources/fisco-bcos-sdk.jar!/" />
+    </SOURCES>
+  </library>
+</component>
