@@ -1,5 +1,6 @@
 package mvcdemo.view;
 
+import mvcdemo.po.GetProUserDO;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.UserDO;
 import mvcdemo.service.Cleaner;
@@ -33,6 +34,14 @@ public class MainView {
 
 
     public void ProductMain(ProUserDO proUserDO){
+        if ( "".equals(GetProUserDO.getrMessage()) ){
+
+            System.out.println("请注意，您有新的举报信息！！");
+        }
+        if("".equals(GetProUserDO.getsMessage())){
+            System.out.println("请注意，您有新的点赞信息！！");
+
+        }
         System.out.println("                                                欢迎您，生产者！");
         System.out.println("                                        -----------------------------------");
         System.out.println("                                        选择1：查看我的用户信息");

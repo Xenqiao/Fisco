@@ -162,6 +162,8 @@ public class AdminServiceImpl implements AdminService {
                     GetProUserDO.setProManager(rs.getString("proManager"));
                     GetProUserDO.setBalance(Integer.valueOf(rs.getString("proBalance")));
                     GetProUserDO.setProAlreadyPurchased(rs.getString("AlreadyPurchased"));
+                    GetProUserDO.setrMessage(rs.getString("rMessage"));
+                    GetProUserDO.setsMessage(rs.getString("sMessage"));
                 }
             }
             rs.close();

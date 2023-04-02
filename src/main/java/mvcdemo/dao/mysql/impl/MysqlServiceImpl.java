@@ -125,6 +125,7 @@ public class MysqlServiceImpl implements MysqlService {
         return false;
     }
 
+
     @Override
     public boolean PrintProduct(ProductDO productDO, String sql, int branch) {
         boolean result = false;

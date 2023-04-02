@@ -20,14 +20,17 @@ public class MainViewHandler {
         char select =sc.next().charAt(0);
         switch (select){
             case '1':
+                //选择1：查看我的用户信息
                 new MainViewHandler().CheckUser(userDO);
                 Cleaner.Clean();
                 new MainView().UserMain(userDO);
                 break;
             case '2':
+                //选择2：修改用户信息
                 new ChangeUser(userDO);
                 break;
             case '3':
+                //选择3：购买或查询商品
                 System.out.println();
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
                 new CheckProductByUser(userDO).CheckProduct();
@@ -35,20 +38,25 @@ public class MainViewHandler {
                 new MainView().UserMain(userDO);
                 break;
             case '4':
+                //选择4：查看已购买产品信息
                 new AlreadyPurchasedByUser().CheckingAlreadyPurchased();
                 Cleaner.Clean();
                 new MainView().UserMain(userDO);
                 break;
             case '5':
+                //选择5：举报或点赞产品
                 Cleaner.Clean();
                 new ReportProduct().ReportProducts();
                 new MainView().UserMain(userDO);
                 break;
             case'6':
+                //选择6：退货
                 break;
             case '7':
+                //选择7：查看产品分类
                 break;
             case '8':
+                //选择8：真伪验证
                 new AlreadyPurchasedByUser().VerificationOfAuthenticity();
                 Cleaner.Clean();
                 new MainView().UserMain(userDO);
@@ -66,17 +74,21 @@ public class MainViewHandler {
     public void ProUserMainViewHandler(char select, ProUserDO proUserDO){
         switch (select){
             case '1':
+                //选择1：查看我的用户信息
                 new MainViewHandler().CheckProUser(proUserDO);
                 Cleaner.Clean();
                 new MainView().ProductMain(proUserDO);
                 break;
             case '2':
+                //选择2：修改用户信息
                 new ChangeProUser(proUserDO);
                 break;
             case '3':
+                //选择3：上传商品信息
                 new CreateGoods(proUserDO);
                 break;
             case '4':
+                //选择4：修改我的商品信息
                 System.out.println();
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
                 new ReviseProductInformation(proUserDO);
@@ -86,10 +98,21 @@ public class MainViewHandler {
                 System.out.println();
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
                 new CheckProductByProUser(proUserDO);
+
+                Cleaner.Clean();
+                new MainView().ProductMain(proUserDO);
+                break;
+            case '6':
+                //选择6：查看举报或点赞信息
+                new CheckReportMessage().CheckSupport();
+                new CheckReportMessage().CheckReport();
+
                 Cleaner.BackMain();
                 Cleaner.Clean();
                 new MainView().ProductMain(proUserDO);
-
+                break;
+            case '7':
+                //选择7：查看产品分类
                 break;
             default:
                 JOptionPane.showMessageDialog(null,"格式错误,请重新输入！");

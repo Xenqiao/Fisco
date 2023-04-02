@@ -14,7 +14,25 @@ public class GetProUserDO {
     private static Integer balance;
     private static String proAlreadyPurchased;
     private static String message;
+    private static String rMessage;
+    private static String sMessage;
     private static String maker;
+
+    public static String getrMessage() {
+        return rMessage;
+    }
+
+    public static void setrMessage(String rMessage) {
+        GetProUserDO.rMessage = rMessage;
+    }
+
+    public static String getsMessage() {
+        return sMessage;
+    }
+
+    public static void setsMessage(String sMessage) {
+        GetProUserDO.sMessage = sMessage;
+    }
 
     public static String getMaker() {
         return maker;
