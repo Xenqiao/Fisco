@@ -11,7 +11,7 @@ import java.util.Scanner;
  * @author Xenqiao
  * @create 2023/3/18 17:24
  */
-public class UserMain{
+public class MainView {
     public void UserMain(UserDO userDO){
 
         Cleaner.Clean();
@@ -24,7 +24,7 @@ public class UserMain{
         System.out.println("                                        选择5：举报或点赞产品");
         System.out.println("                                        选择6：退货");
         System.out.println("                                        选择7：查看产品分类");
-        System.out.println("                                        选择8：敬请期待");
+        System.out.println("                                        选择8：真伪验证");
         System.out.println("                                        ------------------------------------");
         System.out.println();
         new MainViewHandler().UserMainViewHandler(userDO);

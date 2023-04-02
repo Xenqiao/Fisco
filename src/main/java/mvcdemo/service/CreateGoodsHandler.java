@@ -1,13 +1,13 @@
 package mvcdemo.service;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.dao.mysql.impl.UserService;
-import mvcdemo.dao.mysql.impl.UserServiceImpl;
+import mvcdemo.dao.mysql.impl.MysqlService;
+import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.ProductDO;
 import mvcdemo.util.contractRealize.ChangeOnFisco;
 import mvcdemo.view.CreateGoods;
-import mvcdemo.view.UserMain;
+import mvcdemo.view.MainView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -56,8 +56,8 @@ public class CreateGoodsHandler implements ActionListener{
         if ("确认".equals(text)) {
             JOptionPane.showMessageDialog(createGoods,"数据将更新上传至区块链，请等待几分钟。");
             new ChangeOnFisco().GetProductHash(productDO);
-            UserService userService = new UserServiceImpl();
-            boolean addResult = userService.addProduct(productDO);
+            MysqlService mysqlService = new MysqlServiceImpl();
+            boolean addResult = mysqlService.addProduct(productDO);
 
             if (addResult) {
                 JOptionPane.showMessageDialog(createGoods, "添加成功！您的商品哈希为："+productDO.getProductHash());
@@ -66,7 +66,7 @@ public class CreateGoodsHandler implements ActionListener{
                 JOptionPane.showMessageDialog(createGoods, "上传失败！");
             }
             Cleaner.Clean();
-            new UserMain().ProductMain(proUserDO);
+            new MainView().ProductMain(proUserDO);
         }
     }
 }

@@ -4,20 +4,22 @@ import mvcdemo.dao.mysql.DBUtil;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.ProductDO;
 import mvcdemo.po.UserDO;
+import mvcdemo.service.Cleaner;
+import mvcdemo.util.contractRealize.GetBcosSDK;
+import mvcdemo.util.toolcontract.Product;
+import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * @author Xenqiao
  * @create 2023/3/20 22:32
  */
-public class UserServiceImpl implements UserService{
+public class MysqlServiceImpl implements MysqlService {
     Connection conn = null;
     PreparedStatement ps = null;
 
-    public UserServiceImpl(){
+    public MysqlServiceImpl(){
 
     }
 
@@ -121,5 +123,47 @@ public class UserServiceImpl implements UserService{
             DBUtil.closePs(ps);
         }
         return false;
+    }
+
+    @Override
+    public boolean PrintProduct(ProductDO productDO, String sql, int branch) {
+        boolean result = false;
+        try {
+            conn = DBUtil.getConn();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                result = true;
+                productDO.setProductId(Integer.valueOf(rs.getString("pid")));
+                productDO.setProductHash(rs.getString("phash"));
+                productDO.setProductName(rs.getString("pname"));
+                Product product = new Product(productDO.getProductHash(), GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
+
+                productDO.setProductPrice(product.getProduct(productDO.getProductHash()).getValue3().intValue());
+                productDO.setProductPlace(product.getProduct(productDO.getProductHash()).getValue4());
+                productDO.setProductMake(product.getProduct(productDO.getProductHash()).getValue5());
+                productDO.setProductId(product.getProduct(productDO.getProductHash()).getValue6().intValue());
+                productDO.setProductMakePhone(rs.getString("pphone"));
+
+                if (branch == 1) {
+                    System.out.println("商品哈希：" + productDO.getProductHash());
+                }
+                Cleaner.PrintProduct(productDO);
+                System.out.println();
+                System.out.println();
+
+            }
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } catch (ContractException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtil.closeConn(conn);
+        }
+        return result;
     }
 }

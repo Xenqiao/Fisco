@@ -1,14 +1,14 @@
 package mvcdemo.view;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.dao.mysql.impl.UserServiceImpl;
+import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
+import mvcdemo.po.GetUserDO;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.ProductDO;
 import mvcdemo.po.UserDO;
 import mvcdemo.service.Cleaner;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Erc20;
-import mvcdemo.util.toolcontract.Product;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 
 import javax.swing.*;
@@ -33,39 +33,10 @@ public class CheckProductByUser {
     public void CheckProduct(){
         Cleaner.Clean();
 
+        String sql = "select * from product;";
+        new MysqlServiceImpl().PrintProduct(productDO,sql,0);
 
-        try {
-
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from product;");
-            System.out.println("===================================================================================== 分割线 == 分割线 ================================================================================================================");
-
-            while (rs.next()){
-                productDO.setProductHash(rs.getString("phash"));
-                productDO.setProductName(rs.getString("pname"));
-                Product product = new Product(productDO.getProductHash(), GetBcosSDK.getClient(),GetBcosSDK.getKeyPair());
-
-                productDO.setProductPrice(product.getProduct(productDO.getProductHash()).getValue3().intValue());
-                productDO.setProductPlace(product.getProduct(productDO.getProductHash()).getValue4());
-                productDO.setProductMake(product.getProduct(productDO.getProductHash()).getValue5());
-                productDO.setProductId(product.getProduct(productDO.getProductHash()).getValue6().intValue());
-                productDO.setProductMakePhone(rs.getString("pphone"));
-
-                Cleaner.PrintProduct(productDO);
-                System.out.println();
-                System.out.println();
-                System.out.println();
-            }
-
-            stmt.close();
-            rs.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }catch (ContractException e) {
-            e.printStackTrace();
-        }
-
-        System.out.print("                                        请选择输入您要进行的操作（ a.查询产品信息      b.购买产品      c.返回主菜单 ）：");
+        System.out.print("                                        请选择输入您要进行的操作（ a.查询产品      b.购买产品      c.返回主菜单 ）：");
         Scanner sc = new Scanner(System.in);
         char select =sc.next().charAt(0);
         switch (select){
@@ -90,45 +61,15 @@ public class CheckProductByUser {
         String select = sc.next();
         
         Cleaner.Clean();
-
-        try {
-            int number = 0;
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from product where pname like"+"'%"+select+"%' ;");
-            System.out.println("===================================================================================== 分割线 == 分割线 ================================================================================================================");
-
-            while (rs.next()){
-
-                productDO.setProductHash(rs.getString("phash"));
-                productDO.setProductName(rs.getString("pname"));
-                Product product = new Product(productDO.getProductHash(),GetBcosSDK.getClient(),GetBcosSDK.getKeyPair());
-
-                productDO.setProductPrice(product.getProduct(productDO.getProductHash()).getValue3().intValue());
-                productDO.setProductPlace(product.getProduct(productDO.getProductHash()).getValue4());
-                productDO.setProductMake(product.getProduct(productDO.getProductHash()).getValue5());
-                productDO.setProductId(product.getProduct(productDO.getProductHash()).getValue6().intValue());
-                productDO.setProductMakePhone(rs.getString("pphone"));
-
-
-                Cleaner.PrintProduct(productDO);
-                System.out.println();
-                System.out.println();
-                number++;
-            }
-            if (number == 0){
+        StringBuilder sql = new StringBuilder();
+        sql.append("select * from product where pname like"+"'%"+select+"%' ;");
+        boolean number = true;
+        number = new MysqlServiceImpl().PrintProduct(productDO,sql.toString(),0);
+            if (number == false) {
                 System.out.println("没有找到哦，输入一个字进行查找试试？ ");
                 Cleaner.BackMain();
                 return;
             }
-            Cleaner.BackMain();
-            stmt.close();
-            rs.close();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }catch (ContractException e) {
-            e.printStackTrace();
-        }
-
     }
 
 
@@ -196,14 +137,14 @@ public class CheckProductByUser {
 
         StringBuilder stringBuilder = new StringBuilder();
         if (userDO.getAlreadyPurchased()==null){
-            userDO.setAlreadyPurchased("0");
+            userDO.setAlreadyPurchased("0,");
         }
-        stringBuilder.append(userDO.getAlreadyPurchased()+","+productDO.getProductId());
+        stringBuilder.append(userDO.getAlreadyPurchased()+productDO.getProductId()+",");
         userDO.setAlreadyPurchased(stringBuilder.toString());
-
+        GetUserDO.setAlreadyPurchased(stringBuilder.toString());
 
         //把余额数据上传至MySQL
-        new UserServiceImpl().add(userDO);
+        new MysqlServiceImpl().add(userDO);
         Cleaner.BackMain();
     }
 

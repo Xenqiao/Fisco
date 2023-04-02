@@ -1,17 +1,14 @@
 package mvcdemo.service;
 
 
-import mvcdemo.dao.mysql.impl.UserService;
-import mvcdemo.dao.mysql.impl.UserServiceImpl;
+import mvcdemo.dao.mysql.impl.MysqlService;
+import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.ProductDO;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Product;
 import mvcdemo.view.ReviseProductInformation;
-import mvcdemo.view.UserMain;
-import org.fisco.bcos.sdk.BcosSDK;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
+import mvcdemo.view.MainView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -48,8 +45,8 @@ public class ReviseProductInformationHandler implements ActionListener {
         if ("确认修改".equals(text)) {
             JOptionPane.showMessageDialog(reviseProductInformation,"数据将更新上传至区块链，请等待几分钟。");
 
-            UserService userService = new UserServiceImpl();
-            boolean addResult = userService.ReviseProduct(productDO);
+            MysqlService mysqlService = new MysqlServiceImpl();
+            boolean addResult = mysqlService.ReviseProduct(productDO);
 
             if (addResult) {
                 JOptionPane.showMessageDialog(reviseProductInformation, "修改成功！您的商品哈希为："+productDO.getProductHash());
@@ -58,7 +55,7 @@ public class ReviseProductInformationHandler implements ActionListener {
                 JOptionPane.showMessageDialog(reviseProductInformation, "上传失败！");
             }
             Cleaner.Clean();
-            new UserMain().ProductMain(proUserDO);
+            new MainView().ProductMain(proUserDO);
         }
     }
 

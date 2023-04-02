@@ -1,6 +1,8 @@
 package mvcdemo.service.impl;
 
 import mvcdemo.dao.mysql.DBUtil;
+import mvcdemo.po.GetProUserDO;
+import mvcdemo.po.GetUserDO;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.UserDO;
 
@@ -12,7 +14,6 @@ import java.sql.*;
 public class AdminServiceImpl implements AdminService {
 
     Connection conn = null;
-    PreparedStatement ps = null;
     ResultSet rs = null;
     Statement stmt;
     String sql;
@@ -39,6 +40,15 @@ public class AdminServiceImpl implements AdminService {
                 userDO.setPhone(rs.getString("phone"));
                 userDO.setBalance(Integer.valueOf(rs.getString("ubalance")));
                 userDO.setAlreadyPurchased(rs.getString("AlreadyPurchased"));
+
+                GetUserDO.setUserName(rs.getString("userName"));
+                GetUserDO.setPwd(rs.getString("pwd"));
+                GetUserDO.setHash(rs.getString("hash"));
+                GetUserDO.setHome(rs.getString("home"));
+                GetUserDO.setName(rs.getString("name"));
+                GetUserDO.setPhone(rs.getString("phone"));
+                GetUserDO.setBalance(Integer.valueOf(rs.getString("ubalance")));
+                GetUserDO.setAlreadyPurchased(rs.getString("AlreadyPurchased"));
                 return true;
             }
         }catch (Exception e){
@@ -143,6 +153,15 @@ public class AdminServiceImpl implements AdminService {
                     proUserDO.setProManager(rs.getString("proManager"));
                     proUserDO.setBalance(Integer.valueOf(rs.getString("proBalance")));
                     proUserDO.setProAlreadyPurchased(rs.getString("AlreadyPurchased"));
+
+                    GetProUserDO.setUserName(rs.getString("id"));
+                    GetProUserDO.setPwd(rs.getString("pwd"));
+                    GetProUserDO.setHash(rs.getString("hash"));
+                    GetProUserDO.setProPhone(rs.getString("proPhone"));
+                    GetProUserDO.setProHome(rs.getString("proHome"));
+                    GetProUserDO.setProManager(rs.getString("proManager"));
+                    GetProUserDO.setBalance(Integer.valueOf(rs.getString("proBalance")));
+                    GetProUserDO.setProAlreadyPurchased(rs.getString("AlreadyPurchased"));
                 }
             }
             rs.close();

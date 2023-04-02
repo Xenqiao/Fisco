@@ -8,9 +8,10 @@ import mvcdemo.po.UserDO;
  * @author Xenqiao
  * @create 2023/3/20 22:32
  */
-public interface UserService {
+public interface MysqlService {
     boolean add(UserDO userDO);
     boolean addProUser(ProUserDO proUserDO);
     boolean addProduct(ProductDO productDO);
     boolean ReviseProduct(ProductDO productDO);
+    boolean PrintProduct(ProductDO productDO, String sql, int branch);
 }

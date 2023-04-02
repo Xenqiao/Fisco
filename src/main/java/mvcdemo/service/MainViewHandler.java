@@ -22,7 +22,7 @@ public class MainViewHandler {
             case '1':
                 new MainViewHandler().CheckUser(userDO);
                 Cleaner.Clean();
-                new UserMain().UserMain(userDO);
+                new MainView().UserMain(userDO);
                 break;
             case '2':
                 new ChangeUser(userDO);
@@ -32,15 +32,28 @@ public class MainViewHandler {
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
                 new CheckProductByUser(userDO).CheckProduct();
                 Cleaner.Clean();
-                new UserMain().UserMain(userDO);
+                new MainView().UserMain(userDO);
                 break;
             case '4':
-
+                new AlreadyPurchasedByUser().CheckingAlreadyPurchased();
+                Cleaner.Clean();
+                new MainView().UserMain(userDO);
+                break;
+            case '5':
+                break;
+            case'6':
+                break;
+            case '7':
+                break;
+            case '8':
+                new AlreadyPurchasedByUser().VerificationOfAuthenticity();
+                Cleaner.Clean();
+                new MainView().UserMain(userDO);
                 break;
             default:
                 JOptionPane.showMessageDialog(null,"格式错误,请重新输入！");
                 Cleaner.Clean();
-                new UserMain().UserMain(userDO);
+                new MainView().UserMain(userDO);
                 break;
         }
 
@@ -52,7 +65,7 @@ public class MainViewHandler {
             case '1':
                 new MainViewHandler().CheckProUser(proUserDO);
                 Cleaner.Clean();
-                new UserMain().ProductMain(proUserDO);
+                new MainView().ProductMain(proUserDO);
                 break;
             case '2':
                 new ChangeProUser(proUserDO);
@@ -72,13 +85,13 @@ public class MainViewHandler {
                 new CheckProductByProUser(proUserDO);
                 Cleaner.BackMain();
                 Cleaner.Clean();
-                new UserMain().ProductMain(proUserDO);
+                new MainView().ProductMain(proUserDO);
 
                 break;
             default:
                 JOptionPane.showMessageDialog(null,"格式错误,请重新输入！");
                 Cleaner.Clean();
-                new UserMain().ProductMain(proUserDO);
+                new MainView().ProductMain(proUserDO);
                 break;
         }
 

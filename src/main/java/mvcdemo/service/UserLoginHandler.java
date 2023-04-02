@@ -7,9 +7,8 @@ import mvcdemo.service.impl.AdminServiceImpl;
 import mvcdemo.service.impl.ProductLogonImpl;
 import mvcdemo.service.impl.UserLogonImpl;
 import mvcdemo.util.contractRealize.GetBcosSDK;
-import mvcdemo.util.toolcontract.User;
 import mvcdemo.view.UserLogin;
-import mvcdemo.view.UserMain;
+import mvcdemo.view.MainView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -95,10 +94,10 @@ public class UserLoginHandler extends KeyAdapter implements ActionListener {
             loginView.dispose();
             if (chance == 1){
                 Cleaner.Clean();
-                new UserMain().UserMain(userDO);
+                new MainView().UserMain(userDO);
             }else{
                 Cleaner.Clean();
-                new UserMain().ProductMain(proUserDO);
+                new MainView().ProductMain(proUserDO);
             }
         }else {
             JOptionPane.showMessageDialog(loginView, "注册失败！");
@@ -157,10 +156,10 @@ public class UserLoginHandler extends KeyAdapter implements ActionListener {
 
             if (change == 1){
                 Cleaner.Clean();
-                new UserMain().UserMain(userDO);
+                new MainView().UserMain(userDO);
             }else{
                 Cleaner.Clean();
-                new UserMain().ProductMain(proUserDO);
+                new MainView().ProductMain(proUserDO);
             }
 
         }else {

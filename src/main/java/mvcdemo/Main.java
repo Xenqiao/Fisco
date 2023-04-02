@@ -2,6 +2,7 @@ package mvcdemo;
 
 
 import mvcdemo.util.contractRealize.ChangeOnFisco;
+import mvcdemo.view.AlreadyPurchasedByUser;
 
 public class Main {
 
@@ -12,7 +13,6 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        String b = "0xcf79a8f644fd695de4329e38c1708a050d8724e8";
 
     }
 }

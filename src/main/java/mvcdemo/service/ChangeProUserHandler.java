@@ -1,11 +1,11 @@
 package mvcdemo.service;
 
-import mvcdemo.dao.mysql.impl.UserService;
-import mvcdemo.dao.mysql.impl.UserServiceImpl;
+import mvcdemo.dao.mysql.impl.MysqlService;
+import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.util.contractRealize.ChangeOnFisco;
 import mvcdemo.view.ChangeProUser;
-import mvcdemo.view.UserMain;
+import mvcdemo.view.MainView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -31,8 +31,8 @@ public class ChangeProUserHandler implements ActionListener{
         changeProUser.SetManage(proUserDO);
         new ChangeOnFisco().ChangeProUserOnFisco(proUserDO);
         if ("确认修改".equals(text)) {
-            UserService userService = new UserServiceImpl();
-            boolean addResult = userService.addProUser(proUserDO);
+            MysqlService mysqlService = new MysqlServiceImpl();
+            boolean addResult = mysqlService.addProUser(proUserDO);
             JOptionPane.showMessageDialog(changeProUser,"数据将更新上传至区块链，请等待几分钟。");
             if (addResult) {
                 JOptionPane.showMessageDialog(changeProUser, "修改成功！");
@@ -41,7 +41,7 @@ public class ChangeProUserHandler implements ActionListener{
                 JOptionPane.showMessageDialog(changeProUser, "修改失败！");
             }
             Cleaner.Clean();
-            new UserMain().ProductMain(proUserDO);
+            new MainView().ProductMain(proUserDO);
         }
     }
 }

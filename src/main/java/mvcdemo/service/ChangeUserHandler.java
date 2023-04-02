@@ -1,11 +1,11 @@
 package mvcdemo.service;
 
-import mvcdemo.dao.mysql.impl.UserService;
-import mvcdemo.dao.mysql.impl.UserServiceImpl;
+import mvcdemo.dao.mysql.impl.MysqlService;
+import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
 import mvcdemo.po.UserDO;
 import mvcdemo.util.contractRealize.ChangeOnFisco;
 import mvcdemo.view.ChangeUser;
-import mvcdemo.view.UserMain;
+import mvcdemo.view.MainView;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -40,8 +40,8 @@ public class ChangeUserHandler implements ActionListener{
         }
 
         if ("确认修改".equals(text)) {
-            UserService userService = new UserServiceImpl();
-            boolean addResult = userService.add(userDO);
+            MysqlService mysqlService = new MysqlServiceImpl();
+            boolean addResult = mysqlService.add(userDO);
 
             if (addResult) {
                 JOptionPane.showMessageDialog(changeUser, "修改成功！");
@@ -50,7 +50,7 @@ public class ChangeUserHandler implements ActionListener{
                 JOptionPane.showMessageDialog(changeUser, "修改失败！");
             }
             Cleaner.Clean();
-            new UserMain().UserMain(userDO);
+            new MainView().UserMain(userDO);
 
         }
     }
