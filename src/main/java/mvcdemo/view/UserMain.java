@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class UserMain{
     public void UserMain(UserDO userDO){
 
-        new Cleaner();
+        Cleaner.Clean();
         System.out.println("                                                欢迎光临，尊敬的顾客！");
         System.out.println("                                        -----------------------------------");
         System.out.println("                                        选择1：查看我的用户信息");

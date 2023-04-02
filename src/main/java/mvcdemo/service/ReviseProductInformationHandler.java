@@ -57,7 +57,7 @@ public class ReviseProductInformationHandler implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(reviseProductInformation, "上传失败！");
             }
-            new Cleaner();
+            Cleaner.Clean();
             new UserMain().ProductMain(proUserDO);
         }
     }

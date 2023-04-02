@@ -1,7 +1,6 @@
 package mvcdemo.view;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.dao.mysql.impl.UserService;
 import mvcdemo.dao.mysql.impl.UserServiceImpl;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.ProductDO;
@@ -10,9 +9,6 @@ import mvcdemo.service.Cleaner;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Erc20;
 import mvcdemo.util.toolcontract.Product;
-import org.fisco.bcos.sdk.BcosSDK;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 
 import javax.swing.*;
@@ -35,7 +31,7 @@ public class CheckProductByUser {
     Connection conn = DBUtil.getConn();
 
     public void CheckProduct(){
-        new Cleaner();
+        Cleaner.Clean();
 
 
         try {
@@ -55,13 +51,8 @@ public class CheckProductByUser {
                 productDO.setProductId(product.getProduct(productDO.getProductHash()).getValue6().intValue());
                 productDO.setProductMakePhone(rs.getString("pphone"));
 
+                Cleaner.PrintProduct(productDO);
                 System.out.println();
-                System.out.println("商品序号："+ productDO.getProductId());
-                System.out.println("商品名称："+ productDO.getProductName());
-                System.out.println("商品价格："+ productDO.getProductPrice()+"  ETH");
-                System.out.println("产品委托商："+ productDO.getProductMake());
-                System.out.println("产品委托商联系电话："+ productDO.getProductMakePhone());
-                System.out.println("产品发货地址："+ productDO.getProductPlace());
                 System.out.println();
                 System.out.println();
             }
@@ -98,12 +89,12 @@ public class CheckProductByUser {
         Scanner sc = new Scanner(System.in);
         String select = sc.next();
         
-        new Cleaner();
+        Cleaner.Clean();
 
         try {
-
+            int number = 0;
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from product;");
+            ResultSet rs = stmt.executeQuery("select * from product where pname like"+"'%"+select+"%' ;");
             System.out.println("===================================================================================== 分割线 == 分割线 ================================================================================================================");
 
             while (rs.next()){
@@ -118,18 +109,18 @@ public class CheckProductByUser {
                 productDO.setProductId(product.getProduct(productDO.getProductHash()).getValue6().intValue());
                 productDO.setProductMakePhone(rs.getString("pphone"));
 
-                System.out.println();
-                System.out.println("商品序号："+ productDO.getProductId());
-                System.out.println("商品名称："+ productDO.getProductName());
-                System.out.println("商品价格："+ productDO.getProductPrice()+"  ETH");
-                System.out.println("产品委托商："+ productDO.getProductMake());
-                System.out.println("产品委托商联系电话："+ productDO.getProductMakePhone());
-                System.out.println("产品发货地址："+ productDO.getProductPlace());
+
+                Cleaner.PrintProduct(productDO);
                 System.out.println();
                 System.out.println();
+                number++;
             }
-
-
+            if (number == 0){
+                System.out.println("没有找到哦，输入一个字进行查找试试？ ");
+                Cleaner.BackMain();
+                return;
+            }
+            Cleaner.BackMain();
             stmt.close();
             rs.close();
         } catch (SQLException throwables) {
@@ -137,6 +128,7 @@ public class CheckProductByUser {
         }catch (ContractException e) {
             e.printStackTrace();
         }
+
     }
 
 
@@ -212,11 +204,7 @@ public class CheckProductByUser {
 
         //把余额数据上传至MySQL
         new UserServiceImpl().add(userDO);
-
-        System.out.println();
-        System.out.print("                                        输入任意键返回主菜单(请勿直接回车)：");
-        sc = new Scanner(System.in);
-        select =sc.next().charAt(0);
+        Cleaner.BackMain();
     }
 
 

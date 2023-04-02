@@ -51,11 +51,11 @@ public class CloseWindow extends WindowAdapter {
 
         if (proUserDO==null){
 
-            new Cleaner();
+            Cleaner.Clean();
             new UserMain().UserMain(userDO);
         }else if (userDO==null){
 
-            new Cleaner();
+            Cleaner.Clean();
             new UserMain().ProductMain(proUserDO);
         }
 

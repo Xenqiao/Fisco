@@ -65,7 +65,7 @@ public class CreateGoodsHandler implements ActionListener{
             } else {
                 JOptionPane.showMessageDialog(createGoods, "上传失败！");
             }
-            new Cleaner();
+            Cleaner.Clean();
             new UserMain().ProductMain(proUserDO);
         }
     }

@@ -40,7 +40,7 @@ public class ChangeProUserHandler implements ActionListener{
             } else {
                 JOptionPane.showMessageDialog(changeProUser, "修改失败！");
             }
-            new Cleaner();
+            Cleaner.Clean();
             new UserMain().ProductMain(proUserDO);
         }
     }

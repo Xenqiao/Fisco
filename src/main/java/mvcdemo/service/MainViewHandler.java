@@ -21,7 +21,7 @@ public class MainViewHandler {
         switch (select){
             case '1':
                 new MainViewHandler().CheckUser(userDO);
-                new Cleaner();
+                Cleaner.Clean();
                 new UserMain().UserMain(userDO);
                 break;
             case '2':
@@ -31,7 +31,7 @@ public class MainViewHandler {
                 System.out.println();
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
                 new CheckProductByUser(userDO).CheckProduct();
-                new Cleaner();
+                Cleaner.Clean();
                 new UserMain().UserMain(userDO);
                 break;
             case '4':
@@ -39,7 +39,7 @@ public class MainViewHandler {
                 break;
             default:
                 JOptionPane.showMessageDialog(null,"格式错误,请重新输入！");
-                new Cleaner();
+                Cleaner.Clean();
                 new UserMain().UserMain(userDO);
                 break;
         }
@@ -51,7 +51,7 @@ public class MainViewHandler {
         switch (select){
             case '1':
                 new MainViewHandler().CheckProUser(proUserDO);
-                new Cleaner();
+                Cleaner.Clean();
                 new UserMain().ProductMain(proUserDO);
                 break;
             case '2':
@@ -70,16 +70,14 @@ public class MainViewHandler {
                 System.out.println();
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
                 new CheckProductByProUser(proUserDO);
-                System.out.print("                                        输入任意键返回主菜单(请勿直接回车)：");
-                Scanner sc = new Scanner(System.in);
-                char select2 =sc.next().charAt(0);
-                new Cleaner();
+                Cleaner.BackMain();
+                Cleaner.Clean();
                 new UserMain().ProductMain(proUserDO);
 
                 break;
             default:
                 JOptionPane.showMessageDialog(null,"格式错误,请重新输入！");
-                new Cleaner();
+                Cleaner.Clean();
                 new UserMain().ProductMain(proUserDO);
                 break;
         }
@@ -88,7 +86,7 @@ public class MainViewHandler {
 
 
     public void CheckProUser(ProUserDO proUserDO){
-        new Cleaner();
+        Cleaner.Clean();
         proUserDO.setBalance(Integer.valueOf(new ChangeOnFisco().CreateErc20(proUserDO.getHash())));
         System.out.println("                                        您的账户信息为：");
         System.out.println("                                        =======================================================");
@@ -99,16 +97,13 @@ public class MainViewHandler {
         System.out.println("                                        联系电话："+proUserDO.getProPhone());
         System.out.println("                                        收货地址："+proUserDO.getProHome());
         System.out.println("                                        =======================================================");
-        System.out.println();
-        System.out.print("                                        输入任意键返回主菜单(请勿直接回车)：");
-        Scanner sc = new Scanner(System.in);
-        char select =sc.next().charAt(0);
+        Cleaner.BackMain();
 
     }
 
 
     public void CheckUser(UserDO userDO){
-        new Cleaner();
+        Cleaner.Clean();
         userDO.setBalance(Integer.valueOf(new ChangeOnFisco().CreateErc20(userDO.getHash())));
         System.out.println("                                        您的账户信息为：");
         System.out.println("                                        =======================================================");
@@ -119,10 +114,7 @@ public class MainViewHandler {
         System.out.println("                                        联系电话："+userDO.getPhone());
         System.out.println("                                        收货地址："+userDO.getHome());
         System.out.println("                                        =======================================================");
-        System.out.println();
-        System.out.print("                                        输入任意键返回主菜单(请勿直接回车)：");
-        Scanner sc = new Scanner(System.in);
-        char select =sc.next().charAt(0);
+        Cleaner.BackMain();
 
     }
 }

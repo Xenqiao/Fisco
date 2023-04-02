@@ -6,9 +6,6 @@ import mvcdemo.po.ProductDO;
 import mvcdemo.service.Cleaner;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Product;
-import org.fisco.bcos.sdk.BcosSDK;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 
 import java.sql.Connection;
@@ -23,7 +20,7 @@ import java.sql.Statement;
 public class CheckProductByProUser {
 
     public CheckProductByProUser(ProUserDO proUserDO){
-        new Cleaner();
+        Cleaner.Clean();
         ProductDO productDO = new ProductDO();
         Connection conn = DBUtil.getConn();
 
@@ -44,14 +41,9 @@ public class CheckProductByProUser {
                 productDO.setProductId(product.getProduct(productDO.getProductHash()).getValue6().intValue());
                 productDO.setProductMakePhone(proUserDO.getProPhone());
 
-                System.out.println();
-                System.out.println("商品序号："+ productDO.getProductId());
+
                 System.out.println("商品哈希："+ productDO.getProductHash());
-                System.out.println("商品名称："+ productDO.getProductName());
-                System.out.println("商品价格："+ productDO.getProductPrice()+"  ETH");
-                System.out.println("产品委托商："+ productDO.getProductMake());
-                System.out.println("产品委托商联系电话："+ productDO.getProductMakePhone());
-                System.out.println("产品发货地址："+ productDO.getProductPlace());
+                Cleaner.PrintProduct(productDO);
                 System.out.println();
                 System.out.println();
             }

@@ -49,7 +49,7 @@ public class ChangeUserHandler implements ActionListener{
             } else {
                 JOptionPane.showMessageDialog(changeUser, "修改失败！");
             }
-            new Cleaner();
+            Cleaner.Clean();
             new UserMain().UserMain(userDO);
 
         }

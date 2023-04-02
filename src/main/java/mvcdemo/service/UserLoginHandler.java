@@ -94,10 +94,10 @@ public class UserLoginHandler extends KeyAdapter implements ActionListener {
             JOptionPane.showMessageDialog(loginView, "接下来请转入控制台界面！");
             loginView.dispose();
             if (chance == 1){
-                new Cleaner();
+                Cleaner.Clean();
                 new UserMain().UserMain(userDO);
             }else{
-                new Cleaner();
+                Cleaner.Clean();
                 new UserMain().ProductMain(proUserDO);
             }
         }else {
@@ -156,10 +156,10 @@ public class UserLoginHandler extends KeyAdapter implements ActionListener {
             loginView.dispose();
 
             if (change == 1){
-                new Cleaner();
+                Cleaner.Clean();
                 new UserMain().UserMain(userDO);
             }else{
-                new Cleaner();
+                Cleaner.Clean();
                 new UserMain().ProductMain(proUserDO);
             }
 

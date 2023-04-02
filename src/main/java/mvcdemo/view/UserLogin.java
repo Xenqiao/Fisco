@@ -15,7 +15,7 @@ import java.util.Enumeration;
  * @author Xenqiao
  */
 public class UserLogin extends JFrame{
-    JLabel nameLabel = new JLabel("欢迎使用！");
+    JLabel nameLabel = new JLabel("欢迎使用！登录时请耐心等待");
 
     /**
      * 弹簧布局设置
