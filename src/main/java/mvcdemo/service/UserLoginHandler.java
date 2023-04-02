@@ -6,6 +6,8 @@ import mvcdemo.service.impl.AdminService;
 import mvcdemo.service.impl.AdminServiceImpl;
 import mvcdemo.service.impl.ProductLogonImpl;
 import mvcdemo.service.impl.UserLogonImpl;
+import mvcdemo.util.contractRealize.GetBcosSDK;
+import mvcdemo.util.toolcontract.User;
 import mvcdemo.view.UserLogin;
 import mvcdemo.view.UserMain;
 
@@ -148,7 +150,9 @@ public class UserLoginHandler extends KeyAdapter implements ActionListener {
 
             System.out.println(userDO.getUserName()==null);
             System.out.println(proUserDO.getUserName()==null);
-            JOptionPane.showMessageDialog(loginView,"登陆成功，接下来请看控制台界面！");
+            JOptionPane.showMessageDialog(loginView,"登陆成功，等待三分钟后将进入控制台界面！");
+            GetBcosSDK.getClient();
+            GetBcosSDK.getKeyPair();
             loginView.dispose();
 
             if (change == 1){

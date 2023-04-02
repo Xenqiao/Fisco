@@ -1,5 +1,6 @@
 package mvcdemo.service;
 
+import mvcdemo.util.contractRealize.GetBcosSDK;
 import org.fisco.bcos.sdk.BcosSDK;
 import org.fisco.bcos.sdk.client.Client;
 import org.fisco.bcos.sdk.crypto.CryptoSuite;
@@ -16,9 +17,6 @@ import java.security.KeyPair;
  * @create 2023/3/18 22:43
  */
 public class CreateUser {
-    String configFile = "src/main/resources/config.toml";
-    BcosSDK sdk = BcosSDK.build(configFile);
-    Client client = sdk.getClient(1);
 
     /**创建非国密类型的 CryptoSuite */
     CryptoSuite cryptoSuite = new CryptoSuite(CryptoType.ECDSA_TYPE);
@@ -32,7 +30,7 @@ public class CreateUser {
         pemFilePath.append("src/main/resource/solidity/pem/"+accountAddress+".pem");
 
         saveAccountWithPem(cryptoKeyPair,pemFilePath.toString());
-        loadPemAccount(client,pemFilePath.toString());
+        loadPemAccount(GetBcosSDK.getClient(),pemFilePath.toString());
         saveAccountWithPemToKeyStoreDir(cryptoKeyPair);
         loadPem(pemFilePath.toString());
         return accountAddress;

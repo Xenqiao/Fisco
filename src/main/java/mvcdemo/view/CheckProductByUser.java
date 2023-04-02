@@ -7,6 +7,7 @@ import mvcdemo.po.ProUserDO;
 import mvcdemo.po.ProductDO;
 import mvcdemo.po.UserDO;
 import mvcdemo.service.Cleaner;
+import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Erc20;
 import mvcdemo.util.toolcontract.Product;
 import org.fisco.bcos.sdk.BcosSDK;
@@ -24,10 +25,7 @@ import java.util.Scanner;
  * @create 2023/3/27 12:28
  */
 public class CheckProductByUser {
-    String configFile = "src/main/resources/config.toml";
-    BcosSDK sdk = BcosSDK.build(configFile);
-    Client client = sdk.getClient(1);
-    CryptoKeyPair keyPair = client.getCryptoSuite().createKeyPair();
+
     ProductDO productDO = new ProductDO();
 
     private UserDO userDO;
@@ -49,7 +47,7 @@ public class CheckProductByUser {
             while (rs.next()){
                 productDO.setProductHash(rs.getString("phash"));
                 productDO.setProductName(rs.getString("pname"));
-                Product product = new Product(productDO.getProductHash(),client,keyPair);
+                Product product = new Product(productDO.getProductHash(), GetBcosSDK.getClient(),GetBcosSDK.getKeyPair());
 
                 productDO.setProductPrice(product.getProduct(productDO.getProductHash()).getValue3().intValue());
                 productDO.setProductPlace(product.getProduct(productDO.getProductHash()).getValue4());
@@ -99,7 +97,7 @@ public class CheckProductByUser {
         System.out.print("                                        请选择输入您要查询的商品名称：");
         Scanner sc = new Scanner(System.in);
         String select = sc.next();
-        System.out.println("你写的啥？"+select);
+        
         new Cleaner();
 
         try {
@@ -112,7 +110,7 @@ public class CheckProductByUser {
 
                 productDO.setProductHash(rs.getString("phash"));
                 productDO.setProductName(rs.getString("pname"));
-                Product product = new Product(productDO.getProductHash(),client,keyPair);
+                Product product = new Product(productDO.getProductHash(),GetBcosSDK.getClient(),GetBcosSDK.getKeyPair());
 
                 productDO.setProductPrice(product.getProduct(productDO.getProductHash()).getValue3().intValue());
                 productDO.setProductPlace(product.getProduct(productDO.getProductHash()).getValue4());
@@ -176,7 +174,7 @@ public class CheckProductByUser {
             }
             rs.close();
             stmt.close();
-
+            conn.close();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -184,7 +182,7 @@ public class CheckProductByUser {
 
         //在合约上完成的转账操作
         String contractAddress = "0x3fb7e04e2ff1a5796ff62348c6dc2b05f684118c";
-        Erc20 erc20 = new Erc20(contractAddress, client, keyPair);
+        Erc20 erc20 = new Erc20(contractAddress, GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
 
         try {
             userDO.setBalance(Integer.valueOf(erc20.balanceOf(userDO.getHash()).toString()));
@@ -210,26 +208,10 @@ public class CheckProductByUser {
         }
         stringBuilder.append(userDO.getAlreadyPurchased()+","+productDO.getProductId());
         userDO.setAlreadyPurchased(stringBuilder.toString());
+
+
         //把余额数据上传至MySQL
-
-        try {
-            StringBuilder sql = new StringBuilder();
-            sql.append(" update producer set " +
-                    " proBalance="+"'"+proUserDO.getBalance()+"' "+
-                    " where id="+"'"+productDO.getProductMake()+"' ;");
-            
-            System.out.println(sql.toString());
-
-            PreparedStatement ps = conn.prepareStatement(sql.toString());
-
-            new UserServiceImpl().add(userDO);
-
-            ps.close();
-            conn.close();
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        new UserServiceImpl().add(userDO);
 
         System.out.println();
         System.out.print("                                        输入任意键返回主菜单(请勿直接回车)：");

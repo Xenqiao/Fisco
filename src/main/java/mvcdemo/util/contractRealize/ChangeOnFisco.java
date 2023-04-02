@@ -28,15 +28,10 @@ public class ChangeOnFisco {
     /**区块链的初始化
      *
      */
-    String configFile = "src/main/resources/config.toml";
-
-    BcosSDK sdk = BcosSDK.build(configFile);
-    Client client = sdk.getClient(1);
-    CryptoKeyPair keyPair = client.getCryptoSuite().createKeyPair();
 
     public String CreatingBlocks(String contractName){
         try {
-            AssembleTransactionProcessor transactionProcessor = TransactionProcessorFactory.createAssembleTransactionProcessor(client, keyPair, "src/main/resource/solidity/abi", "src/main/resource/solidity/bin");
+            AssembleTransactionProcessor transactionProcessor = TransactionProcessorFactory.createAssembleTransactionProcessor(GetBcosSDK.getClient(), GetBcosSDK.getKeyPair(), "src/main/resource/solidity/abi", "src/main/resource/solidity/bin");
             TransactionResponse response = transactionProcessor.deployByContractLoader(contractName, new ArrayList<>());
             String Address = response.getContractAddress();
             return Address;
@@ -49,7 +44,7 @@ public class ChangeOnFisco {
     public void ChangeUserOnFisco(UserDO userDO){
 
         String Address = userDO.getHash();
-        User user = new User(Address, client, keyPair);
+        User user = new User(Address, GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
         user.setUser(
                 userDO.getHash(),
                 userDO.getUserName(),
@@ -64,7 +59,7 @@ public class ChangeOnFisco {
     public void ChangeProUserOnFisco(ProUserDO proUserDO){
 
             String Address = proUserDO.getHash();
-            ProUser proUser = new ProUser(Address,client,keyPair);
+            ProUser proUser = new ProUser(Address,GetBcosSDK.getClient(),GetBcosSDK.getKeyPair());
             proUser.setProUser(
                     proUserDO.getHash(),
                     proUserDO.getUserName(),
@@ -80,7 +75,7 @@ public class ChangeOnFisco {
     public void GetProductHash(ProductDO productDO){
 
         String Address = new ChangeOnFisco().CreatingBlocks("Product");
-        Product product = new Product(Address, client, keyPair);
+        Product product = new Product(Address, GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
 
         productDO.setProductHash(product.getContractAddress());
         product.setProduct(
@@ -101,7 +96,7 @@ public class ChangeOnFisco {
 
         //String contractAddress = new ChangeOnFisco().CreatingBlocks("Erc20");
 
-        Erc20 erc20 = new Erc20(contractAddress, client, keyPair);
+        Erc20 erc20 = new Erc20(contractAddress, GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
         try {
             //erc20.transferFrom(a,hash,BigInteger.valueOf(500));
             return erc20.balanceOf(hash).toString();

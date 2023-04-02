@@ -5,6 +5,7 @@ import mvcdemo.dao.mysql.impl.UserService;
 import mvcdemo.dao.mysql.impl.UserServiceImpl;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.ProductDO;
+import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Product;
 import mvcdemo.view.ReviseProductInformation;
 import mvcdemo.view.UserMain;
@@ -32,12 +33,6 @@ public class ReviseProductInformationHandler implements ActionListener {
     }
 
 
-    String configFile = "src/main/resource/config.toml";
-    BcosSDK sdk = BcosSDK.build(configFile);
-    Client client = sdk.getClient(1);
-    CryptoKeyPair keyPair = client.getCryptoSuite().createKeyPair();
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -47,7 +42,7 @@ public class ReviseProductInformationHandler implements ActionListener {
         reviseProductInformation.SetManage(productDO);
 
 
-        Product product = new Product(productDO.getProductHash(),client,keyPair);
+        Product product = new Product(productDO.getProductHash(), GetBcosSDK.getClient(),GetBcosSDK.getKeyPair());
         product.setProduct(productDO.getProductHash(), productDO.getProductName(), productDO.getProductPrice(), productDO.getProductPlace(), productDO.getProductMake(), productDO.getProductId());
 
         if ("确认修改".equals(text)) {

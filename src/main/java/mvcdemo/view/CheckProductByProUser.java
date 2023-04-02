@@ -4,6 +4,7 @@ import mvcdemo.dao.mysql.DBUtil;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.ProductDO;
 import mvcdemo.service.Cleaner;
+import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Product;
 import org.fisco.bcos.sdk.BcosSDK;
 import org.fisco.bcos.sdk.client.Client;
@@ -20,11 +21,6 @@ import java.sql.Statement;
  * @create 2023/3/25 21:58
  */
 public class CheckProductByProUser {
-    String configFile = "src/main/resources/config.toml";
-    BcosSDK sdk = BcosSDK.build(configFile);
-    Client client = sdk.getClient(1);
-    CryptoKeyPair keyPair = client.getCryptoSuite().createKeyPair();
-
 
     public CheckProductByProUser(ProUserDO proUserDO){
         new Cleaner();
@@ -40,7 +36,7 @@ public class CheckProductByProUser {
             while (rs.next()){
                 productDO.setProductHash(rs.getString("phash"));
                 productDO.setProductName(rs.getString("pname"));
-                Product product = new Product(productDO.getProductHash(),client,keyPair);
+                Product product = new Product(productDO.getProductHash(), GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
 
                 productDO.setProductPrice(product.getProduct(productDO.getProductHash()).getValue3().intValue());
                 productDO.setProductPlace(product.getProduct(productDO.getProductHash()).getValue4());

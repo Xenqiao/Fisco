@@ -83,8 +83,8 @@ public class AdminServiceImpl implements AdminService {
 
     /**
      * 登录时查询 MySQL的函数，负责验证密码
-     * @param lname
-     * @param lpassword
+     * @param lName
+     * @param lPassword
      * @param change
      * @return
      * @throws Exception

@@ -1,0 +1,3 @@
+INSERT INTO `producer` (`id`, `pwd`, `hash`, `proPhone`, `proHome`, `proManager`, `proBalance`, `AlreadyPurchased`) VALUES ('a', '1111', '0x10e47f5aa26b58f53e055878148ed47529a24099', '100881008810088', '浙江省合肥市石窟区广州理解大学北门行政楼10086保安室10086号床', '武洪', '10043', NULL);
+INSERT INTO `producer` (`id`, `pwd`, `hash`, `proPhone`, `proHome`, `proManager`, `proBalance`, `AlreadyPurchased`) VALUES ('b', '111', '0x8bf17e0deecb3f5e7568ca7b76e6d8d832114d1e', '100861008610086', '广东省广州市番禺区大学城南广东工业大学华南植物园1008610086保安室', '谢Bro', '0', NULL);
+INSERT INTO `producer` (`id`, `pwd`, `hash`, `proPhone`, `proHome`, `proManager`, `proBalance`, `AlreadyPurchased`) VALUES (NULL, '', '', NULL, NULL, NULL, NULL, NULL);
