@@ -15,6 +15,7 @@ import java.util.Scanner;
 public class AlreadyPurchasedByUser {
     ProductDO productDO = new ProductDO();
 
+    /** 展示购买过的产品以及对应哈希值供用户核实 **/
     public void CheckingAlreadyPurchased(){
         Cleaner.Clean();
         System.out.println("===================================================================================== 分割线 == 分割线 ================================================================================================================");
@@ -46,6 +47,8 @@ public class AlreadyPurchasedByUser {
         Cleaner.BackMain();
     }
 
+
+    /** 查询产品哈希以验证真伪的函数 */
     public void VerificationOfAuthenticity(){
         Cleaner.Clean();
 
@@ -67,4 +70,6 @@ public class AlreadyPurchasedByUser {
             Cleaner.BackMain();
         }
     }
+
+
 }

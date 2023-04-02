@@ -13,6 +13,24 @@ public class GetProUserDO {
     private static String proHome;
     private static Integer balance;
     private static String proAlreadyPurchased;
+    private static String message;
+    private static String maker;
+
+    public static String getMaker() {
+        return maker;
+    }
+
+    public static void setMaker(String maker) {
+        GetProUserDO.maker = maker;
+    }
+
+    public static String getMessage() {
+        return message;
+    }
+
+    public static void setMessage(String message) {
+        GetProUserDO.message = message;
+    }
 
     public static String getUserName() {
         return userName;

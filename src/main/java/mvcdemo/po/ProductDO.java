@@ -13,6 +13,7 @@ public class ProductDO {
     private String productMake;
     private String productMakePhone;
     private String productConner;
+    private String maker;
 
     @Override
     public String toString() {
@@ -25,7 +26,16 @@ public class ProductDO {
                 ", productMake='" + productMake + '\'' +
                 ", productMakePhone='" + productMakePhone + '\'' +
                 ", productConner='" + productConner + '\'' +
+                ", maker='" + maker + '\'' +
                 '}';
+    }
+
+    public String getMaker() {
+        return maker;
+    }
+
+    public void setMaker(String maker) {
+        this.maker = maker;
     }
 
     public String getProductConner() {

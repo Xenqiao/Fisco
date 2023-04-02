@@ -40,6 +40,9 @@ public class MainViewHandler {
                 new MainView().UserMain(userDO);
                 break;
             case '5':
+                Cleaner.Clean();
+                new ReportProduct().ReportProducts();
+                new MainView().UserMain(userDO);
                 break;
             case'6':
                 break;
