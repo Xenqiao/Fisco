@@ -31,7 +31,7 @@ public class ChangeOnFisco {
 
     public String CreatingBlocks(String contractName){
         try {
-            AssembleTransactionProcessor transactionProcessor = TransactionProcessorFactory.createAssembleTransactionProcessor(GetBcosSDK.getClient(), GetBcosSDK.getKeyPair(), "src/main/resource/solidity/abi", "src/main/resource/solidity/bin");
+            AssembleTransactionProcessor transactionProcessor = TransactionProcessorFactory.createAssembleTransactionProcessor(GetBcosSDK.getClient(), GetBcosSDK.getKeyPair(), "src/main/resources/solidity/abi", "src/main/resources/solidity/bin");
             TransactionResponse response = transactionProcessor.deployByContractLoader(contractName, new ArrayList<>());
             String Address = response.getContractAddress();
             return Address;

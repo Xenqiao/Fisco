@@ -70,14 +70,14 @@ public class ReportProduct {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select "+mess+" from producer where id="+"'"+GetProUserDO.getUserName()+"' ;");
             while (rs.next()){
-                GetProUserDO.setMessage(rs.getString(mess));
+                GetProUserDO.setrMessage(rs.getString(mess));
             }
-            if (GetProUserDO.getMessage()==null || "".equals(GetProUserDO.getMessage())){
-                GetProUserDO.setMessage("0,");
+            if (GetProUserDO.getrMessage()==null || "".equals(GetProUserDO.getrMessage())){
+                GetProUserDO.setrMessage("0,");
             }
             StringBuilder message = new StringBuilder();
-            message.append(GetProUserDO.getMessage()+productDO.getProductId()+",");
-            GetProUserDO.setMessage(message.toString());
+            message.append(GetProUserDO.getrMessage()+productDO.getProductId()+",");
+            GetProUserDO.setrMessage(message.toString());
 
             rs.close();
             stmt.close();
@@ -88,7 +88,7 @@ public class ReportProduct {
 
 
         sql.append(" update producer set " +
-                mess+"="+"'"+GetProUserDO.getMessage()+"' "+
+                mess+"="+"'"+GetProUserDO.getrMessage()+"' "+
                 " where id="+"'"+GetProUserDO.getUserName()+"';");
 
         try {

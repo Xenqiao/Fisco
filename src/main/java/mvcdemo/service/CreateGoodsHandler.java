@@ -36,8 +36,12 @@ public class CreateGoodsHandler implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         JButton jButton = (JButton) e.getSource();
         String text = jButton.getText();
+        boolean judge = createGoods.SetManage(productDO);
 
-        createGoods.SetManage(productDO);
+        if (judge == false){
+            JOptionPane.showMessageDialog(createGoods,"您可能输入为空或者格式错误，请重新输入");
+            return;
+        }
 
         try {
             int totalCount = 0;

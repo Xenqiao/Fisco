@@ -80,7 +80,7 @@ public class MysqlServiceImpl implements MysqlService {
     @Override
     public boolean addProduct(ProductDO productDO){
         StringBuilder sql = new StringBuilder();
-        sql.append("insert into product(pname,pprice,phash,pid,pmaker,pphone) values(?,?,?,?,?,?);");
+        sql.append("insert into product(pname,pprice,phash,pid,pmaker,pphone,pclass) values(?,?,?,?,?,?,?);");
 
         try {
             conn = DBUtil.getConn();
@@ -92,6 +92,7 @@ public class MysqlServiceImpl implements MysqlService {
             ps.setString(4,productDO.getProductId().toString());
             ps.setString(5,productDO.getProductConner());
             ps.setString(6,productDO.getProductMakePhone());
+            ps.setString(7,productDO.getProductClass());
             return ps.executeLargeUpdate() == 1 ;
 
         } catch (SQLException throwables) {

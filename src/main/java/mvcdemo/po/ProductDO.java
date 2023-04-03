@@ -13,6 +13,7 @@ public class ProductDO {
     private String productMake;
     private String productMakePhone;
     private String productConner;
+    private String productClass;
     private String maker;
 
     @Override
@@ -26,8 +27,17 @@ public class ProductDO {
                 ", productMake='" + productMake + '\'' +
                 ", productMakePhone='" + productMakePhone + '\'' +
                 ", productConner='" + productConner + '\'' +
+                ", productClass='" + productClass + '\'' +
                 ", maker='" + maker + '\'' +
                 '}';
+    }
+
+    public String getProductClass() {
+        return productClass;
+    }
+
+    public void setProductClass(String productClass) {
+        this.productClass = productClass;
     }
 
     public String getMaker() {

@@ -10,12 +10,13 @@ public class GetProUserDO {
     private static String hash;
     private static String proManager;
     private static String proPhone;
+    /** 5 **/
     private static String proHome;
     private static Integer balance;
     private static String proAlreadyPurchased;
-    private static String message;
     private static String rMessage;
     private static String sMessage;
+    /**  10  **/
     private static String maker;
 
     public static String getrMessage() {
@@ -42,13 +43,6 @@ public class GetProUserDO {
         GetProUserDO.maker = maker;
     }
 
-    public static String getMessage() {
-        return message;
-    }
-
-    public static void setMessage(String message) {
-        GetProUserDO.message = message;
-    }
 
     public static String getUserName() {
         return userName;

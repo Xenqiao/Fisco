@@ -1,8 +1,8 @@
 package mvcdemo;
 
 
-import mvcdemo.util.contractRealize.ChangeOnFisco;
-import mvcdemo.view.AlreadyPurchasedByUser;
+import mvcdemo.po.ProUserDO;
+import mvcdemo.view.CreateGoods;
 
 public class Main {
 
@@ -12,7 +12,7 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-
+        new CreateGoods(new ProUserDO());
 
     }
 }

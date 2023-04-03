@@ -27,7 +27,7 @@ public class CreateUser {
 
     public String GetUserHash() {
         StringBuilder pemFilePath = new StringBuilder();
-        pemFilePath.append("src/main/resource/solidity/pem/"+accountAddress+".pem");
+        pemFilePath.append("src/main/resources/solidity/pem/"+accountAddress+".pem");
 
         saveAccountWithPem(cryptoKeyPair,pemFilePath.toString());
         loadPemAccount(GetBcosSDK.getClient(),pemFilePath.toString());

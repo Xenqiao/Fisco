@@ -1,5 +1,7 @@
 package mvcdemo.service;
 
+import mvcdemo.po.GetProUserDO;
+import mvcdemo.po.GetUserDO;
 import mvcdemo.po.ProUserDO;
 import mvcdemo.po.UserDO;
 import mvcdemo.util.contractRealize.ChangeOnFisco;
@@ -21,7 +23,7 @@ public class MainViewHandler {
         switch (select){
             case '1':
                 //选择1：查看我的用户信息
-                new MainViewHandler().CheckUser(userDO);
+                new MainViewHandler().CheckUser();
                 Cleaner.Clean();
                 new MainView().UserMain(userDO);
                 break;
@@ -75,7 +77,7 @@ public class MainViewHandler {
         switch (select){
             case '1':
                 //选择1：查看我的用户信息
-                new MainViewHandler().CheckProUser(proUserDO);
+                new MainViewHandler().CheckProUser();
                 Cleaner.Clean();
                 new MainView().ProductMain(proUserDO);
                 break;
@@ -124,34 +126,34 @@ public class MainViewHandler {
     }
 
 
-    public void CheckProUser(ProUserDO proUserDO){
+    public void CheckProUser(){
         Cleaner.Clean();
-        proUserDO.setBalance(Integer.valueOf(new ChangeOnFisco().CreateErc20(proUserDO.getHash())));
+        GetProUserDO.setBalance(Integer.valueOf(new ChangeOnFisco().CreateErc20(GetProUserDO.getHash())));
         System.out.println("                                        您的账户信息为：");
         System.out.println("                                        =======================================================");
-        System.out.println("                                        账号："+proUserDO.getUserName());
-        System.out.println("                                        账号哈希："+proUserDO.getHash());
-        System.out.println("                                        账户余额："+proUserDO.getBalance());
-        System.out.println("                                        委托商："+proUserDO.getProManager());
-        System.out.println("                                        联系电话："+proUserDO.getProPhone());
-        System.out.println("                                        收货地址："+proUserDO.getProHome());
+        System.out.println("                                        账号："+GetProUserDO.getUserName());
+        System.out.println("                                        账号哈希："+GetProUserDO.getHash());
+        System.out.println("                                        账户余额："+GetProUserDO.getBalance()+"  ETH");
+        System.out.println("                                        委托商："+GetProUserDO.getProManager());
+        System.out.println("                                        联系电话："+GetProUserDO.getProPhone());
+        System.out.println("                                        收货地址："+GetProUserDO.getProHome());
         System.out.println("                                        =======================================================");
         Cleaner.BackMain();
 
     }
 
 
-    public void CheckUser(UserDO userDO){
+    public void CheckUser(){
         Cleaner.Clean();
-        userDO.setBalance(Integer.valueOf(new ChangeOnFisco().CreateErc20(userDO.getHash())));
+        GetUserDO.setBalance(Integer.valueOf(new ChangeOnFisco().CreateErc20(GetUserDO.getHash())));
         System.out.println("                                        您的账户信息为：");
         System.out.println("                                        =======================================================");
-        System.out.println("                                        账号："+userDO.getUserName());
-        System.out.println("                                        账号哈希："+userDO.getHash());
-        System.out.println("                                        账户余额："+userDO.getBalance());
-        System.out.println("                                        姓名："+userDO.getName());
-        System.out.println("                                        联系电话："+userDO.getPhone());
-        System.out.println("                                        收货地址："+userDO.getHome());
+        System.out.println("                                        账号："+GetUserDO.getUserName());
+        System.out.println("                                        账号哈希："+GetUserDO.getHash());
+        System.out.println("                                        账户余额："+GetUserDO.getBalance()+"   ETH");
+        System.out.println("                                        姓名："+GetUserDO.getName());
+        System.out.println("                                        联系电话："+GetUserDO.getPhone());
+        System.out.println("                                        收货地址："+GetUserDO.getHome());
         System.out.println("                                        =======================================================");
         Cleaner.BackMain();
 
