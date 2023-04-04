@@ -1,12 +1,11 @@
 package mvcdemo.view;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
-import mvcdemo.po.GetUserDO;
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.ProductDO;
-import mvcdemo.po.UserDO;
-import mvcdemo.service.Cleaner;
+import mvcdemo.service.impl.MysqlServiceImpl;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.dto.UserDTO;
+import mvcdemo.util.Cleaner;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Erc20;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
@@ -22,11 +21,11 @@ import java.util.Scanner;
  */
 public class CheckProductByUser {
 
-    ProductDO productDO = new ProductDO();
+    ProductDTO productDTO = new ProductDTO();
 
-    private UserDO userDO;
-    public CheckProductByUser(UserDO userDO) {
-        this.userDO = userDO;
+    private UserDTO userDTO;
+    public CheckProductByUser(UserDTO userDTO) {
+        this.userDTO = userDTO;
     }
     Connection conn = DBUtil.getConn();
 
@@ -34,17 +33,17 @@ public class CheckProductByUser {
         Cleaner.Clean();
 
         String sql = "select * from product;";
-        new MysqlServiceImpl().PrintProduct(productDO,sql,0);
+        new MysqlServiceImpl().PrintProduct(productDTO,sql,0);
 
         System.out.print("                                        请选择输入您要进行的操作（ a.查询产品      b.购买产品      c.返回主菜单 ）：");
         Scanner sc = new Scanner(System.in);
         char select =sc.next().charAt(0);
         switch (select){
             case 'a':
-                new CheckProductByUser(userDO).lookingForProduct();
+                new CheckProductByUser(userDTO).lookingForProduct();
                 break;
             case 'b':
-                new CheckProductByUser(userDO).purchaseProducts();
+                new CheckProductByUser(userDTO).purchaseProducts();
                 break;
             default:
                 JOptionPane.showMessageDialog(null,"接下来将返回主菜单！");
@@ -64,7 +63,7 @@ public class CheckProductByUser {
         StringBuilder sql = new StringBuilder();
         sql.append("select * from product where pname like"+"'%"+select+"%' ;");
         boolean number = true;
-        number = new MysqlServiceImpl().PrintProduct(productDO,sql.toString(),0);
+        number = new MysqlServiceImpl().PrintProduct(productDTO,sql.toString(),0);
             if (number == false) {
                 System.out.println("没有找到哦，输入一个字进行查找试试？ ");
                 Cleaner.BackMain();
@@ -79,31 +78,31 @@ public class CheckProductByUser {
         Scanner sc = new Scanner(System.in);
         char select =sc.next().charAt(0);
 
-        productDO.setProductId(Integer.valueOf(String.valueOf(select)));
-        ProUserDO proUserDO = new ProUserDO();
+        productDTO.setProductId(Integer.valueOf(String.valueOf(select)));
+        ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
 
 
         try {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select * from product WHERE pid="+"'"+productDO.getProductId()+"' ;");
+            ResultSet rs = stmt.executeQuery("select * from product WHERE pid="+"'"+ productDTO.getProductId()+"' ;");
 
             while (rs.next()){
                 if (rs != null){
-                    productDO.setProductName(rs.getString("pname"));
-                    productDO.setProductHash(rs.getString("phash"));
-                    productDO.setProductMake(rs.getString("pmaker"));
-                    productDO.setProductMakePhone(rs.getString("pphone"));
-                    productDO.setProductPrice(Integer.valueOf(rs.getString("pprice")));
+                    productDTO.setProductName(rs.getString("pname"));
+                    productDTO.setProductHash(rs.getString("phash"));
+                    productDTO.setProductMake(rs.getString("pmaker"));
+                    productDTO.setProductMakePhone(rs.getString("pphone"));
+                    productDTO.setProductPrice(Integer.valueOf(rs.getString("pprice")));
                 }else {
                     JOptionPane.showMessageDialog(null, "该序号不存在！");
                     return;
                 }
             }
 
-            rs = stmt.executeQuery("select * from producer where id="+"'"+productDO.getProductMake()+"' ;");
+            rs = stmt.executeQuery("select * from producer where id="+"'"+ productDTO.getProductMake()+"' ;");
             while (rs.next()){
-                proUserDO.setUserName(rs.getString("id"));
-                proUserDO.setHash(rs.getString("hash"));
+                proUserDTO.setUserName(rs.getString("id"));
+                proUserDTO.setHash(rs.getString("hash"));
             }
             rs.close();
             stmt.close();
@@ -115,36 +114,36 @@ public class CheckProductByUser {
 
         //在合约上完成的转账操作
         String contractAddress = "0x3fb7e04e2ff1a5796ff62348c6dc2b05f684118c";
-        Erc20 erc20 = new Erc20(contractAddress, GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
+        Erc20 erc20 = new Erc20(contractAddress, GetBcosSDK.theGetBcosSDK().getClient(), GetBcosSDK.theGetBcosSDK().getKeyPair());
 
         try {
-            userDO.setBalance(Integer.valueOf(erc20.balanceOf(userDO.getHash()).toString()));
-            if (userDO.getBalance() < productDO.getProductPrice()){
+            userDTO.setBalance(Integer.valueOf(erc20.balanceOf(userDTO.getHash()).toString()));
+            if (userDTO.getBalance() < productDTO.getProductPrice()){
 
                 JOptionPane.showMessageDialog(null, "余额不足！");
                 return;
             }
             //转账操作
-            erc20.transferFrom(userDO.getHash(),proUserDO.getHash(), BigInteger.valueOf(productDO.getProductPrice()));
-            userDO.setBalance(Integer.valueOf(erc20.balanceOf(userDO.getHash()).toString()));
+            erc20.transferFrom(userDTO.getHash(), proUserDTO.getHash(), BigInteger.valueOf(productDTO.getProductPrice()));
+            userDTO.setBalance(Integer.valueOf(erc20.balanceOf(userDTO.getHash()).toString()));
 
-            System.out.println("购买成功！商品哈希为："+productDO.getProductHash());
-            System.out.println("您的账户余额为："+userDO.getBalance()+"   ETH");
+            System.out.println("购买成功！商品哈希为："+ productDTO.getProductHash());
+            System.out.println("您的账户余额为："+ userDTO.getBalance()+"   ETH");
         } catch (ContractException e) {
             e.printStackTrace();
         }
 
 
         StringBuilder stringBuilder = new StringBuilder();
-        if (userDO.getAlreadyPurchased()==null){
-            userDO.setAlreadyPurchased("0,");
+        if (userDTO.getAlreadyPurchased()==null){
+            userDTO.setAlreadyPurchased("0,");
         }
-        stringBuilder.append(userDO.getAlreadyPurchased()+productDO.getProductId()+",");
-        userDO.setAlreadyPurchased(stringBuilder.toString());
-        GetUserDO.setAlreadyPurchased(stringBuilder.toString());
+        stringBuilder.append(userDTO.getAlreadyPurchased()+ productDTO.getProductId()+",");
+        userDTO.setAlreadyPurchased(stringBuilder.toString());
+        proUserDTO.setProAlreadyPurchased(stringBuilder.toString());
 
         //把余额数据上传至MySQL
-        new MysqlServiceImpl().add(userDO);
+        new MysqlServiceImpl().add(userDTO);
         Cleaner.BackMain();
     }
 

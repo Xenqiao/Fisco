@@ -1,7 +1,7 @@
-package mvcdemo.service;
+package mvcdemo.util;
 
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.UserDO;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.UserDTO;
 import mvcdemo.view.*;
 
 import java.awt.event.WindowAdapter;
@@ -12,29 +12,26 @@ import java.awt.event.WindowEvent;
  * @create 2023/3/31 17:21
  */
 public class CloseWindow extends WindowAdapter {
-    private UserDO userDO;
-    private ProUserDO proUserDO;
+    private UserDTO userDTO;
     private CreateGoods createGoods;
     private ChangeUser changeUser;
     private ChangeProUser changeProUser;
     private ReviseProductInformation reviseProductInformation;
 
     public CloseWindow(
-            UserDO userDO,
-            ProUserDO proUserDO,
+            UserDTO userDTO,
             CreateGoods createGoods,
             ChangeUser changeUser,
             ChangeProUser changeProUser,
             ReviseProductInformation reviseProductInformation
     ) {
-        this.userDO = userDO;
-        this.proUserDO = proUserDO;
-
+        this.userDTO = userDTO;
         this.createGoods = createGoods;
         this.changeUser = changeUser;
         this.changeProUser = changeProUser;
         this.reviseProductInformation = reviseProductInformation;
     }
+
 
     @Override
     public void windowClosing(WindowEvent e){
@@ -49,14 +46,14 @@ public class CloseWindow extends WindowAdapter {
             reviseProductInformation.dispose();
         }
 
-        if (proUserDO==null){
+        ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
+        if (proUserDTO ==null){
+            Cleaner.Clean();
+            new MainView().UserMain();
+        }else if (userDTO ==null){
 
             Cleaner.Clean();
-            new MainView().UserMain(userDO);
-        }else if (userDO==null){
-
-            Cleaner.Clean();
-            new MainView().ProductMain(proUserDO);
+            new MainView().ProductMain();
         }
 
     }

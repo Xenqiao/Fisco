@@ -1,10 +1,11 @@
-package mvcdemo.po;
+package mvcdemo.dto;
+
 
 /**
  * @author Xenqiao
  * @create 2023/3/18 17:38
  */
-public class UserDO {
+public class UserDTO {
 
     private String userName;
     private String pwd;
@@ -14,6 +15,21 @@ public class UserDO {
     private String home;
     private Integer balance;
     private String AlreadyPurchased;
+
+    /** 单例模式的双重检查 **/
+    private static volatile UserDTO userDTO;
+    private UserDTO(){
+    }
+    public static UserDTO getUserDO(){
+        if (userDTO == null){
+            synchronized (ProUserDTO.class){
+                if (userDTO == null){
+                    userDTO = new UserDTO();
+                }
+            }
+        }
+        return userDTO;
+    }
 
     @Override
     public String toString() {

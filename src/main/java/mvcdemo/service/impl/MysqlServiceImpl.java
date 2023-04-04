@@ -1,10 +1,10 @@
-package mvcdemo.dao.mysql.impl;
+package mvcdemo.service.impl;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.ProductDO;
-import mvcdemo.po.UserDO;
-import mvcdemo.service.Cleaner;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.dto.UserDTO;
+import mvcdemo.util.Cleaner;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Product;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
@@ -24,17 +24,17 @@ public class MysqlServiceImpl implements MysqlService {
     }
 
     @Override
-    public boolean add(UserDO userDO){
+    public boolean add(UserDTO userDTO){
         StringBuilder sql = new StringBuilder();
         //update user set pwd="222" where userName="a";
         sql.append(" update user set " +
-                "pwd="+"'"+userDO.getPwd()+"' ,"+
-                "home="+"'"+userDO.getHome()+"' ,"+
-                "name="+"'"+userDO.getName()+"' ,"+
-                "phone="+"'"+userDO.getPhone()+"' ,"+
-                "ubalance="+"'"+userDO.getBalance()+"' ,"+
-                "AlreadyPurchased="+"'"+userDO.getAlreadyPurchased()+"' "+
-                "where userName="+"'"+userDO.getUserName()+"';");
+                "pwd="+"'"+ userDTO.getPwd()+"' ,"+
+                "home="+"'"+ userDTO.getHome()+"' ,"+
+                "name="+"'"+ userDTO.getName()+"' ,"+
+                "phone="+"'"+ userDTO.getPhone()+"' ,"+
+                "ubalance="+"'"+ userDTO.getBalance()+"' ,"+
+                "AlreadyPurchased="+"'"+ userDTO.getAlreadyPurchased()+"' "+
+                "where userName="+"'"+ userDTO.getUserName()+"';");
 
         try {
             conn = DBUtil.getConn();
@@ -53,14 +53,14 @@ public class MysqlServiceImpl implements MysqlService {
 
 
     @Override
-    public boolean addProUser(ProUserDO proUserDO){
+    public boolean addProUser(ProUserDTO proUserDTO){
         StringBuilder sql = new StringBuilder();
         sql.append(" update producer set " +
-                "pwd="+"'"+proUserDO.getPwd()+"' ,"+
-                "proPhone="+"'"+proUserDO.getProPhone()+"' ,"+
-                "proHome="+"'"+proUserDO.getProHome()+"' ,"+
-                "proManager="+"'"+proUserDO.getProManager()+"' "+
-                "where id="+"'"+proUserDO.getUserName()+"';");
+                "pwd="+"'"+ proUserDTO.getPwd()+"' ,"+
+                "proPhone="+"'"+ proUserDTO.getProPhone()+"' ,"+
+                "proHome="+"'"+ proUserDTO.getProHome()+"' ,"+
+                "proManager="+"'"+ proUserDTO.getProManager()+"' "+
+                "where id="+"'"+ proUserDTO.getUserName()+"';");
 
         try {
             conn = DBUtil.getConn();
@@ -78,7 +78,7 @@ public class MysqlServiceImpl implements MysqlService {
     }
 
     @Override
-    public boolean addProduct(ProductDO productDO){
+    public boolean addProduct(ProductDTO productDTO){
         StringBuilder sql = new StringBuilder();
         sql.append("insert into product(pname,pprice,phash,pid,pmaker,pphone,pclass) values(?,?,?,?,?,?,?);");
 
@@ -86,13 +86,13 @@ public class MysqlServiceImpl implements MysqlService {
             conn = DBUtil.getConn();
 
             ps = conn.prepareStatement(sql.toString());
-            ps.setString(1,productDO.getProductName());
-            ps.setString(2, String.valueOf(productDO.getProductPrice()));
-            ps.setString(3,productDO.getProductHash());
-            ps.setString(4,productDO.getProductId().toString());
-            ps.setString(5,productDO.getProductConner());
-            ps.setString(6,productDO.getProductMakePhone());
-            ps.setString(7,productDO.getProductClass());
+            ps.setString(1, productDTO.getProductName());
+            ps.setString(2, String.valueOf(productDTO.getProductPrice()));
+            ps.setString(3, productDTO.getProductHash());
+            ps.setString(4, productDTO.getProductId().toString());
+            ps.setString(5, productDTO.getProductConner());
+            ps.setString(6, productDTO.getProductMakePhone());
+            ps.setString(7, productDTO.getProductClass());
             return ps.executeLargeUpdate() == 1 ;
 
         } catch (SQLException throwables) {
@@ -105,12 +105,12 @@ public class MysqlServiceImpl implements MysqlService {
     }
 
     @Override
-    public boolean ReviseProduct(ProductDO productDO){
+    public boolean ReviseProduct(ProductDTO productDTO){
         StringBuilder sql = new StringBuilder();
         sql.append(" update product set " +
-                "pname="+"'"+productDO.getProductName()+"' ,"+
-                "pprice="+"'"+productDO.getProductPrice()+"' "+
-                "where pid="+"'"+productDO.getProductId()+"';");
+                "pname="+"'"+ productDTO.getProductName()+"' ,"+
+                "pprice="+"'"+ productDTO.getProductPrice()+"' "+
+                "where pid="+"'"+ productDTO.getProductId()+"';");
         conn = DBUtil.getConn();
 
         try {
@@ -128,7 +128,7 @@ public class MysqlServiceImpl implements MysqlService {
 
 
     @Override
-    public boolean PrintProduct(ProductDO productDO, String sql, int branch) {
+    public boolean PrintProduct(ProductDTO productDTO, String sql, int branch) {
         boolean result = false;
         try {
             conn = DBUtil.getConn();
@@ -137,22 +137,22 @@ public class MysqlServiceImpl implements MysqlService {
 
             while (rs.next()) {
                 result = true;
-                productDO.setProductId(Integer.valueOf(rs.getString("pid")));
-                productDO.setProductHash(rs.getString("phash"));
-                productDO.setProductName(rs.getString("pname"));
-                Product product = new Product(productDO.getProductHash(), GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
+                productDTO.setProductId(Integer.valueOf(rs.getString("pid")));
+                productDTO.setProductHash(rs.getString("phash"));
+                productDTO.setProductName(rs.getString("pname"));
+                Product product = new Product(productDTO.getProductHash(), GetBcosSDK.theGetBcosSDK().getClient(), GetBcosSDK.theGetBcosSDK().getKeyPair());
 
-                productDO.setProductPrice(product.getProduct(productDO.getProductHash()).getValue3().intValue());
-                productDO.setProductPlace(product.getProduct(productDO.getProductHash()).getValue4());
-                productDO.setProductMake(product.getProduct(productDO.getProductHash()).getValue5());
-                productDO.setProductId(product.getProduct(productDO.getProductHash()).getValue6().intValue());
-                productDO.setProductMakePhone(rs.getString("pphone"));
-                productDO.setMaker(rs.getString("pmaker"));
+                productDTO.setProductPrice(product.getProduct(productDTO.getProductHash()).getValue3().intValue());
+                productDTO.setProductPlace(product.getProduct(productDTO.getProductHash()).getValue4());
+                productDTO.setProductMake(product.getProduct(productDTO.getProductHash()).getValue5());
+                productDTO.setProductId(product.getProduct(productDTO.getProductHash()).getValue6().intValue());
+                productDTO.setProductMakePhone(rs.getString("pphone"));
+                productDTO.setMaker(rs.getString("pmaker"));
 
                 if (branch == 1) {
-                    System.out.println("商品哈希：" + productDO.getProductHash());
+                    System.out.println("商品哈希：" + productDTO.getProductHash());
                 }
-                Cleaner.PrintProduct(productDO);
+                Cleaner.PrintProduct(productDTO);
                 System.out.println();
                 System.out.println();
 

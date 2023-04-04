@@ -1,11 +1,12 @@
 package mvcdemo.service;
 
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.UserDO;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.UserDTO;
 import mvcdemo.service.impl.AdminService;
 import mvcdemo.service.impl.AdminServiceImpl;
-import mvcdemo.service.impl.ProductLogonImpl;
-import mvcdemo.service.impl.UserLogonImpl;
+import mvcdemo.service.impl.ProductLogonServiceServiceImpl;
+import mvcdemo.service.impl.UserLogonServiceServiceImpl;
+import mvcdemo.util.Cleaner;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.view.UserLogin;
 import mvcdemo.view.MainView;
@@ -20,15 +21,15 @@ import java.awt.event.KeyEvent;
  * @author Xenqiao
  * @create 2023/3/16 22:23
  */
-public class UserLoginHandler extends KeyAdapter implements ActionListener {
+public class UserLoginService extends KeyAdapter implements ActionListener {
     private UserLogin loginView;
 
 
-    public UserLoginHandler(UserLogin loginView){
+    public UserLoginService(UserLogin loginView){
         this.loginView = loginView;
     }
-    UserDO userDO = new UserDO();
-    ProUserDO proUserDO = new ProUserDO();
+    UserDTO userDTO = UserDTO.getUserDO();
+    ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -70,22 +71,22 @@ public class UserLoginHandler extends KeyAdapter implements ActionListener {
             return;
         }
         JOptionPane.showMessageDialog(loginView,"请不要关闭窗口，账户合约的创建需要2分钟的时间！");
-        String hash = new CreateUser().GetUserHash();
+        String hash = new CreateUserService().GetUserHash();
         boolean require = false;
 
         //  =1为进入消费者注册程序
         //  =2为进入生产者注册程序
         if (chance == 1){
 
-            userDO.setUserName(userName);
-            userDO.setPwd(pwd);
-            userDO.setHash(hash);
-            require = new UserLogonImpl().add(userDO);
+            userDTO.setUserName(userName);
+            userDTO.setPwd(pwd);
+            userDTO.setHash(hash);
+            require = new UserLogonServiceServiceImpl().add(userDTO);
         }else if (chance == 2){
-            proUserDO.setUserName(userName);
-            proUserDO.setPwd(pwd);
-            proUserDO.setHash(hash);
-            require = new ProductLogonImpl().addPro(proUserDO);
+            proUserDTO.setUserName(userName);
+            proUserDTO.setPwd(pwd);
+            proUserDTO.setHash(hash);
+            require = new ProductLogonServiceServiceImpl().addPro(proUserDTO);
         }
 
         if (require) {
@@ -94,10 +95,10 @@ public class UserLoginHandler extends KeyAdapter implements ActionListener {
             loginView.dispose();
             if (chance == 1){
                 Cleaner.Clean();
-                new MainView().UserMain(userDO);
+                new MainView().UserMain();
             }else{
                 Cleaner.Clean();
-                new MainView().ProductMain(proUserDO);
+                new MainView().ProductMain();
             }
         }else {
             JOptionPane.showMessageDialog(loginView, "注册失败！");
@@ -120,26 +121,26 @@ public class UserLoginHandler extends KeyAdapter implements ActionListener {
         AdminService adminService = new AdminServiceImpl();
         boolean flag = false;
         if(change == 1) {
-            userDO.setUserName(user);
-            userDO.setPwd(pwd);
+            userDTO.setUserName(user);
+            userDTO.setPwd(pwd);
             try {
-                flag = adminService.loGin(userDO.getUserName(), userDO.getPwd(), change);
-                adminService.getUserHash(userDO);
+                flag = adminService.loGin(userDTO.getUserName(), userDTO.getPwd(), change);
+                adminService.getUserHash(userDTO);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             //生产者的登录
         }else if (change == 2){
-            proUserDO.setUserName(user);
-            proUserDO.setPwd(pwd);
+            proUserDTO.setUserName(user);
+            proUserDTO.setPwd(pwd);
 
             try {
-                flag = adminService.loGin(proUserDO.getUserName(), proUserDO.getPwd(),change);
+                flag = adminService.loGin(proUserDTO.getUserName(), proUserDTO.getPwd(),change);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            adminService.getProducerHash(proUserDO);
+            adminService.getProducerHash();
         }
 
 
@@ -147,19 +148,19 @@ public class UserLoginHandler extends KeyAdapter implements ActionListener {
             //跳转到主界面并且销毁登陆界面
             //new MainView();
 
-            System.out.println(userDO.getUserName()==null);
-            System.out.println(proUserDO.getUserName()==null);
+            System.out.println(userDTO.getUserName()==null);
+            System.out.println(proUserDTO.getUserName()==null);
             JOptionPane.showMessageDialog(loginView,"登陆成功，等待三分钟后将进入控制台界面！");
-            GetBcosSDK.getClient();
-            GetBcosSDK.getKeyPair();
+            GetBcosSDK.theGetBcosSDK().getClient();
+            GetBcosSDK.theGetBcosSDK().getKeyPair();
             loginView.dispose();
 
             if (change == 1){
                 Cleaner.Clean();
-                new MainView().UserMain(userDO);
+                new MainView().UserMain();
             }else{
                 Cleaner.Clean();
-                new MainView().ProductMain(proUserDO);
+                new MainView().ProductMain();
             }
 
         }else {

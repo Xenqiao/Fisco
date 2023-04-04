@@ -1,9 +1,9 @@
 package mvcdemo.view;
 
-import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
-import mvcdemo.po.GetUserDO;
-import mvcdemo.po.ProductDO;
-import mvcdemo.service.Cleaner;
+import mvcdemo.service.impl.MysqlServiceImpl;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.util.Cleaner;
 
 import javax.swing.*;
 import java.util.Scanner;
@@ -13,15 +13,15 @@ import java.util.Scanner;
  * @create 2023/4/2 11:33
  */
 public class AlreadyPurchasedByUser {
-    ProductDO productDO = new ProductDO();
-
+    ProductDTO productDTO = new ProductDTO();
+    ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
     /** 展示购买过的产品以及对应哈希值供用户核实 **/
     public void CheckingAlreadyPurchased(){
         Cleaner.Clean();
         System.out.println("===================================================================================== 分割线 == 分割线 ================================================================================================================");
 
 
-        String userAlreadyPurchased = GetUserDO.getAlreadyPurchased();
+        String userAlreadyPurchased = proUserDTO.getProAlreadyPurchased();
         String productID = "";
         if(userAlreadyPurchased != null && !"".equals(userAlreadyPurchased)) {
             System.out.println();
@@ -34,7 +34,7 @@ public class AlreadyPurchasedByUser {
                 }else if (productID != null && !"".equals(productID)){
                     StringBuilder sql = new StringBuilder();
                     sql.append("select * from product where pid="+"'"+productID+"' ;");
-                    new MysqlServiceImpl().PrintProduct(productDO,sql.toString(),1);
+                    new MysqlServiceImpl().PrintProduct(productDTO,sql.toString(),1);
                     productID = "";
                 }
             }
@@ -59,7 +59,7 @@ public class AlreadyPurchasedByUser {
         StringBuilder sql = new StringBuilder();
         sql.append("select * from product where phash="+"'"+hash+"' ;");
         boolean number = true;
-        number = new MysqlServiceImpl().PrintProduct(productDO,sql.toString(),1);
+        number = new MysqlServiceImpl().PrintProduct(productDTO,sql.toString(),1);
 
         if (number == false) {
             System.out.println("                未查询到该商品信息");

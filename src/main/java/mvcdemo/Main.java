@@ -1,9 +1,6 @@
 package mvcdemo;
 
 
-import mvcdemo.po.ProUserDO;
-import mvcdemo.view.CreateGoods;
-
 public class Main {
 
 
@@ -12,7 +9,7 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        new CreateGoods(new ProUserDO());
+
 
     }
 }

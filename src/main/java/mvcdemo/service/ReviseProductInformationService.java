@@ -1,10 +1,10 @@
 package mvcdemo.service;
 
 
-import mvcdemo.dao.mysql.impl.MysqlService;
-import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.ProductDO;
+import mvcdemo.service.impl.MysqlService;
+import mvcdemo.service.impl.MysqlServiceImpl;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.util.Cleaner;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Product;
 import mvcdemo.view.ReviseProductInformation;
@@ -19,14 +19,13 @@ import java.awt.event.ActionListener;
  * @author Xenqiao
  * @create 2023/3/26 20:21
  */
-public class ReviseProductInformationHandler implements ActionListener {
+public class ReviseProductInformationService implements ActionListener {
     private ReviseProductInformation reviseProductInformation;
-    private ProductDO productDO;
-    private ProUserDO proUserDO;
-    public ReviseProductInformationHandler(ReviseProductInformation reviseProductInformation, ProductDO productDO, ProUserDO proUserDO) {
+    private ProductDTO productDTO;
+
+    public ReviseProductInformationService(ReviseProductInformation reviseProductInformation, ProductDTO productDTO) {
         this.reviseProductInformation = reviseProductInformation;
-        this.productDO = productDO;
-        this.proUserDO = proUserDO;
+        this.productDTO = productDTO;
     }
 
 
@@ -36,26 +35,26 @@ public class ReviseProductInformationHandler implements ActionListener {
         JButton jButton = (JButton) e.getSource();
         String text = jButton.getText();
 
-        reviseProductInformation.SetManage(productDO);
+        reviseProductInformation.SetManage(productDTO);
 
 
-        Product product = new Product(productDO.getProductHash(), GetBcosSDK.getClient(),GetBcosSDK.getKeyPair());
-        product.setProduct(productDO.getProductHash(), productDO.getProductName(), productDO.getProductPrice(), productDO.getProductPlace(), productDO.getProductMake(), productDO.getProductId());
+        Product product = new Product(productDTO.getProductHash(), GetBcosSDK.theGetBcosSDK().getClient(),GetBcosSDK.theGetBcosSDK().getKeyPair());
+        product.setProduct(productDTO.getProductHash(), productDTO.getProductName(), productDTO.getProductPrice(), productDTO.getProductPlace(), productDTO.getProductMake(), productDTO.getProductId());
 
         if ("确认修改".equals(text)) {
             JOptionPane.showMessageDialog(reviseProductInformation,"数据将更新上传至区块链，请等待几分钟。");
 
             MysqlService mysqlService = new MysqlServiceImpl();
-            boolean addResult = mysqlService.ReviseProduct(productDO);
+            boolean addResult = mysqlService.ReviseProduct(productDTO);
 
             if (addResult) {
-                JOptionPane.showMessageDialog(reviseProductInformation, "修改成功！您的商品哈希为："+productDO.getProductHash());
+                JOptionPane.showMessageDialog(reviseProductInformation, "修改成功！您的商品哈希为："+ productDTO.getProductHash());
                 reviseProductInformation.dispose();
             } else {
                 JOptionPane.showMessageDialog(reviseProductInformation, "上传失败！");
             }
             Cleaner.Clean();
-            new MainView().ProductMain(proUserDO);
+            new MainView().ProductMain();
         }
     }
 

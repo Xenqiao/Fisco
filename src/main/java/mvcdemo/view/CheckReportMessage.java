@@ -1,10 +1,10 @@
 package mvcdemo.view;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
-import mvcdemo.po.GetProUserDO;
-import mvcdemo.po.ProductDO;
-import mvcdemo.service.Cleaner;
+import mvcdemo.service.impl.MysqlServiceImpl;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.util.Cleaner;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,14 +16,16 @@ import java.sql.SQLException;
  */
 public class CheckReportMessage {
 
-    ProductDO productDO = new ProductDO();
+    ProductDTO productDTO = new ProductDTO();
     Connection conn = null;
+    ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
+
 
     public void CheckSupport(){
         Cleaner.Clean();
         System.out.println("===================================================================================== 分割线 == 分割线 ================================================================================================================");
 
-        String proUserSupport = GetProUserDO.getsMessage();
+        String proUserSupport = proUserDTO.getsMessage();
         String productID = "";
         if(proUserSupport != null && !"".equals(proUserSupport)) {
             System.out.println();
@@ -36,14 +38,14 @@ public class CheckReportMessage {
                 } else if (productID != null && !"".equals(productID)) {
                     StringBuilder sql = new StringBuilder();
                     sql.append("select * from product where pid=" + "'" + productID + "' ;");
-                    new MysqlServiceImpl().PrintProduct(productDO, sql.toString(), 1);
+                    new MysqlServiceImpl().PrintProduct(productDTO, sql.toString(), 1);
                     productID = "";
                 }
             }
 
             conn = DBUtil.getConn();
             try {
-                PreparedStatement ps = conn.prepareStatement("update producer set sMessage=null where id="+"'"+GetProUserDO.getUserName()+"' ;");
+                PreparedStatement ps = conn.prepareStatement("update producer set sMessage=null where id="+"'"+ proUserDTO.getUserName()+"' ;");
                 int checked = ps.executeUpdate();
                 ps.close();
                 conn.close();
@@ -56,7 +58,7 @@ public class CheckReportMessage {
     public void CheckReport(){
         System.out.println("===================================================================================== 分割线 == 分割线 ================================================================================================================");
 
-        String proUserSupport = GetProUserDO.getrMessage();
+        String proUserSupport = proUserDTO.getrMessage();
         String productID = "";
         if(proUserSupport != null && !"".equals(proUserSupport)) {
             System.out.println();
@@ -69,14 +71,14 @@ public class CheckReportMessage {
                 } else if (productID != null && !"".equals(productID)) {
                     StringBuilder sql = new StringBuilder();
                     sql.append("select * from product where pid=" + "'" + productID + "' ;");
-                    new MysqlServiceImpl().PrintProduct(productDO, sql.toString(), 1);
+                    new MysqlServiceImpl().PrintProduct(productDTO, sql.toString(), 1);
                     productID = "";
                 }
             }
 
             conn = DBUtil.getConn();
             try {
-                PreparedStatement ps = conn.prepareStatement("update producer set rMessage=null where id="+"'"+GetProUserDO.getUserName()+"' ;");
+                PreparedStatement ps = conn.prepareStatement("update producer set rMessage=null where id="+"'"+ proUserDTO.getUserName()+"' ;");
                 int checked = ps.executeUpdate();
                 ps.close();
                 conn.close();

@@ -2,10 +2,10 @@ package mvcdemo.view;
 
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.ProductDO;
-import mvcdemo.service.CloseWindow;
-import mvcdemo.service.ReviseProductInformationHandler;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.util.CloseWindow;
+import mvcdemo.service.ReviseProductInformationService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,12 +33,12 @@ public class ReviseProductInformation extends JDialog{
     JButton addBtn = new JButton("确认修改");
 
 
-    ProductDO productDO = new ProductDO();
+    ProductDTO productDTO = new ProductDTO();
 
-    public ReviseProductInformation(ProUserDO proUserDO){
+    public ReviseProductInformation(ProUserDTO proUserDTO){
 
-        productDO.setProductMake(proUserDO.getProManager());
-        productDO.setProductConner(proUserDO.getUserName());
+        productDTO.setProductMake(proUserDTO.getProManager());
+        productDTO.setProductConner(proUserDTO.getUserName());
         int heigth = 35;
         IDLabel.setPreferredSize(new Dimension(130,heigth));
         jPanel.add(IDLabel);
@@ -70,29 +70,29 @@ public class ReviseProductInformation extends JDialog{
         setLocationRelativeTo(null);
 
 
-        ReviseProductInformationHandler reviseProductInformationHandler = new ReviseProductInformationHandler(this,productDO,proUserDO);
-        addBtn.addActionListener(reviseProductInformationHandler);
+        ReviseProductInformationService reviseProductInformationService = new ReviseProductInformationService(this, productDTO);
+        addBtn.addActionListener(reviseProductInformationService);
         jPanel.add(addBtn);
 
         //DISPOSE_ON_CLOSE：关闭时只销毁当前窗口
-        addWindowListener(new CloseWindow(null,proUserDO,null,null,null,this));
+        addWindowListener(new CloseWindow(null,null,null,null,this));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
     }
 
 
-    public void SetManage(ProductDO productDO){
+    public void SetManage(ProductDTO productDTO){
         Connection conn = DBUtil.getConn();
-        productDO.setProductId(Integer.valueOf(IDTxt.getText()));
+        productDTO.setProductId(Integer.valueOf(IDTxt.getText()));
         //判断是否为产品的拥有者，是否具有修改资格
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select * from product WHERE pid="+"'"+IDTxt.getText()+"' ;");
             while (rs.next()){
 
-                if (productDO.getProductConner().equals(rs.getString("pmaker"))){
-                    productDO.setProductHash(rs.getString("phash"));
+                if (productDTO.getProductConner().equals(rs.getString("pmaker"))){
+                    productDTO.setProductHash(rs.getString("phash"));
 
                 }else {
 
@@ -106,9 +106,9 @@ public class ReviseProductInformation extends JDialog{
             throwables.printStackTrace();
         }
 
-        productDO.setProductName(nameTxt.getText());
-        productDO.setProductPrice(Integer.valueOf(priceTxt.getText()));
-        productDO.setProductPlace(homeTxt.getText());
+        productDTO.setProductName(nameTxt.getText());
+        productDTO.setProductPrice(Integer.valueOf(priceTxt.getText()));
+        productDTO.setProductPlace(homeTxt.getText());
     }
 
 

@@ -1,9 +1,9 @@
 package mvcdemo.view;
 
-import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.ProductDO;
-import mvcdemo.service.Cleaner;
+import mvcdemo.service.impl.MysqlServiceImpl;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.util.Cleaner;
 
 /**
  * @author Xenqiao
@@ -11,14 +11,15 @@ import mvcdemo.service.Cleaner;
  */
 public class CheckProductByProUser {
 
-    public CheckProductByProUser(ProUserDO proUserDO) {
+    public CheckProductByProUser() {
         Cleaner.Clean();
-        ProductDO productDO = new ProductDO();
+        ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
+        ProductDTO productDTO = new ProductDTO();
 
         StringBuilder sql = new StringBuilder();
-        sql.append("select * from product WHERE pmaker=" + "'" + proUserDO.getUserName() + "' ;");
+        sql.append("select * from product WHERE pmaker=" + "'" + proUserDTO.getUserName() + "' ;");
         System.out.println("===================================================================================== 分割线 === 分割线 ===============================================================================================================");
-        new MysqlServiceImpl().PrintProduct(productDO, sql.toString(), 1);
+        new MysqlServiceImpl().PrintProduct(productDTO, sql.toString(), 1);
         Cleaner.BackMain();
 
     }

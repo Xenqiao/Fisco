@@ -1,4 +1,4 @@
-package mvcdemo.service;
+package mvcdemo.util;
 
 import javax.swing.*;
 import java.awt.*;

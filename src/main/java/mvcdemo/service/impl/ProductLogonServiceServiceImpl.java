@@ -1,7 +1,7 @@
 package mvcdemo.service.impl;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.po.ProUserDO;
+import mvcdemo.dto.ProUserDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +10,12 @@ import java.sql.PreparedStatement;
  * @author Xenqiao
  * @create 2023/3/20 12:14
  */
-public class ProductLogonImpl implements ProductLogon{
-    public ProductLogonImpl(){
+public class ProductLogonServiceServiceImpl implements ProductLogonService {
+    public ProductLogonServiceServiceImpl(){
     }
 
     @Override
-    public boolean addPro(ProUserDO proUserDO){
+    public boolean addPro(ProUserDTO proUserDTO){
         StringBuilder sql = new StringBuilder();
         sql.append(" insert into producer(id,pwd,hash) ");
         sql.append(" values(?,?,?) ");
@@ -25,9 +25,9 @@ public class ProductLogonImpl implements ProductLogon{
             conn = DBUtil.getConn();
             ps = conn.prepareStatement(sql.toString());
 
-            ps.setString(1, proUserDO.getUserName());
-            ps.setString(2, proUserDO.getPwd());
-            ps.setString(3, proUserDO.getHash());
+            ps.setString(1, proUserDTO.getUserName());
+            ps.setString(2, proUserDTO.getPwd());
+            ps.setString(3, proUserDTO.getHash());
 
             return ps.executeLargeUpdate() == 1;
         }catch (Exception e){

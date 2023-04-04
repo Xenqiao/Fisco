@@ -1,7 +1,7 @@
 package mvcdemo.service.impl;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.po.UserDO;
+import mvcdemo.dto.UserDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +10,13 @@ import java.sql.PreparedStatement;
  * @author Xenqiao
  * @create 2023/3/19 16:50
  */
-public class UserLogonImpl implements UserLogon {
-    public UserLogonImpl(){
+public class UserLogonServiceServiceImpl implements UserLogonService {
+    public UserLogonServiceServiceImpl(){
 
     }
 
     @Override
-    public boolean add(UserDO userDO) {
+    public boolean add(UserDTO userDTO) {
         StringBuilder sql = new StringBuilder();
         sql.append(" insert into user(userName,pwd,hash) ");
         sql.append(" values(?,?,?) ");
@@ -26,9 +26,9 @@ public class UserLogonImpl implements UserLogon {
             conn = DBUtil.getConn();
             ps = conn.prepareStatement(sql.toString());
 
-            ps.setString(1,userDO.getUserName());
-            ps.setString(2,userDO.getPwd());
-            ps.setString(3,userDO.getHash());
+            ps.setString(1, userDTO.getUserName());
+            ps.setString(2, userDTO.getPwd());
+            ps.setString(3, userDTO.getHash());
 
             return ps.executeLargeUpdate() == 1;
         }catch (Exception e){

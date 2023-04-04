@@ -1,4 +1,4 @@
-package mvcdemo.po;
+package mvcdemo.dto;
 
 /**
  * @author Xenqiao

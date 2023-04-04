@@ -16,7 +16,7 @@ import java.security.KeyPair;
  * @author Xenqiao
  * @create 2023/3/18 22:43
  */
-public class CreateUser {
+public class CreateUserService {
 
     /**创建非国密类型的 CryptoSuite */
     CryptoSuite cryptoSuite = new CryptoSuite(CryptoType.ECDSA_TYPE);
@@ -30,7 +30,7 @@ public class CreateUser {
         pemFilePath.append("src/main/resources/solidity/pem/"+accountAddress+".pem");
 
         saveAccountWithPem(cryptoKeyPair,pemFilePath.toString());
-        loadPemAccount(GetBcosSDK.getClient(),pemFilePath.toString());
+        loadPemAccount(GetBcosSDK.theGetBcosSDK().getClient(),pemFilePath.toString());
         saveAccountWithPemToKeyStoreDir(cryptoKeyPair);
         loadPem(pemFilePath.toString());
         return accountAddress;

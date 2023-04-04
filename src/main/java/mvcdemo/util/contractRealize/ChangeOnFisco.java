@@ -1,23 +1,18 @@
 package mvcdemo.util.contractRealize;
 
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.ProductDO;
-import mvcdemo.po.UserDO;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.dto.UserDTO;
 import mvcdemo.util.toolcontract.Erc20;
 import mvcdemo.util.toolcontract.ProUser;
 import mvcdemo.util.toolcontract.Product;
 import mvcdemo.util.toolcontract.User;
-import org.fisco.bcos.sdk.BcosSDK;
-import org.fisco.bcos.sdk.client.Client;
-import org.fisco.bcos.sdk.crypto.keypair.CryptoKeyPair;
 import org.fisco.bcos.sdk.transaction.manager.AssembleTransactionProcessor;
 import org.fisco.bcos.sdk.transaction.manager.TransactionProcessorFactory;
 import org.fisco.bcos.sdk.transaction.model.dto.TransactionResponse;
 import org.fisco.bcos.sdk.transaction.model.exception.ContractException;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * @author Xenqiao
@@ -31,7 +26,7 @@ public class ChangeOnFisco {
 
     public String CreatingBlocks(String contractName){
         try {
-            AssembleTransactionProcessor transactionProcessor = TransactionProcessorFactory.createAssembleTransactionProcessor(GetBcosSDK.getClient(), GetBcosSDK.getKeyPair(), "src/main/resources/solidity/abi", "src/main/resources/solidity/bin");
+            AssembleTransactionProcessor transactionProcessor = TransactionProcessorFactory.createAssembleTransactionProcessor(GetBcosSDK.theGetBcosSDK().getClient(), GetBcosSDK.theGetBcosSDK().getKeyPair(), "src/main/resources/solidity/abi", "src/main/resources/solidity/bin");
             TransactionResponse response = transactionProcessor.deployByContractLoader(contractName, new ArrayList<>());
             String Address = response.getContractAddress();
             return Address;
@@ -41,50 +36,50 @@ public class ChangeOnFisco {
         return "";
     }
     /** 一个在链上改变用户信息的函数 */
-    public void ChangeUserOnFisco(UserDO userDO){
+    public void ChangeUserOnFisco(UserDTO userDTO){
 
-        String Address = userDO.getHash();
-        User user = new User(Address, GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
+        String Address = userDTO.getHash();
+        User user = new User(Address, GetBcosSDK.theGetBcosSDK().getClient(), GetBcosSDK.theGetBcosSDK().getKeyPair());
         user.setUser(
-                userDO.getHash(),
-                userDO.getUserName(),
-                userDO.getName(),
-                userDO.getPhone(),
-                userDO.getHome()
+                userDTO.getHash(),
+                userDTO.getUserName(),
+                userDTO.getName(),
+                userDTO.getPhone(),
+                userDTO.getHome()
         );
     }
 
 
     /** 一个在链上改变生产商信息的函数 */
-    public void ChangeProUserOnFisco(ProUserDO proUserDO){
+    public void ChangeProUserOnFisco(ProUserDTO proUserDTO){
 
-            String Address = proUserDO.getHash();
-            ProUser proUser = new ProUser(Address,GetBcosSDK.getClient(),GetBcosSDK.getKeyPair());
+            String Address = proUserDTO.getHash();
+            ProUser proUser = new ProUser(Address,GetBcosSDK.theGetBcosSDK().getClient(),GetBcosSDK.theGetBcosSDK().getKeyPair());
             proUser.setProUser(
-                    proUserDO.getHash(),
-                    proUserDO.getUserName(),
-                    proUserDO.getProManager(),
-                    proUserDO.getProPhone(),
-                    proUserDO.getProHome()
+                    proUserDTO.getHash(),
+                    proUserDTO.getUserName(),
+                    proUserDTO.getProManager(),
+                    proUserDTO.getProPhone(),
+                    proUserDTO.getProHome()
             );
 
     }
 
 
     /** 一个在链上创建产品信息的函数 */
-    public void GetProductHash(ProductDO productDO){
+    public void GetProductHash(ProductDTO productDTO){
 
         String Address = new ChangeOnFisco().CreatingBlocks("Product");
-        Product product = new Product(Address, GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
+        Product product = new Product(Address, GetBcosSDK.theGetBcosSDK().getClient(), GetBcosSDK.theGetBcosSDK().getKeyPair());
 
-        productDO.setProductHash(product.getContractAddress());
+        productDTO.setProductHash(product.getContractAddress());
         product.setProduct(
-                productDO.getProductHash(),
-                productDO.getProductName(),
-                productDO.getProductPrice(),
-                productDO.getProductPlace(),
-                productDO.getProductMake(),
-                productDO.getProductId()
+                productDTO.getProductHash(),
+                productDTO.getProductName(),
+                productDTO.getProductPrice(),
+                productDTO.getProductPlace(),
+                productDTO.getProductMake(),
+                productDTO.getProductId()
         );
     }
 
@@ -96,7 +91,7 @@ public class ChangeOnFisco {
 
         //String contractAddress = new ChangeOnFisco().CreatingBlocks("Erc20");
 
-        Erc20 erc20 = new Erc20(contractAddress, GetBcosSDK.getClient(), GetBcosSDK.getKeyPair());
+        Erc20 erc20 = new Erc20(contractAddress, GetBcosSDK.theGetBcosSDK().getClient(), GetBcosSDK.theGetBcosSDK().getKeyPair());
         try {
             //erc20.transferFrom(a,hash,BigInteger.valueOf(500));
             return erc20.balanceOf(hash).toString();
