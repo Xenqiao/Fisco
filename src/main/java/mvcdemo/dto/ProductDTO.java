@@ -1,10 +1,11 @@
-package mvcdemo.po;
+package mvcdemo.dto;
 
 /**
  * @author Xenqiao
  * @create 2023/3/20 20:54
+ * 产品对象，记录了产品的各种参数
  */
-public class ProductDO {
+public class ProductDTO {
     private String productName;
     private Integer productId;
     private String productHash;

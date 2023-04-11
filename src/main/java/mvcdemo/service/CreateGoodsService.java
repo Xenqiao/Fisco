@@ -1,10 +1,11 @@
 package mvcdemo.service;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.dao.mysql.impl.MysqlService;
-import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.ProductDO;
+import mvcdemo.service.impl.MysqlService;
+import mvcdemo.service.impl.MysqlServiceImpl;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.util.Cleaner;
 import mvcdemo.util.contractRealize.ChangeOnFisco;
 import mvcdemo.view.CreateGoods;
 import mvcdemo.view.MainView;
@@ -21,14 +22,13 @@ import java.sql.Statement;
  * @author Xenqiao
  * @create 2023/3/20 20:48
  */
-public class CreateGoodsHandler implements ActionListener{
+public class CreateGoodsService implements ActionListener{
     private CreateGoods createGoods;
-    private ProductDO productDO;
-    private ProUserDO proUserDO;
-    public CreateGoodsHandler(CreateGoods createGoods, ProductDO productDO, ProUserDO proUserDO) {
+    private ProductDTO productDTO;
+
+    public CreateGoodsService(CreateGoods createGoods, ProductDTO productDTO) {
         this.createGoods = createGoods;
-        this.productDO = productDO;
-        this.proUserDO = proUserDO;
+        this.productDTO = productDTO;
     }
 
 
@@ -36,7 +36,7 @@ public class CreateGoodsHandler implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         JButton jButton = (JButton) e.getSource();
         String text = jButton.getText();
-        boolean judge = createGoods.SetManage(productDO);
+        boolean judge = createGoods.SetManage(productDTO);
 
         if (judge == false){
             JOptionPane.showMessageDialog(createGoods,"您可能输入为空或者格式错误，请重新输入");
@@ -51,7 +51,7 @@ public class CreateGoodsHandler implements ActionListener{
             ResultSet rs = stmt.executeQuery("select count(*) as pid from product;");
             while (rs.next()) {
                 totalCount = rs.getInt("pid");
-                productDO.setProductId(totalCount+1);
+                productDTO.setProductId(totalCount+1);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -59,18 +59,18 @@ public class CreateGoodsHandler implements ActionListener{
 
         if ("确认".equals(text)) {
             JOptionPane.showMessageDialog(createGoods,"数据将更新上传至区块链，请等待几分钟。");
-            new ChangeOnFisco().GetProductHash(productDO);
+            new ChangeOnFisco().GetProductHash(productDTO);
             MysqlService mysqlService = new MysqlServiceImpl();
-            boolean addResult = mysqlService.addProduct(productDO);
+            boolean addResult = mysqlService.addProduct(productDTO);
 
             if (addResult) {
-                JOptionPane.showMessageDialog(createGoods, "添加成功！您的商品哈希为："+productDO.getProductHash());
+                JOptionPane.showMessageDialog(createGoods, "添加成功！您的商品哈希为："+ productDTO.getProductHash());
                 createGoods.dispose();
             } else {
                 JOptionPane.showMessageDialog(createGoods, "上传失败！");
             }
-            Cleaner.Clean();
-            new MainView().ProductMain(proUserDO);
+            Cleaner.getCleaner().Clean();
+            new MainView().ProductMain();
         }
     }
 }

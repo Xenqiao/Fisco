@@ -1,10 +1,11 @@
-package mvcdemo.po;
+package mvcdemo.dto;
 
 /**
  * @author Xenqiao
  * @create 2023/3/19 18:11
+ * 生产商对象，记录了生产者对应的各种参数
  */
-public class ProUserDO {
+public class ProUserDTO {
     private String userName;
     private String pwd;
     private String hash;
@@ -13,6 +14,23 @@ public class ProUserDO {
     private String proHome;
     private Integer balance;
     private String proAlreadyPurchased;
+    private String rMessage;
+    private String sMessage;
+
+    /**  单例模式的双重检查  **/
+    private static volatile ProUserDTO proUserDTO;
+    private ProUserDTO(){
+    }
+    public static ProUserDTO getProUserDO(){
+        if (proUserDTO == null){
+            synchronized (ProUserDTO.class){
+                if (proUserDTO == null){
+                    proUserDTO = new ProUserDTO();
+                }
+            }
+        }
+        return proUserDTO;
+    }
 
     @Override
     public String toString() {
@@ -25,7 +43,29 @@ public class ProUserDO {
                 ", proHome='" + proHome + '\'' +
                 ", balance=" + balance +
                 ", proAlreadyPurchased='" + proAlreadyPurchased + '\'' +
+                ", rMessage='" + rMessage + '\'' +
+                ", sMessage='" + sMessage + '\'' +
                 '}';
+    }
+
+    public String getrMessage() {
+        return rMessage;
+    }
+
+    public void setrMessage(String rMessage) {
+        this.rMessage = rMessage;
+    }
+
+    public String getsMessage() {
+        return sMessage;
+    }
+
+    public void setsMessage(String sMessage) {
+        this.sMessage = sMessage;
+    }
+
+    public static void setProUserDO(ProUserDTO proUserDTO) {
+        ProUserDTO.proUserDTO = proUserDTO;
     }
 
     public String getProAlreadyPurchased() {

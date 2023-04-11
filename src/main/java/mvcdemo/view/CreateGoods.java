@@ -1,9 +1,9 @@
 package mvcdemo.view;
 
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.ProductDO;
-import mvcdemo.service.CloseWindow;
-import mvcdemo.service.CreateGoodsHandler;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.util.CloseWindow;
+import mvcdemo.service.CreateGoodsService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,15 +33,18 @@ public class CreateGoods extends JDialog{
 
 
     JButton addBtn = new JButton("确认");
+    ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
 
-    public CreateGoods(ProUserDO proUserDO){
+    public CreateGoods(){
 
         Font font = new Font("微软雅黑",Font.PLAIN,20);
 
-        ProductDO productDO = new ProductDO();
-        productDO.setProductMakePhone(proUserDO.getProPhone());
-        productDO.setProductMake(proUserDO.getProManager());
-        productDO.setProductConner(proUserDO.getUserName());
+        //由于好几个界面都是十分类似的我就不再重复注释了
+        //这里是将前边定义的组件插入到界面中，使用的是swing的流式布局
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setProductMakePhone(proUserDTO.getProPhone());
+        productDTO.setProductMake(proUserDTO.getProManager());
+        productDTO.setProductConner(proUserDTO.getUserName());
         int heigth = 35;
 
 
@@ -90,15 +93,15 @@ public class CreateGoods extends JDialog{
         setLocationRelativeTo(null);
 
 
-        CreateGoodsHandler createGoodsHandler = new CreateGoodsHandler(this,productDO,proUserDO);
+        CreateGoodsService createGoodsService = new CreateGoodsService(this, productDTO);
         addBtn.setFont(font);
-        addBtn.addActionListener(createGoodsHandler);
+        addBtn.addActionListener(createGoodsService);
 
         jPanel.add(addBtn);
 
         //DISPOSE_ON_CLOSE：关闭时只销毁当前窗口
 
-        addWindowListener(new CloseWindow(null,proUserDO,this,null,null,null));
+        addWindowListener(new CloseWindow(this,null,null,null));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
@@ -106,7 +109,7 @@ public class CreateGoods extends JDialog{
 
     }
 
-    public boolean SetManage(ProductDO productDO){
+    public boolean SetManage(ProductDTO productDTO){
 
         //判断输入是否为空
         boolean judge1 = nameTxt.getText()==null || "".equals(nameTxt.getText());
@@ -120,10 +123,10 @@ public class CreateGoods extends JDialog{
         }else if (!pattern.matcher(priceTxt.getText()).matches() || !pattern.matcher(classTxt.getText()).matches()){
             return false;
         }
-        productDO.setProductName(nameTxt.getText());
-        productDO.setProductPrice(Integer.valueOf(priceTxt.getText()));
-        productDO.setProductPlace(homeTxt.getText());
-        productDO.setProductClass(classTxt.getText());
+        productDTO.setProductName(nameTxt.getText());
+        productDTO.setProductPrice(Integer.valueOf(priceTxt.getText()));
+        productDTO.setProductPlace(homeTxt.getText());
+        productDTO.setProductClass(classTxt.getText());
         return true;
     }
 }

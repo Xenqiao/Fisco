@@ -1,9 +1,9 @@
 package mvcdemo.view;
 
-import mvcdemo.po.ProUserDO;
-import mvcdemo.service.ChangeProUserHandler;
-import mvcdemo.service.CloseWindow;
-import mvcdemo.service.CopyJLabel;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.service.ChangeProUserService;
+import mvcdemo.util.CloseWindow;
+import mvcdemo.util.CopyJLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,19 +27,20 @@ public class ChangeProUser extends JDialog{
     JTextField phoneTxt = new JTextField();
     JButton addBtn = new JButton("确认修改");
 
-    ChangeProUserHandler changeUserHandler;
-    public ChangeProUser(ProUserDO proUserDO){
+    ChangeProUserService changeUserHandler;
+    ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
+    public ChangeProUser(){
         int heigth = 35;
         //super(mainView,"修改用户信息",true);
         StringBuilder id = new StringBuilder();
-        id.append("当前账号："+proUserDO.getUserName());
+        id.append("当前账号："+ proUserDTO.getUserName());
         JLabel numLabel = new JLabel(id.toString(),JLabel.RIGHT);
         numLabel.setFont(new Font("楷体",Font.PLAIN,20));
         numLabel.setPreferredSize(new Dimension(110,heigth));
         jPanel.add(numLabel);
 
         StringBuilder hash = new StringBuilder();
-        hash.append("账号哈希(双击可复制)："+proUserDO.getHash());
+        hash.append("账号哈希(双击可复制)："+ proUserDTO.getHash());
         JLabel hashLabel = new JLabel(hash.toString(),JLabel.RIGHT);
         hashLabel.setPreferredSize(new Dimension(350,heigth));
         //事件监听，由于复制哈希值
@@ -78,23 +79,27 @@ public class ChangeProUser extends JDialog{
 
         new CopyJLabel(hashLabel);
 
-        changeUserHandler = new ChangeProUserHandler(this,proUserDO);
+        //将数据传入ChangeProUserService中进行处理以及判断输入是否有误
+        //或者数据上传同步至fisco或MySQL是否成功
+        changeUserHandler = new ChangeProUserService(this);
         addBtn.addActionListener(changeUserHandler);
         jPanel.add(addBtn);
 
         //DISPOSE_ON_CLOSE：关闭时只销毁当前窗口
-        addWindowListener(new CloseWindow(null,proUserDO,null,null,this,null));
+        addWindowListener(new CloseWindow(null,null,this,null));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
 
     }
 
-    public void SetManage(ProUserDO proUserDO){
-        proUserDO.setPwd(newPwdTxt.getText());
-        proUserDO.setProManager(nameTxt.getText());
-        proUserDO.setProHome(homeTxt.getText());
-        proUserDO.setProPhone(phoneTxt.getText());
+    public void SetManage(){
+
+        //将输入的数据写入封装的对象内，通过单例模式实现单一对象重复读取
+        proUserDTO.setPwd(newPwdTxt.getText());
+        proUserDTO.setProManager(nameTxt.getText());
+        proUserDTO.setProHome(homeTxt.getText());
+        proUserDTO.setProPhone(phoneTxt.getText());
 
     }
 }

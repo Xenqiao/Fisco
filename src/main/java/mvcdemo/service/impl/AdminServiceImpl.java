@@ -1,10 +1,8 @@
 package mvcdemo.service.impl;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.po.GetProUserDO;
-import mvcdemo.po.GetUserDO;
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.UserDO;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.UserDTO;
 
 import java.sql.*;
 
@@ -17,14 +15,15 @@ public class AdminServiceImpl implements AdminService {
     ResultSet rs = null;
     Statement stmt;
     String sql;
-    
+    ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
+
     @Override
-    public boolean getUserHash(UserDO userDO) throws Exception{
+    public boolean getUserHash(UserDTO userDTO) throws Exception{
         Connection conn = DBUtil.getConn();
         ResultSet rs = null;
 
 
-        sql = "select * from user where userName = " + "'" + userDO.getUserName() + "'";
+        sql = "select * from user where userName = " + "'" + userDTO.getUserName() + "'";
 
         try{
 
@@ -34,21 +33,15 @@ public class AdminServiceImpl implements AdminService {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             while (rs.next()){
-                userDO.setHash(rs.getString("hash"));
-                userDO.setHome(rs.getString("home"));
-                userDO.setName(rs.getString("name"));
-                userDO.setPhone(rs.getString("phone"));
-                userDO.setBalance(Integer.valueOf(rs.getString("ubalance")));
-                userDO.setAlreadyPurchased(rs.getString("AlreadyPurchased"));
 
-                GetUserDO.setUserName(rs.getString("userName"));
-                GetUserDO.setPwd(rs.getString("pwd"));
-                GetUserDO.setHash(rs.getString("hash"));
-                GetUserDO.setHome(rs.getString("home"));
-                GetUserDO.setName(rs.getString("name"));
-                GetUserDO.setPhone(rs.getString("phone"));
-                GetUserDO.setBalance(Integer.valueOf(rs.getString("ubalance")));
-                GetUserDO.setAlreadyPurchased(rs.getString("AlreadyPurchased"));
+                userDTO.setUserName(rs.getString("userName"));
+                userDTO.setPwd(rs.getString("pwd"));
+                userDTO.setHash(rs.getString("hash"));
+                userDTO.setHome(rs.getString("home"));
+                userDTO.setName(rs.getString("name"));
+                userDTO.setPhone(rs.getString("phone"));
+                userDTO.setBalance(Integer.valueOf(rs.getString("ubalance")));
+                userDTO.setAlreadyPurchased(rs.getString("AlreadyPurchased"));
                 return true;
             }
         }catch (Exception e){
@@ -71,18 +64,14 @@ public class AdminServiceImpl implements AdminService {
         if (change == 2){
             sql = "select id from producer where id =" + "'" + useName + "'";
             rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                if (rs.getString("id").equals(useName)) {
-                    return true;
-                }
+            if (rs.next()){
+                return true;
             }
         }else if (change == 1) {
             sql = "select userName from user where userName =" + "'" + useName + "'";
             rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                if (rs.getString("userName").equals(useName)) {
-                    return true;
-                }
+            if (rs.next()){
+                return true;
             }
         }
         rs.close();
@@ -139,31 +128,22 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public String getProducerHash(ProUserDO proUserDO){
+    public String getProducerHash(){
         try {
             conn = DBUtil.getConn();
             stmt = conn.createStatement();
-            sql = "select * from producer where id =" + "'" + proUserDO.getUserName() + "'";
+            sql = "select * from producer where id =" + "'" + proUserDTO.getUserName() + "'";
             rs = stmt.executeQuery(sql);
             while (rs.next()){
-                if (rs.getString("pwd").equals(proUserDO.getPwd())){
-                    proUserDO.setHash(rs.getString("hash"));
-                    proUserDO.setProPhone(rs.getString("proPhone"));
-                    proUserDO.setProHome(rs.getString("proHome"));
-                    proUserDO.setProManager(rs.getString("proManager"));
-                    proUserDO.setBalance(Integer.valueOf(rs.getString("proBalance")));
-                    proUserDO.setProAlreadyPurchased(rs.getString("AlreadyPurchased"));
-
-                    GetProUserDO.setUserName(rs.getString("id"));
-                    GetProUserDO.setPwd(rs.getString("pwd"));
-                    GetProUserDO.setHash(rs.getString("hash"));
-                    GetProUserDO.setProPhone(rs.getString("proPhone"));
-                    GetProUserDO.setProHome(rs.getString("proHome"));
-                    GetProUserDO.setProManager(rs.getString("proManager"));
-                    GetProUserDO.setBalance(Integer.valueOf(rs.getString("proBalance")));
-                    GetProUserDO.setProAlreadyPurchased(rs.getString("AlreadyPurchased"));
-                    GetProUserDO.setrMessage(rs.getString("rMessage"));
-                    GetProUserDO.setsMessage(rs.getString("sMessage"));
+                if (rs.getString("pwd").equals(proUserDTO.getPwd())){
+                    proUserDTO.setHash(rs.getString("hash"));
+                    proUserDTO.setProPhone(rs.getString("proPhone"));
+                    proUserDTO.setProHome(rs.getString("proHome"));
+                    proUserDTO.setProManager(rs.getString("proManager"));
+                    proUserDTO.setBalance(Integer.valueOf(rs.getString("proBalance")));
+                    proUserDTO.setProAlreadyPurchased(rs.getString("AlreadyPurchased"));
+                    proUserDTO.setrMessage(rs.getString("rMessage"));
+                    proUserDTO.setsMessage(rs.getString("sMessage"));
                 }
             }
             rs.close();

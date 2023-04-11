@@ -1,4 +1,4 @@
-package mvcdemo.service;
+package mvcdemo.util;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,11 +13,15 @@ import java.io.IOException;
  */
 public class CopyJLabel implements MouseListener {
     private JLabel jLabel;
+
+    /** 该函数使用范围比较小，主要目的在于实现 JDialog界面窗口的 JLabel文本显示哈希值的双击复制功能
+     *  **/
     public CopyJLabel(JLabel jLabel) {
         this.jLabel = jLabel;
     }
         @Override
         public void mouseClicked (MouseEvent e){
+
             if (e.getClickCount() == 2) {
                 String clipboardStr = jLabel.getText();
                 setClipboardString(clipboardStr);
@@ -51,6 +55,7 @@ public class CopyJLabel implements MouseListener {
             jLabel.setForeground(Color.black);
             jLabel.setFont(new Font("Helvetica", Font.PLAIN, 14));
         }
+
 
     /**
      * 获取剪贴板内容(粘贴)

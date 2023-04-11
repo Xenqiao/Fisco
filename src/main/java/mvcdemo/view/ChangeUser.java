@@ -1,9 +1,9 @@
 package mvcdemo.view;
 
-import mvcdemo.po.UserDO;
-import mvcdemo.service.ChangeUserHandler;
-import mvcdemo.service.CloseWindow;
-import mvcdemo.service.CopyJLabel;
+import mvcdemo.dto.UserDTO;
+import mvcdemo.service.ChangeUserService;
+import mvcdemo.util.CloseWindow;
+import mvcdemo.util.CopyJLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,21 +28,24 @@ public class ChangeUser extends JDialog {
     JTextField phoneTxt = new JTextField();
     JButton addBtn = new JButton("确认修改");
 
-    ChangeUserHandler changeUserHandler;
+    ChangeUserService changeUserService;
+    UserDTO userDTO = UserDTO.getUserDO();
 
-    public  ChangeUser(UserDO userDO) {
 
+    public  ChangeUser() {
+
+        //这个界面主要用于修改用户的信息
         setTitle("修改用户信息");
         int heigth = 35;
         StringBuilder id = new StringBuilder();
-        id.append("当前账号：" + userDO.getUserName());
+        id.append("当前账号：" + userDTO.getUserName());
         JLabel numLabel = new JLabel(id.toString(), JLabel.RIGHT);
         numLabel.setFont(new Font("楷体", Font.PLAIN, 20));
         numLabel.setPreferredSize(new Dimension(110, heigth));
         jPanel.add(numLabel);
 
         StringBuilder hash = new StringBuilder();
-        hash.append("账号哈希(双击可复制)：" + userDO.getHash());
+        hash.append("账号哈希(双击可复制)：" + userDTO.getHash());
         JLabel hashLabel = new JLabel(hash.toString(), JLabel.RIGHT);
         hashLabel.setPreferredSize(new Dimension(350, heigth));
         //事件监听，由于复制哈希值
@@ -79,12 +82,14 @@ public class ChangeUser extends JDialog {
         setLocationRelativeTo(null);
 
 
-        changeUserHandler = new ChangeUserHandler(this, userDO);
-        addBtn.addActionListener(changeUserHandler);
+        //将数据传入ChangeUserService中进行处理以及判断输入是否有误
+        //或者数据上传同步至fisco或MySQL是否成功
+        changeUserService = new ChangeUserService(this);
+        addBtn.addActionListener(changeUserService);
         jPanel.add(addBtn);
 
         //DISPOSE_ON_CLOSE：关闭时只销毁当前窗口
-        addWindowListener(new CloseWindow(userDO,null,null,this,null,null));
+        addWindowListener(new CloseWindow(null,this,null,null));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
@@ -92,11 +97,13 @@ public class ChangeUser extends JDialog {
     }
 
 
-    public void SetManage(UserDO userDO){
-        userDO.setPwd(newPwdTxt.getText());
-        userDO.setName(nameTxt.getText());
-        userDO.setHome(homeTxt.getText());
-        userDO.setPhone(phoneTxt.getText());
+    public void SetManage(UserDTO userDTO){
+
+        //将输入的数据写入封装的对象内，通过单例模式可读取
+        userDTO.setPwd(newPwdTxt.getText());
+        userDTO.setName(nameTxt.getText());
+        userDTO.setHome(homeTxt.getText());
+        userDTO.setPhone(phoneTxt.getText());
 
     }
 

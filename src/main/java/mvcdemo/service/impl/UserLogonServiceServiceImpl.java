@@ -1,23 +1,25 @@
 package mvcdemo.service.impl;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.po.ProUserDO;
+import mvcdemo.dto.UserDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 /**
  * @author Xenqiao
- * @create 2023/3/20 12:14
+ * @create 2023/3/19 16:50
  */
-public class ProductLogonImpl implements ProductLogon{
-    public ProductLogonImpl(){
+public class UserLogonServiceServiceImpl implements UserLogonService {
+    public UserLogonServiceServiceImpl(){
+
     }
 
+    /** 在MySQL数据库中添加新注册的消费者记录 **/
     @Override
-    public boolean addPro(ProUserDO proUserDO){
+    public boolean add(UserDTO userDTO) {
         StringBuilder sql = new StringBuilder();
-        sql.append(" insert into producer(id,pwd,hash) ");
+        sql.append(" insert into user(userName,pwd,hash) ");
         sql.append(" values(?,?,?) ");
         Connection conn = null;
         PreparedStatement ps = null;
@@ -25,9 +27,9 @@ public class ProductLogonImpl implements ProductLogon{
             conn = DBUtil.getConn();
             ps = conn.prepareStatement(sql.toString());
 
-            ps.setString(1, proUserDO.getUserName());
-            ps.setString(2, proUserDO.getPwd());
-            ps.setString(3, proUserDO.getHash());
+            ps.setString(1, userDTO.getUserName());
+            ps.setString(2, userDTO.getPwd());
+            ps.setString(3, userDTO.getHash());
 
             return ps.executeLargeUpdate() == 1;
         }catch (Exception e){

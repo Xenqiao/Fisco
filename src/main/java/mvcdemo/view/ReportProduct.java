@@ -1,10 +1,10 @@
 package mvcdemo.view;
 
 import mvcdemo.dao.mysql.DBUtil;
-import mvcdemo.dao.mysql.impl.MysqlServiceImpl;
-import mvcdemo.po.GetProUserDO;
-import mvcdemo.po.ProductDO;
-import mvcdemo.service.Cleaner;
+import mvcdemo.service.impl.MysqlServiceImpl;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.dto.ProductDTO;
+import mvcdemo.util.Cleaner;
 
 import java.sql.*;
 import java.util.Scanner;
@@ -14,25 +14,25 @@ import java.util.Scanner;
  * @create 2023/4/2 15:40
  */
 public class ReportProduct {
-    ProductDO productDO = new ProductDO();
+    ProductDTO productDTO = new ProductDTO();
 
 
     /** 举报产品的函数：前期准备  **/
     public void ReportProducts(){
         String Sql = "select * from product;";
-        new MysqlServiceImpl().PrintProduct(productDO,Sql,0);
+        new MysqlServiceImpl().PrintProduct(productDTO,Sql,0);
 
 
         System.out.print("                                        请选择输入您要点赞或者举报的商品序号：");
         Scanner sc = new Scanner(System.in);
         char select =sc.next().charAt(0);
 
-        Cleaner.Clean();
-        productDO.setProductId(Integer.valueOf(String.valueOf(select)));
+        Cleaner.getCleaner().Clean();
+        productDTO.setProductId(Integer.valueOf(String.valueOf(select)));
         StringBuilder sql = new StringBuilder();
-        sql.append("select * from product WHERE pid="+"'"+productDO.getProductId()+"' ;");
+        sql.append("select * from product WHERE pid="+"'"+ productDTO.getProductId()+"' ;");
 
-        boolean result = new MysqlServiceImpl().PrintProduct(productDO,sql.toString(),0);
+        boolean result = new MysqlServiceImpl().PrintProduct(productDTO,sql.toString(),0);
 
         if (result == false){
             System.out.println("                                    商品不存在");
@@ -43,12 +43,12 @@ public class ReportProduct {
         select = sc.next().charAt(0);
         switch (select){
             case 'a':
-                this.support(productDO,"sMessage");
-                Cleaner.BackMain();
+                this.support(productDTO,"sMessage");
+                Cleaner.getCleaner().BackMain();
                 break;
             case'b':
-                this.support(productDO,"rMessage");
-                Cleaner.BackMain();
+                this.support(productDTO,"rMessage");
+                Cleaner.getCleaner().BackMain();
                 break;
             default:
                 return;
@@ -59,8 +59,9 @@ public class ReportProduct {
 
     Connection conn = null;
     /** 是一个可以点赞也可以举报的函数 **/
-    public void support(ProductDO productDO, String mess){
-        GetProUserDO.setUserName(productDO.getMaker());
+    public void support(ProductDTO productDTO, String mess){
+        ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
+        proUserDTO.setUserName(productDTO.getMaker());
 
         StringBuilder sql = new StringBuilder();
 
@@ -68,16 +69,16 @@ public class ReportProduct {
         try {
             conn = DBUtil.getConn();
             stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("select "+mess+" from producer where id="+"'"+GetProUserDO.getUserName()+"' ;");
+            ResultSet rs = stmt.executeQuery("select "+mess+" from producer where id="+"'"+ proUserDTO.getUserName()+"' ;");
             while (rs.next()){
-                GetProUserDO.setrMessage(rs.getString(mess));
+                proUserDTO.setrMessage(rs.getString(mess));
             }
-            if (GetProUserDO.getrMessage()==null || "".equals(GetProUserDO.getrMessage())){
-                GetProUserDO.setrMessage("0,");
+            if (proUserDTO.getrMessage()==null || "".equals(proUserDTO.getrMessage())){
+                proUserDTO.setrMessage("0,");
             }
             StringBuilder message = new StringBuilder();
-            message.append(GetProUserDO.getrMessage()+productDO.getProductId()+",");
-            GetProUserDO.setrMessage(message.toString());
+            message.append(proUserDTO.getrMessage()+ productDTO.getProductId()+",");
+            proUserDTO.setrMessage(message.toString());
 
             rs.close();
             stmt.close();
@@ -88,8 +89,8 @@ public class ReportProduct {
 
 
         sql.append(" update producer set " +
-                mess+"="+"'"+GetProUserDO.getrMessage()+"' "+
-                " where id="+"'"+GetProUserDO.getUserName()+"';");
+                mess+"="+"'"+ proUserDTO.getrMessage()+"' "+
+                " where id="+"'"+ proUserDTO.getUserName()+"';");
 
         try {
             conn = DBUtil.getConn();

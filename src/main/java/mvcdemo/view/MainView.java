@@ -1,21 +1,17 @@
 package mvcdemo.view;
 
-import mvcdemo.po.GetProUserDO;
-import mvcdemo.po.ProUserDO;
-import mvcdemo.po.UserDO;
-import mvcdemo.service.Cleaner;
-import mvcdemo.service.MainViewHandler;
-
-import java.util.Scanner;
+import mvcdemo.dto.ProUserDTO;
+import mvcdemo.util.Cleaner;
+import mvcdemo.service.MainViewService;
 
 /**
  * @author Xenqiao
  * @create 2023/3/18 17:24
  */
 public class MainView {
-    public void UserMain(UserDO userDO){
+    public void UserMain(){
 
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
         System.out.println("                                                欢迎光临，尊敬的顾客！");
         System.out.println("                                        -----------------------------------");
         System.out.println("                                        选择1：查看我的用户信息");
@@ -28,17 +24,18 @@ public class MainView {
         System.out.println("                                        选择8：真伪验证");
         System.out.println("                                        ------------------------------------");
         System.out.println();
-        new MainViewHandler().UserMainViewHandler(userDO);
+        new MainViewService().UserMainViewHandler();
 
     }
 
 
-    public void ProductMain(ProUserDO proUserDO){
-        if ( "".equals(GetProUserDO.getrMessage()) ){
+    public void ProductMain(){
+        ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
+        if ( "".equals(proUserDTO.getrMessage()) ){
 
             System.out.println("请注意，您有新的举报信息！！");
         }
-        if("".equals(GetProUserDO.getsMessage())){
+        if("".equals(proUserDTO.getsMessage())){
             System.out.println("请注意，您有新的点赞信息！！");
 
         }
@@ -54,10 +51,7 @@ public class MainView {
         System.out.println();
         System.out.println("                                        ------------------------------------");
         System.out.println();
-        System.out.print("                                        请选择您要进行的操作（请输入数字作为您的选择）：");
-        Scanner sc = new Scanner(System.in);
-        char select =sc.next().charAt(0);
-        new MainViewHandler().ProUserMainViewHandler(select,proUserDO);
+        new MainViewService().ProUserMainViewHandler();
     }
 
 

@@ -1,7 +1,7 @@
 package mvcdemo.view;
 
 
-import mvcdemo.service.UserLoginHandler;
+import mvcdemo.service.UserLoginService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +46,7 @@ public class UserLogin extends JFrame{
      */
     SystemTray systemTray;
     TrayIcon trayIcon;
-    UserLoginHandler userLoginHandler;
+    UserLoginService userLoginService;
 
     public UserLogin(){
         /*
@@ -56,7 +56,7 @@ public class UserLogin extends JFrame{
         Container contentPane = getContentPane();
 
         //引用loginHandler类里的方法
-        userLoginHandler = new UserLoginHandler(this);
+        userLoginService = new UserLoginService(this);
 
         /*
           设置标题大小以及字体,整个标题的宽高
@@ -91,19 +91,19 @@ public class UserLogin extends JFrame{
         group.add(consumerLogin);
 
         centerPanel.add(producerLogin);
-        producerLogin.addActionListener(userLoginHandler);
+        producerLogin.addActionListener(userLoginService);
 
         centerPanel.add(consumerLogin);
-        consumerLogin.addActionListener(userLoginHandler);
+        consumerLogin.addActionListener(userLoginService);
 
         //增加事件：鼠标点击登录键
-        loginBtn.addActionListener(userLoginHandler);
+        loginBtn.addActionListener(userLoginService);
         //增加回车时默认键为登录
-        loginBtn.addKeyListener(userLoginHandler);
+        loginBtn.addKeyListener(userLoginService);
         centerPanel.add(loginBtn);
 
         //鼠标点击注册键
-        resetBtn.addActionListener(userLoginHandler);
+        resetBtn.addActionListener(userLoginService);
         centerPanel.add(resetBtn);
 
         //设置窗体图标
