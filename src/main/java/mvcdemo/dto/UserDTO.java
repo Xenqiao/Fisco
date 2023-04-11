@@ -4,6 +4,7 @@ package mvcdemo.dto;
 /**
  * @author Xenqiao
  * @create 2023/3/18 17:38
+ * 消费者对象，记录了消费者对应的各种参数
  */
 public class UserDTO {
 
@@ -22,7 +23,7 @@ public class UserDTO {
     }
     public static UserDTO getUserDO(){
         if (userDTO == null){
-            synchronized (ProUserDTO.class){
+            synchronized (UserDTO.class){
                 if (userDTO == null){
                     userDTO = new UserDTO();
                 }

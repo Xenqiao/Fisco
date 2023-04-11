@@ -3,6 +3,7 @@ package mvcdemo.dto;
 /**
  * @author Xenqiao
  * @create 2023/3/19 18:11
+ * 生产商对象，记录了生产者对应的各种参数
  */
 public class ProUserDTO {
     private String userName;

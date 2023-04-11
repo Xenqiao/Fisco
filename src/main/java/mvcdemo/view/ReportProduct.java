@@ -27,7 +27,7 @@ public class ReportProduct {
         Scanner sc = new Scanner(System.in);
         char select =sc.next().charAt(0);
 
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
         productDTO.setProductId(Integer.valueOf(String.valueOf(select)));
         StringBuilder sql = new StringBuilder();
         sql.append("select * from product WHERE pid="+"'"+ productDTO.getProductId()+"' ;");
@@ -44,11 +44,11 @@ public class ReportProduct {
         switch (select){
             case 'a':
                 this.support(productDTO,"sMessage");
-                Cleaner.BackMain();
+                Cleaner.getCleaner().BackMain();
                 break;
             case'b':
                 this.support(productDTO,"rMessage");
-                Cleaner.BackMain();
+                Cleaner.getCleaner().BackMain();
                 break;
             default:
                 return;

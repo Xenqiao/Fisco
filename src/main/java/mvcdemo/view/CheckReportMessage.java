@@ -22,7 +22,7 @@ public class CheckReportMessage {
 
 
     public void CheckSupport(){
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
         System.out.println("===================================================================================== 分割线 == 分割线 ================================================================================================================");
 
         String proUserSupport = proUserDTO.getsMessage();
@@ -31,6 +31,8 @@ public class CheckReportMessage {
             System.out.println();
             System.out.println("                                                                        以下是您被点赞支持的产品,您将由此获得奖励金：");
             System.out.println("                                                                        以下是您被点赞支持的产品,您将由此获得奖励金：");
+
+            //此处是将被点赞过的商品记录从MySQL中读取出来，显示提示信息
             for (int i = 0; i < proUserSupport.length(); i++) {
                 if (proUserSupport.charAt(i) >= 48 && proUserSupport.charAt(i) <= 57) {
                     productID += proUserSupport.charAt(i);
@@ -64,6 +66,8 @@ public class CheckReportMessage {
             System.out.println();
             System.out.println("                                                                        以下是您被举报的产品,您将由此扣除一部分质押金：");
             System.out.println("                                                                        以下是您被举报的产品,您将由此扣除一部分质押金：");
+
+            //此处是将被举报过的商品记录从MySQL中读取出来，显示提示信息
             for (int i = 0; i < proUserSupport.length(); i++) {
                 if (proUserSupport.charAt(i) >= 48 && proUserSupport.charAt(i) <= 57) {
                     productID += proUserSupport.charAt(i);

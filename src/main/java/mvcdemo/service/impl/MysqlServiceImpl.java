@@ -152,7 +152,7 @@ public class MysqlServiceImpl implements MysqlService {
                 if (branch == 1) {
                     System.out.println("商品哈希：" + productDTO.getProductHash());
                 }
-                Cleaner.PrintProduct(productDTO);
+                Cleaner.getCleaner().PrintProduct(productDTO);
                 System.out.println();
                 System.out.println();
 

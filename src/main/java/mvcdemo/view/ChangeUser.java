@@ -34,6 +34,7 @@ public class ChangeUser extends JDialog {
 
     public  ChangeUser() {
 
+        //这个界面主要用于修改用户的信息
         setTitle("修改用户信息");
         int heigth = 35;
         StringBuilder id = new StringBuilder();
@@ -81,12 +82,14 @@ public class ChangeUser extends JDialog {
         setLocationRelativeTo(null);
 
 
+        //将数据传入ChangeUserService中进行处理以及判断输入是否有误
+        //或者数据上传同步至fisco或MySQL是否成功
         changeUserService = new ChangeUserService(this);
         addBtn.addActionListener(changeUserService);
         jPanel.add(addBtn);
 
         //DISPOSE_ON_CLOSE：关闭时只销毁当前窗口
-        addWindowListener(new CloseWindow(userDTO,null,this,null,null));
+        addWindowListener(new CloseWindow(null,this,null,null));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
@@ -95,6 +98,8 @@ public class ChangeUser extends JDialog {
 
 
     public void SetManage(UserDTO userDTO){
+
+        //将输入的数据写入封装的对象内，通过单例模式可读取
         userDTO.setPwd(newPwdTxt.getText());
         userDTO.setName(nameTxt.getText());
         userDTO.setHome(homeTxt.getText());

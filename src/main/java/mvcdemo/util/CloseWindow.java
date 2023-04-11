@@ -4,6 +4,7 @@ import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.UserDTO;
 import mvcdemo.view.*;
 
+import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -12,20 +13,22 @@ import java.awt.event.WindowEvent;
  * @create 2023/3/31 17:21
  */
 public class CloseWindow extends WindowAdapter {
-    private UserDTO userDTO;
+
     private CreateGoods createGoods;
     private ChangeUser changeUser;
     private ChangeProUser changeProUser;
     private ReviseProductInformation reviseProductInformation;
 
+
+    /** 本函数主要用于监听（来自各个 JDialog界面的关闭）鼠标事件，
+     *  确保关闭界面以后控制台能够正常自动返回主菜单界面 **/
     public CloseWindow(
-            UserDTO userDTO,
             CreateGoods createGoods,
             ChangeUser changeUser,
             ChangeProUser changeProUser,
             ReviseProductInformation reviseProductInformation
     ) {
-        this.userDTO = userDTO;
+
         this.createGoods = createGoods;
         this.changeUser = changeUser;
         this.changeProUser = changeProUser;
@@ -47,12 +50,13 @@ public class CloseWindow extends WindowAdapter {
         }
 
         ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
+        UserDTO userDTO = UserDTO.getUserDO();
         if (proUserDTO ==null){
-            Cleaner.Clean();
+            Cleaner.getCleaner().Clean();
             new MainView().UserMain();
         }else if (userDTO ==null){
 
-            Cleaner.Clean();
+            Cleaner.getCleaner().Clean();
             new MainView().ProductMain();
         }
 

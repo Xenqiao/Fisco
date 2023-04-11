@@ -39,6 +39,8 @@ public class CreateGoods extends JDialog{
 
         Font font = new Font("微软雅黑",Font.PLAIN,20);
 
+        //由于好几个界面都是十分类似的我就不再重复注释了
+        //这里是将前边定义的组件插入到界面中，使用的是swing的流式布局
         ProductDTO productDTO = new ProductDTO();
         productDTO.setProductMakePhone(proUserDTO.getProPhone());
         productDTO.setProductMake(proUserDTO.getProManager());
@@ -91,7 +93,7 @@ public class CreateGoods extends JDialog{
         setLocationRelativeTo(null);
 
 
-        CreateGoodsService createGoodsService = new CreateGoodsService(this, productDTO, proUserDTO);
+        CreateGoodsService createGoodsService = new CreateGoodsService(this, productDTO);
         addBtn.setFont(font);
         addBtn.addActionListener(createGoodsService);
 
@@ -99,7 +101,7 @@ public class CreateGoods extends JDialog{
 
         //DISPOSE_ON_CLOSE：关闭时只销毁当前窗口
 
-        addWindowListener(new CloseWindow(null,this,null,null,null));
+        addWindowListener(new CloseWindow(this,null,null,null));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);

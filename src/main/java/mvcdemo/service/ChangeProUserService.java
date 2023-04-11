@@ -28,19 +28,23 @@ public class ChangeProUserService implements ActionListener{
         JButton jButton = (JButton) e.getSource();
         String text = jButton.getText();
 
+        //此处负责将数据传入fisco链
         changeProUser.SetManage();
         new ChangeOnFisco().ChangeProUserOnFisco(proUserDTO);
+
         if ("确认修改".equals(text)) {
+
+            //此处将数据传入MySQL的数据库同时返回boolean值判断是否成功
             MysqlService mysqlService = new MysqlServiceImpl();
             boolean addResult = mysqlService.addProUser(proUserDTO);
-            JOptionPane.showMessageDialog(changeProUser,"数据将更新上传至区块链，请等待几分钟。");
+
             if (addResult) {
                 JOptionPane.showMessageDialog(changeProUser, "修改成功！");
                 changeProUser.dispose();
             } else {
                 JOptionPane.showMessageDialog(changeProUser, "修改失败！");
             }
-            Cleaner.Clean();
+            Cleaner.getCleaner().Clean();
             new MainView().ProductMain();
         }
     }

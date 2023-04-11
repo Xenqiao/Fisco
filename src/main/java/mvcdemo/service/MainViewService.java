@@ -27,7 +27,7 @@ public class MainViewService {
             case '1':
                 //选择1：查看我的用户信息
                 new MainViewService().CheckUser();
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().UserMain();
                 break;
             case '2':
@@ -39,18 +39,18 @@ public class MainViewService {
                 System.out.println();
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
                 new CheckProductByUser(userDTO).CheckProduct();
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().UserMain();
                 break;
             case '4':
                 //选择4：查看已购买产品信息
                 new AlreadyPurchasedByUser().CheckingAlreadyPurchased();
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().UserMain();
                 break;
             case '5':
                 //选择5：举报或点赞产品
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new ReportProduct().ReportProducts();
                 new MainView().UserMain();
                 break;
@@ -59,16 +59,19 @@ public class MainViewService {
                 break;
             case '7':
                 //选择7：查看产品分类
+                new ProductClassification();
+                Cleaner.getCleaner().Clean();
+                new MainView().UserMain();
                 break;
             case '8':
                 //选择8：真伪验证
                 new AlreadyPurchasedByUser().VerificationOfAuthenticity();
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().UserMain();
                 break;
             default:
                 JOptionPane.showMessageDialog(null,"格式错误,请重新输入！");
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().UserMain();
                 break;
         }
@@ -84,7 +87,7 @@ public class MainViewService {
             case '1':
                 //选择1：查看我的用户信息
                 new MainViewService().CheckProUser();
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().ProductMain();
                 break;
             case '2':
@@ -107,7 +110,7 @@ public class MainViewService {
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
                 new CheckProductByProUser();
 
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().ProductMain();
                 break;
             case '6':
@@ -115,16 +118,20 @@ public class MainViewService {
                 new CheckReportMessage().CheckSupport();
                 new CheckReportMessage().CheckReport();
 
-                Cleaner.BackMain();
-                Cleaner.Clean();
+                Cleaner.getCleaner().BackMain();
+                Cleaner.getCleaner().Clean();
                 new MainView().ProductMain();
                 break;
             case '7':
                 //选择7：查看产品分类
+                new ProductClassification();
+                Cleaner.getCleaner().BackMain();
+                Cleaner.getCleaner().Clean();
+                new MainView().ProductMain();
                 break;
             default:
                 JOptionPane.showMessageDialog(null,"格式错误,请重新输入！");
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().ProductMain();
                 break;
         }
@@ -134,7 +141,7 @@ public class MainViewService {
 
     public void CheckProUser(){
 
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
         proUserDTO.setBalance(Integer.valueOf(new ChangeOnFisco().CreateErc20(proUserDTO.getHash())));
         System.out.println("                                        您的账户信息为：");
         System.out.println("                                        =======================================================");
@@ -145,13 +152,13 @@ public class MainViewService {
         System.out.println("                                        联系电话："+ proUserDTO.getProPhone());
         System.out.println("                                        收货地址："+ proUserDTO.getProHome());
         System.out.println("                                        =======================================================");
-        Cleaner.BackMain();
+        Cleaner.getCleaner().BackMain();
 
     }
 
 
     public void CheckUser(){
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
         userDTO.setBalance(Integer.valueOf(new ChangeOnFisco().CreateErc20(userDTO.getHash())));
         System.out.println("                                        您的账户信息为：");
         System.out.println("                                        =======================================================");
@@ -162,7 +169,7 @@ public class MainViewService {
         System.out.println("                                        联系电话："+ userDTO.getPhone());
         System.out.println("                                        收货地址："+ userDTO.getHome());
         System.out.println("                                        =======================================================");
-        Cleaner.BackMain();
+        Cleaner.getCleaner().BackMain();
 
     }
 }

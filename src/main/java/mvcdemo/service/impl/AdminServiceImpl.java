@@ -16,7 +16,6 @@ public class AdminServiceImpl implements AdminService {
     Statement stmt;
     String sql;
     ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
-    UserDTO userDTO = UserDTO.getUserDO();
 
     @Override
     public boolean getUserHash(UserDTO userDTO) throws Exception{
@@ -65,18 +64,14 @@ public class AdminServiceImpl implements AdminService {
         if (change == 2){
             sql = "select id from producer where id =" + "'" + useName + "'";
             rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                if (rs.getString("id").equals(useName)) {
-                    return true;
-                }
+            if (rs.next()){
+                return true;
             }
         }else if (change == 1) {
             sql = "select userName from user where userName =" + "'" + useName + "'";
             rs = stmt.executeQuery(sql);
-            while (rs.next()) {
-                if (rs.getString("userName").equals(useName)) {
-                    return true;
-                }
+            if (rs.next()){
+                return true;
             }
         }
         rs.close();

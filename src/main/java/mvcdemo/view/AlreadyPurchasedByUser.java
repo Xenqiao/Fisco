@@ -17,7 +17,7 @@ public class AlreadyPurchasedByUser {
     ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
     /** 展示购买过的产品以及对应哈希值供用户核实 **/
     public void CheckingAlreadyPurchased(){
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
         System.out.println("===================================================================================== 分割线 == 分割线 ================================================================================================================");
 
 
@@ -44,13 +44,13 @@ public class AlreadyPurchasedByUser {
             System.out.println("                                                                        您未曾购买任何产品");
             System.out.println("                                                                        您未曾购买任何产品");
         }
-        Cleaner.BackMain();
+        Cleaner.getCleaner().BackMain();
     }
 
 
     /** 查询产品哈希以验证真伪的函数 */
     public void VerificationOfAuthenticity(){
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
 
         System.out.print("                                              请输入您要查询的商品哈希：");
         Scanner sc = new Scanner(System.in);
@@ -63,11 +63,11 @@ public class AlreadyPurchasedByUser {
 
         if (number == false) {
             System.out.println("                未查询到该商品信息");
-            Cleaner.BackMain();
+            Cleaner.getCleaner().BackMain();
             return;
         }else {
             JOptionPane.showMessageDialog(null, "正品！品质有保障");
-            Cleaner.BackMain();
+            Cleaner.getCleaner().BackMain();
         }
     }
 

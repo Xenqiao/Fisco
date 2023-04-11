@@ -40,6 +40,9 @@ public class ChangeOnFisco {
 
         String Address = userDTO.getHash();
         User user = new User(Address, GetBcosSDK.theGetBcosSDK().getClient(), GetBcosSDK.theGetBcosSDK().getKeyPair());
+        String msgSender = user.setSender(Address).getOutput();
+        System.out.println("msg.sender:  "+msgSender);
+
         user.setUser(
                 userDTO.getHash(),
                 userDTO.getUserName(),
@@ -84,6 +87,7 @@ public class ChangeOnFisco {
     }
 
 
+    /** 在 erc20合约上完成各种操作的函数，留存的地址用于返回最初创建的合约，或者访问合约的管理员账户  **/
     public String CreateErc20(String hash){
 
         String a = "0x10e47f5aa26b58f53e055878148ed47529a24099";

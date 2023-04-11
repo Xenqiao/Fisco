@@ -1,0 +1,52 @@
+            mysql> SHOW COLUMNS FROM product FROM test;
+            +--------+--------------+------+-----+---------+-------+
+            | Field  | Type         | Null | Key | Default | Extra |
+            +--------+--------------+------+-----+---------+-------+
+            | pname  | varchar(255) | YES  |     | NULL    |       |
+            | pprice | varchar(255) | YES  |     | NULL    |       |
+            | phash  | varchar(255) | YES  |     | NULL    |       |
+            | pid    | int          | YES  |     | NULL    |       |
+            | pmaker | varchar(255) | YES  |     | NULL    |       |
+            | pphone | varchar(255) | YES  |     | NULL    |       |
+            | pclass | varchar(255) | YES  |     | NULL    |       |
+            +--------+--------------+------+-----+---------+-------+
+            7 rows in set (0.00 sec)
+
+
+
+            mysql> SHOW COLUMNS FROM producer FROM test;
+            +------------------+--------------+------+-----+---------+-------+
+            | Field            | Type         | Null | Key | Default | Extra |
+            +------------------+--------------+------+-----+---------+-------+
+            | id               | varchar(20)  | YES  |     | NULL    |       |
+            | pwd              | varchar(255) | YES  |     |         |       |
+            | hash             | varchar(255) | YES  |     | NULL    |       |
+            | proPhone         | varchar(255) | YES  |     | NULL    |       |
+            | proHome          | varchar(255) | YES  |     | NULL    |       |
+            | proManager       | varchar(255) | YES  |     | NULL    |       |
+            | proBalance       | varchar(255) | YES  |     | NULL    |       |
+            | AlreadyPurchased | varchar(255) | YES  |     | NULL    |       |
+            | rMessage         | varchar(255) | YES  |     | NULL    |       |
+            | sMessage         | varchar(255) | YES  |     | NULL    |       |
+            +------------------+--------------+------+-----+---------+-------+
+            10 rows in set (0.00 sec)
+
+
+
+            mysql> SHOW COLUMNS FROM user FROM test;
+            +------------------+--------------+------+-----+---------+-------+
+            | Field            | Type         | Null | Key | Default | Extra |
+            +------------------+--------------+------+-----+---------+-------+
+            | userName         | varchar(20)  | NO   |     |         |       |
+            | pwd              | varchar(12)  | NO   |     | 12      |       |
+            | hash             | varchar(255) | YES  |     | NULL    |       |
+            | home             | varchar(255) | YES  |     | NULL    |       |
+            | name             | varchar(255) | YES  |     | NULL    |       |
+            | phone            | varchar(255) | YES  |     | NULL    |       |
+            | ubalance         | varchar(255) | YES  |     | NULL    |       |
+            | AlreadyPurchased | varchar(255) | YES  |     | NULL    |       |
+            +------------------+--------------+------+-----+---------+-------+
+            8 rows in set (0.00 sec)
+
+
+

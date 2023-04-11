@@ -75,7 +75,7 @@ public class ReviseProductInformation extends JDialog{
         jPanel.add(addBtn);
 
         //DISPOSE_ON_CLOSE：关闭时只销毁当前窗口
-        addWindowListener(new CloseWindow(null,null,null,null,this));
+        addWindowListener(new CloseWindow(null,null,null,this));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);

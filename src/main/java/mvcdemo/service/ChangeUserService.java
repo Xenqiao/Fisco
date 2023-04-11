@@ -49,7 +49,7 @@ public class ChangeUserService implements ActionListener{
             } else {
                 JOptionPane.showMessageDialog(changeUser, "修改失败！");
             }
-            Cleaner.Clean();
+            Cleaner.getCleaner().Clean();
             new MainView().UserMain();
 
         }

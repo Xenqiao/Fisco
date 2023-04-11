@@ -79,12 +79,14 @@ public class ChangeProUser extends JDialog{
 
         new CopyJLabel(hashLabel);
 
+        //将数据传入ChangeProUserService中进行处理以及判断输入是否有误
+        //或者数据上传同步至fisco或MySQL是否成功
         changeUserHandler = new ChangeProUserService(this);
         addBtn.addActionListener(changeUserHandler);
         jPanel.add(addBtn);
 
         //DISPOSE_ON_CLOSE：关闭时只销毁当前窗口
-        addWindowListener(new CloseWindow(null,null,null,this,null));
+        addWindowListener(new CloseWindow(null,null,this,null));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
         setVisible(true);
@@ -92,6 +94,8 @@ public class ChangeProUser extends JDialog{
     }
 
     public void SetManage(){
+
+        //将输入的数据写入封装的对象内，通过单例模式实现单一对象重复读取
         proUserDTO.setPwd(newPwdTxt.getText());
         proUserDTO.setProManager(nameTxt.getText());
         proUserDTO.setProHome(homeTxt.getText());

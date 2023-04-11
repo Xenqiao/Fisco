@@ -15,6 +15,7 @@ public class UserLogonServiceServiceImpl implements UserLogonService {
 
     }
 
+    /** 在MySQL数据库中添加新注册的消费者记录 **/
     @Override
     public boolean add(UserDTO userDTO) {
         StringBuilder sql = new StringBuilder();

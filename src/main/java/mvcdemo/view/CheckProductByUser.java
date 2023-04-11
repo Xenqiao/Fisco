@@ -30,11 +30,12 @@ public class CheckProductByUser {
     Connection conn = DBUtil.getConn();
 
     public void CheckProduct(){
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
 
         String sql = "select * from product;";
         new MysqlServiceImpl().PrintProduct(productDTO,sql,0);
 
+        //这里是界面的一个分支操作
         System.out.print("                                        请选择输入您要进行的操作（ a.查询产品      b.购买产品      c.返回主菜单 ）：");
         Scanner sc = new Scanner(System.in);
         char select =sc.next().charAt(0);
@@ -59,14 +60,14 @@ public class CheckProductByUser {
         Scanner sc = new Scanner(System.in);
         String select = sc.next();
         
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
         StringBuilder sql = new StringBuilder();
         sql.append("select * from product where pname like"+"'%"+select+"%' ;");
         boolean number = true;
         number = new MysqlServiceImpl().PrintProduct(productDTO,sql.toString(),0);
             if (number == false) {
                 System.out.println("没有找到哦，输入一个字进行查找试试？ ");
-                Cleaner.BackMain();
+                Cleaner.getCleaner().BackMain();
                 return;
             }
     }
@@ -133,7 +134,8 @@ public class CheckProductByUser {
             e.printStackTrace();
         }
 
-
+        //这里对用户购买过的商品进行一个记录，确保用户能够查看
+        //如果没有购买过产品将生成一个不存在的序号记录到购买记录中，防止被读取时为null出错
         StringBuilder stringBuilder = new StringBuilder();
         if (userDTO.getAlreadyPurchased()==null){
             userDTO.setAlreadyPurchased("0,");
@@ -144,7 +146,7 @@ public class CheckProductByUser {
 
         //把余额数据上传至MySQL
         new MysqlServiceImpl().add(userDTO);
-        Cleaner.BackMain();
+        Cleaner.getCleaner().BackMain();
     }
 
 

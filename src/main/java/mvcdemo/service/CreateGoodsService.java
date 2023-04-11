@@ -25,11 +25,10 @@ import java.sql.Statement;
 public class CreateGoodsService implements ActionListener{
     private CreateGoods createGoods;
     private ProductDTO productDTO;
-    private ProUserDTO proUserDTO;
-    public CreateGoodsService(CreateGoods createGoods, ProductDTO productDTO, ProUserDTO proUserDTO) {
+
+    public CreateGoodsService(CreateGoods createGoods, ProductDTO productDTO) {
         this.createGoods = createGoods;
         this.productDTO = productDTO;
-        this.proUserDTO = proUserDTO;
     }
 
 
@@ -70,7 +69,7 @@ public class CreateGoodsService implements ActionListener{
             } else {
                 JOptionPane.showMessageDialog(createGoods, "上传失败！");
             }
-            Cleaner.Clean();
+            Cleaner.getCleaner().Clean();
             new MainView().ProductMain();
         }
     }

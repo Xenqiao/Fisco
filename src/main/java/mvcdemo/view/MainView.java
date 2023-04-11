@@ -11,7 +11,7 @@ import mvcdemo.service.MainViewService;
 public class MainView {
     public void UserMain(){
 
-        Cleaner.Clean();
+        Cleaner.getCleaner().Clean();
         System.out.println("                                                欢迎光临，尊敬的顾客！");
         System.out.println("                                        -----------------------------------");
         System.out.println("                                        选择1：查看我的用户信息");

@@ -53,7 +53,7 @@ public class ReviseProductInformationService implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(reviseProductInformation, "上传失败！");
             }
-            Cleaner.Clean();
+            Cleaner.getCleaner().Clean();
             new MainView().ProductMain();
         }
     }

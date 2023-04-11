@@ -14,6 +14,7 @@ public class ProductLogonServiceServiceImpl implements ProductLogonService {
     public ProductLogonServiceServiceImpl(){
     }
 
+    /** 在MySQL数据库中添加新注册的生产者记录 **/
     @Override
     public boolean addPro(ProUserDTO proUserDTO){
         StringBuilder sql = new StringBuilder();

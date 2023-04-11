@@ -54,6 +54,7 @@ public class UserLoginService extends KeyAdapter implements ActionListener {
     }
 
 
+    /** 用于管理注册的函数，能够接管和识别登录者的身份，同时根据此进行不同的操作 **/
     private void logon(int chance){
         String userName = loginView.getUserTxt().getText();
         char[] chars = loginView.getPwdField().getPassword();
@@ -94,10 +95,10 @@ public class UserLoginService extends KeyAdapter implements ActionListener {
             JOptionPane.showMessageDialog(loginView, "接下来请转入控制台界面！");
             loginView.dispose();
             if (chance == 1){
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().UserMain();
             }else{
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().ProductMain();
             }
         }else {
@@ -106,6 +107,8 @@ public class UserLoginService extends KeyAdapter implements ActionListener {
         }
     }
 
+
+    /** 用于管理登录的函数  **/
     private void login(int change) {
         String user = loginView.getUserTxt().getText();
         char[] chars = loginView.getPwdField().getPassword();
@@ -156,10 +159,10 @@ public class UserLoginService extends KeyAdapter implements ActionListener {
             loginView.dispose();
 
             if (change == 1){
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().UserMain();
             }else{
-                Cleaner.Clean();
+                Cleaner.getCleaner().Clean();
                 new MainView().ProductMain();
             }
 
@@ -171,6 +174,7 @@ public class UserLoginService extends KeyAdapter implements ActionListener {
 
     }
 
+    /** 鼠标事件监听，点击一次即可触发 **/
     @Override
     public void keyPressed(KeyEvent e) {
         if (KeyEvent.VK_ENTER == e.getKeyCode()){
