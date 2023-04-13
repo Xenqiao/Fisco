@@ -10,7 +10,7 @@ package mvcdemo.dto;
  * 钱包
  * @author nandao
  */
-class Wallet {
+class WalletDTO {
     /**
      * 公钥
      */
@@ -36,18 +36,18 @@ class Wallet {
         this.privateKey = privateKey;
     }
 
-    public Wallet() {
+    public WalletDTO() {
     }
 
     /**
      * 只包含公钥的钱包，用来给其他节点使用，其他节点在转账时需要用到
      * @param publicKey
      */
-    public Wallet(String publicKey) {
+    public WalletDTO(String publicKey) {
         this.publicKey = publicKey;
     }
 
-    public Wallet(String publicKey, String privateKey) {
+    public WalletDTO(String publicKey, String privateKey) {
         this.publicKey = publicKey;
         this.privateKey = privateKey;
     }

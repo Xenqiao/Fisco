@@ -1,6 +1,6 @@
 package mvcdemo.service.impl;
 
-import mvcdemo.dao.mysql.DBUtil;
+import mvcdemo.dao.DBUtil;
 import mvcdemo.dto.UserDTO;
 
 import java.sql.Connection;

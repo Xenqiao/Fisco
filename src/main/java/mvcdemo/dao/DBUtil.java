@@ -1,9 +1,9 @@
-package mvcdemo.dao.mysql;
+package mvcdemo.dao;
 
 import java.sql.*;
 
 /**
- * @author 谢金桥
+ * @author 谢
  */
 public class DBUtil {
     static {

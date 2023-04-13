@@ -1,9 +1,8 @@
 package mvcdemo.service;
 
-import mvcdemo.dao.mysql.DBUtil;
+import mvcdemo.dao.DBUtil;
 import mvcdemo.service.impl.MysqlService;
 import mvcdemo.service.impl.MysqlServiceImpl;
-import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.ProductDTO;
 import mvcdemo.util.Cleaner;
 import mvcdemo.util.contractRealize.ChangeOnFisco;

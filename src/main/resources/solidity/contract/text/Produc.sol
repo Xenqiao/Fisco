@@ -1,4 +1,4 @@
-pragma solidity^0.4.22;
+pragma solidity>=0.4.24 <0.6.11;
 
 // 商品合约
 contract Produc{

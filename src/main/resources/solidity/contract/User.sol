@@ -1,4 +1,4 @@
-pragma solidity>=0.4.24;
+pragma solidity>=0.4.24 <0.6.11;
 
 contract User{
 
@@ -21,9 +21,8 @@ contract User{
 
     //记录用户信息的修改记录与修改者
     event changeUser(address sender, address userAddress, string userName, string uName, string uPhone, string uHome);
-    function setSender(address _sender) public returns(address){
+    function setSender(address _sender) public{
         sender = _sender;
-        return msg.sender;
     }
 
 

@@ -1,4 +1,4 @@
-pragma solidity ^0.8.4;
+pragma solidity>=0.4.24 <0.6.11;
 
 //安全的远程购买，Remix编写
 contract Purchase{

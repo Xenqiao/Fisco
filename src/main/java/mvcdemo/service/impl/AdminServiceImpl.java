@@ -1,6 +1,6 @@
 package mvcdemo.service.impl;
 
-import mvcdemo.dao.mysql.DBUtil;
+import mvcdemo.dao.DBUtil;
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.UserDTO;
 
@@ -13,25 +13,28 @@ public class AdminServiceImpl implements AdminService {
 
     Connection conn = null;
     ResultSet rs = null;
-    Statement stmt;
-    String sql;
+    PreparedStatement ps = null;
+    String sql = null;
     ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
 
     @Override
     public boolean getUserHash(UserDTO userDTO) throws Exception{
         Connection conn = DBUtil.getConn();
-        ResultSet rs = null;
 
-
-        sql = "select * from user where userName = " + "'" + userDTO.getUserName() + "'";
+        //sql = "select * from user where userName = " + "'" + userDTO.getUserName() + "'";
+        sql = "select * from user where userName=?";
 
         try{
 
             if (conn == null){
                 return false;
             }
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
+
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, userDTO.getUserName());
+            rs = ps.executeQuery();
+
+
             while (rs.next()){
 
                 userDTO.setUserName(rs.getString("userName"));
@@ -48,7 +51,7 @@ public class AdminServiceImpl implements AdminService {
             e.printStackTrace();
         }finally {
             rs.close();
-            stmt.close();
+            ps.close();
             DBUtil.closeConn(conn);
         }
         return false;
@@ -60,22 +63,29 @@ public class AdminServiceImpl implements AdminService {
         if (conn == null){
             return false;
         }
-        stmt = conn.createStatement();
+
         if (change == 2){
-            sql = "select id from producer where id =" + "'" + useName + "'";
-            rs = stmt.executeQuery(sql);
+            //sql = "select id from producer where id =" + "'" + useName + "'";
+            sql = "select id from producer where id =?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,useName);
+            rs = ps.executeQuery();
+
             if (rs.next()){
                 return true;
             }
         }else if (change == 1) {
-            sql = "select userName from user where userName =" + "'" + useName + "'";
-            rs = stmt.executeQuery(sql);
+            sql = "select userName from user where userName =?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,useName);
+            rs = ps.executeQuery();
+
             if (rs.next()){
                 return true;
             }
         }
         rs.close();
-        stmt.close();
+        ps.close();
         DBUtil.closeConn(conn);
         return false;
     }
@@ -95,10 +105,13 @@ public class AdminServiceImpl implements AdminService {
             return false;
         }
 
-        Statement stmt = conn.createStatement();
+
         if (change == 1){
-            sql = "select pwd from user where userName =" + "'" + lName + "'";
-            rs = stmt.executeQuery(sql);
+            sql = "select pwd from user where userName =?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,lName);
+            rs = ps.executeQuery();
+
             while (rs.next()) {
                 if (rs.getString("pwd").equals(lPassword)) {
                     System.out.println("密码正确！");
@@ -109,8 +122,11 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }else if (change == 2){
-            sql = "select pwd from producer where id =" + "'" + lName + "'";
-            rs = stmt.executeQuery(sql);
+            sql = "select pwd from producer where id =?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,lName);
+            rs = ps.executeQuery();
+
             while (rs.next()) {
                 if (rs.getString("pwd").equals(lPassword)) {
                     System.out.println("密码正确！");
@@ -122,7 +138,7 @@ public class AdminServiceImpl implements AdminService {
             }
         }
         rs.close();
-        stmt.close();
+        ps.close();
         DBUtil.closeConn(conn);
         return false;
     }
@@ -131,9 +147,11 @@ public class AdminServiceImpl implements AdminService {
     public String getProducerHash(){
         try {
             conn = DBUtil.getConn();
-            stmt = conn.createStatement();
-            sql = "select * from producer where id =" + "'" + proUserDTO.getUserName() + "'";
-            rs = stmt.executeQuery(sql);
+            sql = "select * from producer where id =?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,proUserDTO.getUserName());
+            rs = ps.executeQuery();
+
             while (rs.next()){
                 if (rs.getString("pwd").equals(proUserDTO.getPwd())){
                     proUserDTO.setHash(rs.getString("hash"));
@@ -146,8 +164,8 @@ public class AdminServiceImpl implements AdminService {
                     proUserDTO.setsMessage(rs.getString("sMessage"));
                 }
             }
-            rs.close();
-            stmt.close();
+            DBUtil.closeRs(rs);
+            DBUtil.closePs(ps);
             DBUtil.closeConn(conn);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

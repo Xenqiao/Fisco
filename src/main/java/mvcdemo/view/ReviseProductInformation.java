@@ -1,7 +1,7 @@
 package mvcdemo.view;
 
 
-import mvcdemo.dao.mysql.DBUtil;
+import mvcdemo.dao.DBUtil;
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.ProductDTO;
 import mvcdemo.util.CloseWindow;
