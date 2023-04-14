@@ -19,9 +19,8 @@ import java.sql.*;
  */
 public class MysqlServiceImpl implements MysqlService {
     Connection conn = null;
-    PreparedStatement ps = null;
     String sql;
-    ResultSet rs;
+    long result;
     public MysqlServiceImpl(){
 
     }
@@ -41,10 +40,9 @@ public class MysqlServiceImpl implements MysqlService {
                 userDTO.getAlreadyPurchased(),
                 userDTO.getUserName()
         };
-        
-        rs = MysqlDAO.executeSQL(conn,sql,param);
-        if (rs != null){
-            DBUtil.closeRs(rs);
+
+        result = MysqlDAO.executeUpdate(conn,sql,param);
+        if (result != 0){
             DBUtil.closeConn(conn);
             return true;
         }
@@ -66,9 +64,8 @@ public class MysqlServiceImpl implements MysqlService {
                 proUserDTO.getUserName()
         };
 
-        rs = MysqlDAO.executeSQL(conn,sql,param);
-        if (rs != null){
-            DBUtil.closeRs(rs);
+        result = MysqlDAO.executeUpdate(conn,sql,param);
+        if (result != 0){
             DBUtil.closeConn(conn);
             return true;
         }
@@ -91,9 +88,8 @@ public class MysqlServiceImpl implements MysqlService {
                 productDTO.getProductClass()
         };
 
-        rs = MysqlDAO.executeSQL(conn,sql,param);
-        if (rs != null){
-            DBUtil.closeRs(rs);
+        result = MysqlDAO.executeUpdate(conn,sql,param);
+        if (result != 0){
             DBUtil.closeConn(conn);
             return true;
         }
@@ -111,10 +107,8 @@ public class MysqlServiceImpl implements MysqlService {
                 String.valueOf(productDTO.getProductPrice()),
                 String.valueOf(productDTO.getProductId())
         };
-        rs = MysqlDAO.executeSQL(conn,sql,param);
-
-        if (rs != null){
-            DBUtil.closeRs(rs);
+        result = MysqlDAO.executeUpdate(conn,sql,param);
+        if (result != 0){
             DBUtil.closeConn(conn);
             return true;
         }
@@ -130,7 +124,7 @@ public class MysqlServiceImpl implements MysqlService {
         try {
             conn = DBUtil.getConn();
             Statement stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
                 result = true;

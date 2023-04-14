@@ -26,10 +26,31 @@ public class MysqlDAO {
             }
             // 执行SQL语句
             ResultSet rs = ps.executeQuery();
+            boolean a = (ps.executeLargeUpdate()==1) ;
             return rs;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return null;
     }
+
+
+    public static long  executeUpdate(Connection conn, String preparedSql, Object[] param){
+        try {
+            // 得到PreparedStatement对象
+            PreparedStatement ps = conn.prepareStatement(preparedSql);
+            if (param != null) {
+                for (int i = 0; i < param.length; i++) {
+                    // 为预编译sql设置参数
+                    ps.setObject(i + 1, param[i]);
+                }
+            }
+
+            return ps.executeLargeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return 0;
+    }
+
 }
