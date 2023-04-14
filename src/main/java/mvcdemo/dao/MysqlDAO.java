@@ -45,7 +45,6 @@ public class MysqlDAO {
                     ps.setObject(i + 1, param[i]);
                 }
             }
-
             return ps.executeLargeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
