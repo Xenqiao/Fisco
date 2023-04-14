@@ -2,6 +2,7 @@ package mvcdemo;
 
 
 import mvcdemo.service.impl.MysqlServiceImpl;
+import mvcdemo.util.contractRealize.ChangeOnFisco;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.User;
 
@@ -16,7 +17,8 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
-        boolean a = new MysqlServiceImpl().addProUser(null);
-        System.out.println ( a );
+
+        String a = new ChangeOnFisco().CreateErc20("0x14e25726cca3e9650dd73be8cfed68c510fdc785");
+        System.out.println(a);
     }
 }

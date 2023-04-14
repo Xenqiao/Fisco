@@ -119,7 +119,9 @@ public class TransactionMaker
         return null;
     };
 
-    // 若是非国密类型应用，从txSignature可反序列化出 v, r, s, 构造SignatureResult的方法如下:
+    /**
+     若是非国密类型应用，从txSignature可反序列化出 v, r, s, 构造SignatureResult的方法如下:
+     */
     public SignatureResult decodeECDSASignature(byte v, byte[] r, byte[] s)
     {
         return new ECDSASignatureResult(v, r, s);
@@ -153,7 +155,7 @@ public class TransactionMaker
     }
     
     
-    // 获取配置文件路径
+    /** 获取配置文件路径 **/
     public final String configFile = TransactionMaker.class.getClassLoader().getResource("src/main/resource/config.toml").getPath();
 
     /** 根据合约abi、合约方法、合约地址发送交易，其中交易签名通过签名服务产生
@@ -187,7 +189,15 @@ public class TransactionMaker
         return sendTransaction(txPusher, signedTransaction);
     }
 
-    // 构造交易
+    /** 构造交易
+     *
+     * @param client
+     * @param abiContent
+     * @param methodName
+     * @param to
+     * @param params
+     * @return
+     */
     public RawTransaction makeTransaction(Client client, String abiContent, String methodName, String to, List<Object> params)
     {
         //1.创建ABICodeC对象
@@ -202,7 +212,13 @@ public class TransactionMaker
 
     }
 
-    // 请求签名服务
+    /** 请求签名服务
+     *
+     * @param transactionEncoder
+     * @param rawTransaction
+     * @param client
+     * @return
+     */
     public SignatureResult requestForTransactionSignature(TransactionEncoderInterface transactionEncoder, RawTransaction rawTransaction, Client client)
     {
         // 获取RawTransaction的哈希

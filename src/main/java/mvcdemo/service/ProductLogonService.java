@@ -1,4 +1,4 @@
-package mvcdemo.service.impl;
+package mvcdemo.service;
 
 import mvcdemo.dto.ProUserDTO;
 

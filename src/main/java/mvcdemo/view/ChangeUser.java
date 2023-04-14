@@ -1,7 +1,7 @@
 package mvcdemo.view;
 
 import mvcdemo.dto.UserDTO;
-import mvcdemo.service.ChangeUserService;
+import mvcdemo.service.handler.ChangeUserService;
 import mvcdemo.util.CloseWindow;
 import mvcdemo.util.CopyJLabel;
 

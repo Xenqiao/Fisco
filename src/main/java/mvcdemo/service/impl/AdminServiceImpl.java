@@ -1,8 +1,10 @@
 package mvcdemo.service.impl;
 
 import mvcdemo.dao.DBUtil;
+import mvcdemo.dao.MysqlDAO;
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.UserDTO;
+import mvcdemo.service.AdminService;
 
 import java.sql.*;
 
@@ -18,43 +20,31 @@ public class AdminServiceImpl implements AdminService {
     ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
 
     @Override
-    public boolean getUserHash(UserDTO userDTO) throws Exception{
-        Connection conn = DBUtil.getConn();
+    public boolean getUserHash(UserDTO userDTO) throws Exception {
+        conn = DBUtil.getConn();
 
-        //sql = "select * from user where userName = " + "'" + userDTO.getUserName() + "'";
         sql = "select * from user where userName=?";
+        Object[] param = {userDTO.getUserName()};
+        rs = MysqlDAO.executeSQL(conn, sql, param);
 
-        try{
-
-            if (conn == null){
-                return false;
-            }
-
-            ps = conn.prepareStatement(sql);
-            ps.setString(1, userDTO.getUserName());
-            rs = ps.executeQuery();
-
-
-            while (rs.next()){
-
-                userDTO.setUserName(rs.getString("userName"));
-                userDTO.setPwd(rs.getString("pwd"));
-                userDTO.setHash(rs.getString("hash"));
-                userDTO.setHome(rs.getString("home"));
-                userDTO.setName(rs.getString("name"));
-                userDTO.setPhone(rs.getString("phone"));
-                userDTO.setBalance(Integer.valueOf(rs.getString("ubalance")));
-                userDTO.setAlreadyPurchased(rs.getString("AlreadyPurchased"));
-                return true;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            rs.close();
-            ps.close();
+        if (rs == null) {
             DBUtil.closeConn(conn);
+            return false;
         }
-        return false;
+        while (rs.next()) {
+
+            userDTO.setUserName(rs.getString("userName"));
+            userDTO.setPwd(rs.getString("pwd"));
+            userDTO.setHash(rs.getString("hash"));
+            userDTO.setHome(rs.getString("home"));
+            userDTO.setName(rs.getString("name"));
+            userDTO.setPhone(rs.getString("phone"));
+            userDTO.setBalance(Integer.valueOf(rs.getString("ubalance")));
+            userDTO.setAlreadyPurchased(rs.getString("AlreadyPurchased"));
+        }
+        DBUtil.closeRs(rs);
+        DBUtil.closeConn(conn);
+        return true;
     }
 
     @Override
@@ -64,28 +54,24 @@ public class AdminServiceImpl implements AdminService {
             return false;
         }
 
+        Object[] param = {useName};
         if (change == 2){
-            //sql = "select id from producer where id =" + "'" + useName + "'";
             sql = "select id from producer where id =?";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1,useName);
-            rs = ps.executeQuery();
+            rs = MysqlDAO.executeSQL(conn,sql,param);
 
             if (rs.next()){
                 return true;
             }
         }else if (change == 1) {
             sql = "select userName from user where userName =?";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1,useName);
-            rs = ps.executeQuery();
+            rs = MysqlDAO.executeSQL(conn,sql,param);
 
             if (rs.next()){
                 return true;
             }
         }
-        rs.close();
-        ps.close();
+        DBUtil.closeRs(rs);
+        DBUtil.closePs(ps);
         DBUtil.closeConn(conn);
         return false;
     }
@@ -105,12 +91,10 @@ public class AdminServiceImpl implements AdminService {
             return false;
         }
 
-
+        Object[] param = {lName};
         if (change == 1){
             sql = "select pwd from user where userName =?";
-            ps = conn.prepareStatement(sql);
-            ps.setString(1,lName);
-            rs = ps.executeQuery();
+            rs = MysqlDAO.executeSQL(conn,sql,param);
 
             while (rs.next()) {
                 if (rs.getString("pwd").equals(lPassword)) {
@@ -137,14 +121,14 @@ public class AdminServiceImpl implements AdminService {
                 }
             }
         }
-        rs.close();
-        ps.close();
+        DBUtil.closeRs(rs);
+        DBUtil.closePs(ps);
         DBUtil.closeConn(conn);
         return false;
     }
 
     @Override
-    public String getProducerHash(){
+    public void getProducerHash(){
         try {
             conn = DBUtil.getConn();
             sql = "select * from producer where id =?";
@@ -170,6 +154,5 @@ public class AdminServiceImpl implements AdminService {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return "";
     }
 }

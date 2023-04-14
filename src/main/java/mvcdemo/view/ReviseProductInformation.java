@@ -5,7 +5,7 @@ import mvcdemo.dao.DBUtil;
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.ProductDTO;
 import mvcdemo.util.CloseWindow;
-import mvcdemo.service.ReviseProductInformationService;
+import mvcdemo.service.handler.ReviseProductInformationService;
 
 import javax.swing.*;
 import java.awt.*;

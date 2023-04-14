@@ -1,6 +1,6 @@
-package mvcdemo.service;
+package mvcdemo.service.handler;
 
-import mvcdemo.service.impl.MysqlService;
+import mvcdemo.service.MysqlService;
 import mvcdemo.service.impl.MysqlServiceImpl;
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.util.Cleaner;

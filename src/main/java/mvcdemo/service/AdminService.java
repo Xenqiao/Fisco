@@ -1,4 +1,4 @@
-package mvcdemo.service.impl;
+package mvcdemo.service;
 
 import mvcdemo.dto.UserDTO;
 
@@ -9,5 +9,5 @@ public interface AdminService {
     boolean getUserHash(UserDTO userDTO) throws Exception;
     boolean loGin(String lname,String lpassword, int change) throws Exception;
     boolean adminLogon(String useName,int change)throws Exception;
-    String getProducerHash();
+    void getProducerHash();
 }

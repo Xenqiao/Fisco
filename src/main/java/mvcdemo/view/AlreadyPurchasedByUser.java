@@ -58,8 +58,8 @@ public class AlreadyPurchasedByUser {
 
         StringBuilder sql = new StringBuilder();
         sql.append("select * from product where phash="+"'"+hash+"' ;");
-        boolean number = true;
-        number = new MysqlServiceImpl().PrintProduct(productDTO,sql.toString(),1);
+
+        boolean number = new MysqlServiceImpl().PrintProduct(productDTO,sql.toString(),1);
 
         if (number == false) {
             System.out.println("                未查询到该商品信息");

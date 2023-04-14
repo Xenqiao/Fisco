@@ -1,9 +1,11 @@
 package mvcdemo.service.impl;
 
 import mvcdemo.dao.DBUtil;
+import mvcdemo.dao.MysqlDAO;
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.ProductDTO;
 import mvcdemo.dto.UserDTO;
+import mvcdemo.service.MysqlService;
 import mvcdemo.util.Cleaner;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.util.toolcontract.Product;
@@ -18,110 +20,107 @@ import java.sql.*;
 public class MysqlServiceImpl implements MysqlService {
     Connection conn = null;
     PreparedStatement ps = null;
-
+    String sql;
+    ResultSet rs;
     public MysqlServiceImpl(){
 
     }
 
     @Override
     public boolean add(UserDTO userDTO){
-        StringBuilder sql = new StringBuilder();
-        sql.append("update user set pwd=?,home=?,name=?,phone=?,ubalance=?,AlreadyPurchased=? where userName=?");
-        try {
-            conn = DBUtil.getConn();
-            ps = conn.prepareStatement(sql.toString());
 
-            ps.setString(1,userDTO.getPwd());
-            ps.setString(2,userDTO.getHome());
-            ps.setString(3,userDTO.getName());
-            ps.setString(4,userDTO.getPhone());
-            ps.setString(5, String.valueOf(userDTO.getBalance()));
-            ps.setString(6,userDTO.getAlreadyPurchased());
-            ps.setString(7,userDTO.getUserName());
-            
-            return ps.executeLargeUpdate() == 1;
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            DBUtil.closePs(ps);
+        sql = "update user set pwd=?,home=?,name=?,phone=?,ubalance=?,AlreadyPurchased=? where userName=?";
+        conn = DBUtil.getConn();
+
+        Object[] param = {
+                userDTO.getPwd(),
+                userDTO.getHome(),
+                userDTO.getName(),
+                userDTO.getPhone(),
+                String.valueOf(userDTO.getBalance()),
+                userDTO.getAlreadyPurchased(),
+                userDTO.getUserName()
+        };
+        
+        rs = MysqlDAO.executeSQL(conn,sql,param);
+        if (rs != null){
+            DBUtil.closeRs(rs);
             DBUtil.closeConn(conn);
+            return true;
         }
+        DBUtil.closeConn(conn);
         return false;
     }
 
 
     @Override
     public boolean addProUser(ProUserDTO proUserDTO){
-        StringBuilder sql = new StringBuilder();
-        sql.append("update producer set pwd=?,proPhone=?,proHome=?,proManager=? where id=?");
+        sql = "update producer set pwd=?,proPhone=?,proHome=?,proManager=? where id=?";
+        conn = DBUtil.getConn();
+        //请注意传入参数的顺序
+        Object[] param={
+                proUserDTO.getPwd(),
+                proUserDTO.getProPhone(),
+                proUserDTO.getProHome(),
+                proUserDTO.getProManager(),
+                proUserDTO.getUserName()
+        };
 
-        try {
-            conn = DBUtil.getConn();
-            ps = conn.prepareStatement(sql.toString());
-            ps.setString(1,proUserDTO.getPwd());
-            ps.setString(2,proUserDTO.getProPhone());
-            ps.setString(3,proUserDTO.getProHome());
-            ps.setString(4,proUserDTO.getProManager());
-            ps.setString(5,proUserDTO.getUserName());
-
-            return ps.executeLargeUpdate() == 1 ;
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            DBUtil.closePs(ps);
+        rs = MysqlDAO.executeSQL(conn,sql,param);
+        if (rs != null){
+            DBUtil.closeRs(rs);
             DBUtil.closeConn(conn);
+            return true;
         }
+        DBUtil.closeConn(conn);
         return false;
     }
 
     @Override
     public boolean addProduct(ProductDTO productDTO){
-        StringBuilder sql = new StringBuilder();
-        sql.append("insert into product(pname,pprice,phash,pid,pmaker,pphone,pclass) values(?,?,?,?,?,?,?);");
+        sql = "insert into product(pname,pprice,phash,pid,pmaker,pphone,pclass) values(?,?,?,?,?,?,?);";
+        conn = DBUtil.getConn();
+        Object[] param = {
+                productDTO.getProductName(),
+                String.valueOf(productDTO.getProductPrice()),
+                productDTO.getProductHash(),
 
-        try {
-            conn = DBUtil.getConn();
+                productDTO.getProductId().toString(),
+                productDTO.getProductConner(),
+                productDTO.getProductMakePhone(),
+                productDTO.getProductClass()
+        };
 
-            ps = conn.prepareStatement(sql.toString());
-            ps.setString(1, productDTO.getProductName());
-            ps.setString(2, String.valueOf(productDTO.getProductPrice()));
-            ps.setString(3, productDTO.getProductHash());
-            ps.setString(4, productDTO.getProductId().toString());
-            ps.setString(5, productDTO.getProductConner());
-            ps.setString(6, productDTO.getProductMakePhone());
-            ps.setString(7, productDTO.getProductClass());
-            return ps.executeLargeUpdate() == 1 ;
-
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
-            DBUtil.closePs(ps);
+        rs = MysqlDAO.executeSQL(conn,sql,param);
+        if (rs != null){
+            DBUtil.closeRs(rs);
             DBUtil.closeConn(conn);
+            return true;
         }
+        DBUtil.closeConn(conn);
         return false;
     }
 
     @Override
     public boolean ReviseProduct(ProductDTO productDTO){
-        StringBuilder sql = new StringBuilder();
-        sql.append("update product set pname=?,pprice=? where pid=?");
+        sql = "update product set pname=?,pprice=? where pid=?";
         conn = DBUtil.getConn();
 
-        try {
-            ps = conn.prepareStatement(sql.toString());
-            ps.setString(1,productDTO.getProductName());
-            ps.setString(1, String.valueOf(productDTO.getProductPrice()));
-            ps.setString(1, String.valueOf(productDTO.getProductId()));
+        Object[] param = {
+                productDTO.getProductName(),
+                String.valueOf(productDTO.getProductPrice()),
+                String.valueOf(productDTO.getProductId())
+        };
+        rs = MysqlDAO.executeSQL(conn,sql,param);
 
-            return ps.executeLargeUpdate() == 1;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }finally {
+        if (rs != null){
+            DBUtil.closeRs(rs);
             DBUtil.closeConn(conn);
-            DBUtil.closePs(ps);
+            return true;
         }
+        DBUtil.closeConn(conn);
         return false;
+
     }
 
 
@@ -131,7 +130,7 @@ public class MysqlServiceImpl implements MysqlService {
         try {
             conn = DBUtil.getConn();
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+            rs = stmt.executeQuery(sql);
 
             while (rs.next()) {
                 result = true;
@@ -156,7 +155,7 @@ public class MysqlServiceImpl implements MysqlService {
 
             }
 
-            rs.close();
+            DBUtil.closeRs(rs);
             stmt.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();

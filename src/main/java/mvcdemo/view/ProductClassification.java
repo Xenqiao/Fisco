@@ -1,7 +1,7 @@
 package mvcdemo.view;
 
 import mvcdemo.dto.ProductDTO;
-import mvcdemo.service.impl.MysqlService;
+import mvcdemo.service.MysqlService;
 import mvcdemo.service.impl.MysqlServiceImpl;
 import mvcdemo.util.Cleaner;
 

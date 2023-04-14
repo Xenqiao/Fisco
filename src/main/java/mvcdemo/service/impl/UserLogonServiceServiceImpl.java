@@ -2,6 +2,7 @@ package mvcdemo.service.impl;
 
 import mvcdemo.dao.DBUtil;
 import mvcdemo.dto.UserDTO;
+import mvcdemo.service.UserLogonService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,14 +19,12 @@ public class UserLogonServiceServiceImpl implements UserLogonService {
     /** 在MySQL数据库中添加新注册的消费者记录 **/
     @Override
     public boolean add(UserDTO userDTO) {
-        StringBuilder sql = new StringBuilder();
-        sql.append(" insert into user(userName,pwd,hash) ");
-        sql.append(" values(?,?,?) ");
+        String sql = " insert into user(userName,pwd,hash) values(?,?,?) ";
         Connection conn = null;
         PreparedStatement ps = null;
         try {
             conn = DBUtil.getConn();
-            ps = conn.prepareStatement(sql.toString());
+            ps = conn.prepareStatement(sql);
 
             ps.setString(1, userDTO.getUserName());
             ps.setString(2, userDTO.getPwd());
