@@ -24,8 +24,9 @@ public class AdminServiceImpl implements AdminService {
         conn = DBUtil.getConn();
 
         sql = "select * from user where userName=?";
-        Object[] param = {userDTO.getUserName()};
-        rs = MysqlDAO.executeSQL(conn, sql, param);
+        ps = conn.prepareStatement(sql);
+        ps.setString(1,userDTO.getUserName());
+        rs = ps.executeQuery();
 
         if (rs == null) {
             DBUtil.closeConn(conn);
@@ -54,17 +55,20 @@ public class AdminServiceImpl implements AdminService {
             return false;
         }
 
-        Object[] param = {useName};
         if (change == 2){
             sql = "select id from producer where id =?";
-            rs = MysqlDAO.executeSQL(conn,sql,param);
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,useName);
+            rs = ps.executeQuery();
 
             if (rs.next()){
                 return true;
             }
         }else if (change == 1) {
             sql = "select userName from user where userName =?";
-            rs = MysqlDAO.executeSQL(conn,sql,param);
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,useName);
+            rs = ps.executeQuery();
 
             if (rs.next()){
                 return true;
@@ -94,7 +98,9 @@ public class AdminServiceImpl implements AdminService {
         Object[] param = {lName};
         if (change == 1){
             sql = "select pwd from user where userName =?";
-            rs = MysqlDAO.executeSQL(conn,sql,param);
+            ps = conn.prepareStatement(sql);
+            ps.setString(1,lName);
+            rs = ps.executeQuery();
 
             while (rs.next()) {
                 if (rs.getString("pwd").equals(lPassword)) {

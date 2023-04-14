@@ -29,7 +29,7 @@ public class GetBcosSDK {
 
     public static GetBcosSDK theGetBcosSDK(){
         if (getBcosSDK == null){
-            synchronized (ProUserDTO.class){
+            synchronized (GetBcosSDK.class){
                 if (getBcosSDK == null){
                     getBcosSDK = new GetBcosSDK();
                 }

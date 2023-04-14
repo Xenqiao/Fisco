@@ -136,7 +136,7 @@ public class MysqlServiceImpl implements MysqlService {
                 productDTO.setProductPrice(product.getProduct(productDTO.getProductHash()).getValue3().intValue());
                 productDTO.setProductPlace(product.getProduct(productDTO.getProductHash()).getValue4());
                 productDTO.setProductMake(product.getProduct(productDTO.getProductHash()).getValue5());
-                productDTO.setProductId(product.getProduct(productDTO.getProductHash()).getValue6().intValue());
+                //productDTO.setProductId(product.getProduct(productDTO.getProductHash()).getValue6().intValue());
                 productDTO.setProductMakePhone(rs.getString("pphone"));
                 productDTO.setMaker(rs.getString("pmaker"));
 

@@ -38,7 +38,7 @@ public class MainViewService {
                 //选择3：购买或查询商品
                 System.out.println();
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
-                new CheckProductByUser(userDTO).CheckProduct();
+                new CheckProductByUser().CheckProduct();
                 Cleaner.getCleaner().Clean();
                 new MainView().UserMain();
                 break;
@@ -108,7 +108,7 @@ public class MainViewService {
                 //查看我的商品信息
                 System.out.println();
                 System.out.println("                                        正在加载中，不要退出控制台界面，请耐心等待！");
-                new CheckProductByProUser();
+                new CheckProductByProUser().CheckProduct();
 
                 Cleaner.getCleaner().Clean();
                 new MainView().ProductMain();

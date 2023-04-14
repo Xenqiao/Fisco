@@ -45,7 +45,7 @@ public class MainView {
         System.out.println("                                        选择2：修改用户信息");
         System.out.println("                                        选择3：上传商品信息");
         System.out.println("                                        选择4：修改我的商品信息");
-        System.out.println("                                        选择5：查询我的产品");
+        System.out.println("                                        选择5：查询或下架我的产品");
         System.out.println("                                        选择6：查看举报或点赞信息");
         System.out.println("                                        选择7：查看产品分类");
         System.out.println();

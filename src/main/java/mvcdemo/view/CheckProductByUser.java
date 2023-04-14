@@ -20,13 +20,10 @@ import java.util.Scanner;
  * @create 2023/3/27 12:28
  */
 public class CheckProductByUser {
+    public CheckProductByUser() { }
 
     ProductDTO productDTO = new ProductDTO();
-
-    private UserDTO userDTO;
-    public CheckProductByUser(UserDTO userDTO) {
-        this.userDTO = userDTO;
-    }
+    UserDTO userDTO = UserDTO.getUserDO();
     Connection conn = DBUtil.getConn();
 
     public void CheckProduct(){
@@ -41,10 +38,10 @@ public class CheckProductByUser {
         char select =sc.next().charAt(0);
         switch (select){
             case 'a':
-                new CheckProductByUser(userDTO).lookingForProduct();
+                new CheckProductByUser().lookingForProduct();
                 break;
             case 'b':
-                new CheckProductByUser(userDTO).purchaseProducts();
+                new CheckProductByUser().purchaseProducts();
                 break;
             default:
                 JOptionPane.showMessageDialog(null,"接下来将返回主菜单！");
