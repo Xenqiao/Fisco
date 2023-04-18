@@ -1,7 +1,8 @@
 package mvcdemo.view;
 
 
-import mvcdemo.service.handler.UserLoginService;
+import mvcdemo.controller.handler.UserLoginService;
+import mvcdemo.util.contractRealize.GetBcosSDK;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,7 @@ import java.util.Enumeration;
  */
 public class UserLogin extends JFrame{
     JLabel nameLabel = new JLabel("欢迎使用！登录时请耐心等待");
+
 
     /**
      * 弹簧布局设置
@@ -54,6 +56,8 @@ public class UserLogin extends JFrame{
          */
         super("链上产品溯源系统");
         Container contentPane = getContentPane();
+
+
 
         //引用loginHandler类里的方法
         userLoginService = new UserLoginService(this);
@@ -200,6 +204,10 @@ public class UserLogin extends JFrame{
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setVisible(true);
+
+        //fisco链的初始化
+        GetBcosSDK.theGetBcosSDK().getClient();
+        GetBcosSDK.theGetBcosSDK().getKeyPair();
     }
 
     public String getGroup(){

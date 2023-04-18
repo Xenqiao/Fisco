@@ -1,4 +1,4 @@
-package mvcdemo.service.handler;
+package mvcdemo.controller.handler;
 
 import mvcdemo.service.MysqlService;
 import mvcdemo.service.impl.MysqlServiceImpl;

@@ -2,7 +2,7 @@ package mvcdemo.view;
 
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.util.Cleaner;
-import mvcdemo.service.handler.MainViewService;
+import mvcdemo.controller.handler.MainViewService;
 
 /**
  * @author Xenqiao

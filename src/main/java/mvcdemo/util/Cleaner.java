@@ -1,6 +1,7 @@
 package mvcdemo.util;
 
 import mvcdemo.dto.ProductDTO;
+import org.fisco.bcos.sdk.crypto.hash.Keccak256;
 
 import java.util.Scanner;
 
@@ -53,5 +54,11 @@ public class Cleaner {
         System.out.println("产品委托商联系电话："+ productDTO.getProductMakePhone());
         System.out.println("产品发货地址："+ productDTO.getProductPlace());
 
+    }
+
+    public String EncryptedInformation(String data){
+        Keccak256 keccak256 = new Keccak256();
+        String encrypted = keccak256.hash(data);
+        return encrypted;
     }
 }

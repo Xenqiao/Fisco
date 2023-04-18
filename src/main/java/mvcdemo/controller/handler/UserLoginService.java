@@ -1,4 +1,4 @@
-package mvcdemo.service.handler;
+package mvcdemo.controller.handler;
 
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.UserDTO;
@@ -58,7 +58,7 @@ public class UserLoginService extends KeyAdapter implements ActionListener {
     private void logon(int chance){
         String userName = loginView.getUserTxt().getText();
         char[] chars = loginView.getPwdField().getPassword();
-        String pwd = new String(chars);
+        String pwd = Cleaner.getCleaner().EncryptedInformation(new String(chars));
 
         AdminService adminService = new AdminServiceImpl();
         boolean flag = false;
@@ -67,7 +67,7 @@ public class UserLoginService extends KeyAdapter implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (flag == true || chars == null ||userName == null || "".equals(userName.trim()) || pwd == null || "".equals(pwd.trim())){
+        if (flag == true || chars == null || userName == null || "".equals(userName.trim()) || pwd == null || "".equals(pwd.trim())){
             JOptionPane.showMessageDialog(loginView,"用户名已存在或输入为空，请重新填写");
             return;
         }
@@ -112,7 +112,7 @@ public class UserLoginService extends KeyAdapter implements ActionListener {
     private void login(int change) {
         String user = loginView.getUserTxt().getText();
         char[] chars = loginView.getPwdField().getPassword();
-        String pwd = new String(chars);
+        String pwd = Cleaner.getCleaner().EncryptedInformation(new String(chars));
 
 
 

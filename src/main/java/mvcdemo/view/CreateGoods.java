@@ -3,7 +3,7 @@ package mvcdemo.view;
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.ProductDTO;
 import mvcdemo.util.CloseWindow;
-import mvcdemo.service.handler.CreateGoodsService;
+import mvcdemo.controller.handler.CreateGoodsService;
 
 import javax.swing.*;
 import java.awt.*;

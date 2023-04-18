@@ -94,8 +94,7 @@ public class AdminServiceImpl implements AdminService {
         if (conn == null){
             return false;
         }
-
-        Object[] param = {lName};
+        
         if (change == 1){
             sql = "select pwd from user where userName =?";
             ps = conn.prepareStatement(sql);

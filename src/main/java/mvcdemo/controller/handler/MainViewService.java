@@ -1,4 +1,4 @@
-package mvcdemo.service.handler;
+package mvcdemo.controller.handler;
 
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.UserDTO;
