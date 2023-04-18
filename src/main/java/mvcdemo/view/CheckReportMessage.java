@@ -40,7 +40,7 @@ public class CheckReportMessage {
                 } else if (productID != null && !"".equals(productID)) {
                     StringBuilder sql = new StringBuilder();
                     sql.append("select * from product where pid=" + "'" + productID + "' ;");
-                    new MysqlServiceImpl().PrintProduct(productDTO, sql.toString(), 1);
+                    MysqlServiceImpl.getMysqlService().printProduct(productDTO, sql.toString(), 1);
                     productID = "";
                 }
             }
@@ -75,7 +75,7 @@ public class CheckReportMessage {
                 } else if (productID != null && !"".equals(productID)) {
                     StringBuilder sql = new StringBuilder();
                     sql.append("select * from product where pid=" + "'" + productID + "' ;");
-                    new MysqlServiceImpl().PrintProduct(productDTO, sql.toString(), 1);
+                    MysqlServiceImpl.getMysqlService().printProduct(productDTO, sql.toString(), 1);
                     productID = "";
                 }
             }

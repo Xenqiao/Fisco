@@ -1,6 +1,7 @@
 package mvcdemo.controller.handler;
 
 import mvcdemo.dao.DBUtil;
+import mvcdemo.dto.ProUserDTO;
 import mvcdemo.service.MysqlService;
 import mvcdemo.service.impl.MysqlServiceImpl;
 import mvcdemo.dto.ProductDTO;
@@ -59,7 +60,7 @@ public class CreateGoodsService implements ActionListener{
         if ("确认".equals(text)) {
             JOptionPane.showMessageDialog(createGoods,"数据将更新上传至区块链，请等待几分钟。");
             new ChangeOnFisco().GetProductHash(productDTO);
-            MysqlService mysqlService = new MysqlServiceImpl();
+            MysqlService mysqlService = MysqlServiceImpl.getMysqlService();
             boolean addResult = mysqlService.addProduct(productDTO);
 
             if (addResult) {

@@ -51,10 +51,11 @@ public class CloseWindow extends WindowAdapter {
 
         ProUserDTO proUserDTO = ProUserDTO.getProUserDO();
         UserDTO userDTO = UserDTO.getUserDO();
-        if (proUserDTO ==null){
+
+        if ( proUserDTO.getUserName()==null ){
             Cleaner.getCleaner().Clean();
             new MainView().UserMain();
-        }else if (userDTO ==null){
+        }else if ( userDTO.getUserName()==null ){
 
             Cleaner.getCleaner().Clean();
             new MainView().ProductMain();

@@ -18,18 +18,44 @@ import java.sql.*;
  * @create 2023/3/20 22:32
  */
 public class MysqlServiceImpl implements MysqlService {
-    Connection conn = null;
-    String sql;
-    long result;
-    public MysqlServiceImpl(){
 
+    String sql;
+    /**  单例模式的双重检查  **/
+    private static volatile MysqlServiceImpl mysqlService;
+    private MysqlServiceImpl(){
+    }
+    public static MysqlServiceImpl getMysqlService(){
+        if (mysqlService == null){
+            synchronized (MysqlServiceImpl.class){
+                if (mysqlService == null){
+                    mysqlService = MysqlServiceImpl.getMysqlService();
+                }
+            }
+        }
+        return mysqlService;
     }
 
-    @Override
-    public boolean add(UserDTO userDTO){
 
+    /** 在MySQL数据库中添加新注册的消费者记录 **/
+    @Override
+    public boolean addUser(UserDTO userDTO) {
+        sql = " insert into user(userName,pwd,hash,ubalance) values(?,?,?,?) ";
+        Object[] param = {
+                userDTO.getUserName(),
+                userDTO.getPwd(),
+                userDTO.getHash(),
+                "0"
+        };
+
+        return MysqlDAO.executeUpdate(sql,param);
+    }
+
+
+    /**
+     * 修改消费者的信息 **/
+    @Override
+    public boolean modifyUser(UserDTO userDTO){
         sql = "update user set pwd=?,home=?,name=?,phone=?,ubalance=?,AlreadyPurchased=? where userName=?";
-        conn = DBUtil.getConn();
 
         Object[] param = {
                 userDTO.getPwd(),
@@ -41,20 +67,33 @@ public class MysqlServiceImpl implements MysqlService {
                 userDTO.getUserName()
         };
 
-        result = MysqlDAO.executeUpdate(conn,sql,param);
-        if (result != 0){
-            DBUtil.closeConn(conn);
-            return true;
-        }
-        DBUtil.closeConn(conn);
-        return false;
+        return MysqlDAO.executeUpdate(sql,param);
     }
 
 
+    /**
+     * 在MySQL数据库中添加新注册的生产者记录 **/
     @Override
     public boolean addProUser(ProUserDTO proUserDTO){
+        sql = " insert into producer(id,pwd,hash,proBalance) values(?,?,?,?) ";
+
+        Object[] param = {
+                proUserDTO.getUserName(),
+                proUserDTO.getPwd(),
+                proUserDTO.getHash(),
+                "0"
+        };
+
+        return MysqlDAO.executeUpdate(sql,param);
+    }
+
+
+    /**
+     * 修改生产者的信息 **/
+    @Override
+    public boolean modifyProUser(ProUserDTO proUserDTO){
         sql = "update producer set pwd=?,proPhone=?,proHome=?,proManager=? where id=?";
-        conn = DBUtil.getConn();
+
         //请注意传入参数的顺序
         Object[] param={
                 proUserDTO.getPwd(),
@@ -63,20 +102,16 @@ public class MysqlServiceImpl implements MysqlService {
                 proUserDTO.getProManager(),
                 proUserDTO.getUserName()
         };
-
-        result = MysqlDAO.executeUpdate(conn,sql,param);
-        if (result != 0){
-            DBUtil.closeConn(conn);
-            return true;
-        }
-        DBUtil.closeConn(conn);
-        return false;
+        return MysqlDAO.executeUpdate(sql,param);
     }
 
+
+    /**
+     * 该函数用于添加商品 **/
     @Override
     public boolean addProduct(ProductDTO productDTO){
         sql = "insert into product(pname,pprice,phash,pid,pmaker,pphone,pclass) values(?,?,?,?,?,?,?);";
-        conn = DBUtil.getConn();
+
         Object[] param = {
                 productDTO.getProductName(),
                 String.valueOf(productDTO.getProductPrice()),
@@ -88,41 +123,33 @@ public class MysqlServiceImpl implements MysqlService {
                 productDTO.getProductClass()
         };
 
-        result = MysqlDAO.executeUpdate(conn,sql,param);
-        if (result != 0){
-            DBUtil.closeConn(conn);
-            return true;
-        }
-        DBUtil.closeConn(conn);
-        return false;
+        return MysqlDAO.executeUpdate(sql,param);
+
     }
 
+
+    /**
+     * 该函数用于修改商品的信息 **/
     @Override
-    public boolean ReviseProduct(ProductDTO productDTO){
+    public boolean reviseProduct(ProductDTO productDTO){
         sql = "update product set pname=?,pprice=? where pid=?";
-        conn = DBUtil.getConn();
 
         Object[] param = {
                 productDTO.getProductName(),
                 String.valueOf(productDTO.getProductPrice()),
                 String.valueOf(productDTO.getProductId())
         };
-        result = MysqlDAO.executeUpdate(conn,sql,param);
-        if (result != 0){
-            DBUtil.closeConn(conn);
-            return true;
-        }
-        DBUtil.closeConn(conn);
-        return false;
-
+        return MysqlDAO.executeUpdate(sql,param);
     }
 
 
+    /**
+     * 从 MySQL数据库读取产品信息并且打印显示 **/
     @Override
-    public boolean PrintProduct(ProductDTO productDTO, String sql, int branch) {
+    public boolean printProduct(ProductDTO productDTO, String sql, int branch) {
         boolean result = false;
+        Connection conn = DBUtil.getConn();
         try {
-            conn = DBUtil.getConn();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -136,14 +163,13 @@ public class MysqlServiceImpl implements MysqlService {
                 productDTO.setProductPrice(product.getProduct(productDTO.getProductHash()).getValue3().intValue());
                 productDTO.setProductPlace(product.getProduct(productDTO.getProductHash()).getValue4());
                 productDTO.setProductMake(product.getProduct(productDTO.getProductHash()).getValue5());
-                //productDTO.setProductId(product.getProduct(productDTO.getProductHash()).getValue6().intValue());
                 productDTO.setProductMakePhone(rs.getString("pphone"));
                 productDTO.setMaker(rs.getString("pmaker"));
 
                 if (branch == 1) {
                     System.out.println("商品哈希：" + productDTO.getProductHash());
                 }
-                Cleaner.getCleaner().PrintProduct(productDTO);
+                Cleaner.getCleaner().printProduct(productDTO);
                 System.out.println();
                 System.out.println();
 
@@ -151,12 +177,11 @@ public class MysqlServiceImpl implements MysqlService {
 
             DBUtil.closeRs(rs);
             stmt.close();
+            DBUtil.closeConn(conn);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } catch (ContractException e) {
             e.printStackTrace();
-        } finally {
-            DBUtil.closeConn(conn);
         }
         return result;
     }

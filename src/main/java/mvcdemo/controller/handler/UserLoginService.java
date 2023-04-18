@@ -4,8 +4,7 @@ import mvcdemo.dto.ProUserDTO;
 import mvcdemo.dto.UserDTO;
 import mvcdemo.service.AdminService;
 import mvcdemo.service.impl.AdminServiceImpl;
-import mvcdemo.service.impl.ProductLogonServiceServiceImpl;
-import mvcdemo.service.impl.UserLogonServiceServiceImpl;
+import mvcdemo.service.impl.MysqlServiceImpl;
 import mvcdemo.util.Cleaner;
 import mvcdemo.util.contractRealize.GetBcosSDK;
 import mvcdemo.view.UserLogin;
@@ -82,12 +81,12 @@ public class UserLoginService extends KeyAdapter implements ActionListener {
             userDTO.setUserName(userName);
             userDTO.setPwd(pwd);
             userDTO.setHash(hash);
-            require = new UserLogonServiceServiceImpl().add(userDTO);
+            require = MysqlServiceImpl.getMysqlService().addUser(userDTO);
         }else if (chance == 2){
             proUserDTO.setUserName(userName);
             proUserDTO.setPwd(pwd);
             proUserDTO.setHash(hash);
-            require = new ProductLogonServiceServiceImpl().addPro(proUserDTO);
+            require = MysqlServiceImpl.getMysqlService().addProUser(proUserDTO);
         }
 
         if (require) {

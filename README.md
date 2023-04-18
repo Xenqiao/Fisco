@@ -1,4 +1,4 @@
- 谢金桥的 FiscoBcosDemo
+FiscoBcosDemo
 
  #环境准备：
  ###MySql

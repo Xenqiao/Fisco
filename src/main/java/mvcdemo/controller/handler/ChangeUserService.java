@@ -40,8 +40,8 @@ public class ChangeUserService implements ActionListener{
         }
 
         if ("确认修改".equals(text)) {
-            MysqlService mysqlService = new MysqlServiceImpl();
-            boolean addResult = mysqlService.add(userDTO);
+            MysqlService mysqlService = MysqlServiceImpl.getMysqlService();
+            boolean addResult = mysqlService.modifyUser(userDTO);
 
             if (addResult) {
                 JOptionPane.showMessageDialog(changeUser, "修改成功！");

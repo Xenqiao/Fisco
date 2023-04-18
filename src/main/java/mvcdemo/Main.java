@@ -19,7 +19,7 @@ public class Main {
         //指定交易账户的设置
 
         Keccak256 hasher = new Keccak256();
-        String se = hasher.hash("13");
+        String se = hasher.hash("c");
         System.out.println(se);
 
     }

@@ -2,6 +2,7 @@ package mvcdemo.view;
 
 import mvcdemo.dto.UserDTO;
 import mvcdemo.controller.handler.ChangeUserService;
+import mvcdemo.util.Cleaner;
 import mvcdemo.util.CloseWindow;
 import mvcdemo.util.CopyJLabel;
 
@@ -100,7 +101,9 @@ public class ChangeUser extends JDialog {
     public void SetManage(UserDTO userDTO){
 
         //将输入的数据写入封装的对象内，通过单例模式可读取
-        userDTO.setPwd(newPwdTxt.getText());
+        String encrypted = newPwdTxt.getText();
+        userDTO.setPwd( Cleaner.getCleaner().EncryptedInformation(encrypted) );
+
         userDTO.setName(nameTxt.getText());
         userDTO.setHome(homeTxt.getText());
         userDTO.setPhone(phoneTxt.getText());

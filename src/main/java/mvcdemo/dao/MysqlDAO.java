@@ -2,7 +2,6 @@ package mvcdemo.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -12,21 +11,26 @@ import java.sql.SQLException;
 public class MysqlDAO {
 
 
-    public static long  executeUpdate(Connection conn, String preparedSql, Object[] param){
+    public static boolean executeUpdate(String preparedSql, Object[] param){
+        Connection conn = DBUtil.getConn();
+        PreparedStatement ps = null;
         try {
             // 得到PreparedStatement对象
-            PreparedStatement ps = conn.prepareStatement(preparedSql);
+            ps = conn.prepareStatement(preparedSql);
             if (param != null) {
                 for (int i = 0; i < param.length; i++) {
                     // 为预编译sql设置参数
                     ps.setObject(i + 1, param[i]);
                 }
             }
-            return ps.executeLargeUpdate();
+            return ps.executeLargeUpdate()==1;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }finally {
+            DBUtil.closePs(ps);
+            DBUtil.closeConn(conn);
         }
-        return 0;
+        return false;
     }
 
 }

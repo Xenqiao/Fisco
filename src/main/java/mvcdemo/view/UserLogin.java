@@ -231,15 +231,8 @@ public class UserLogin extends JFrame{
         return pwdField;
     }
 
-    public void setPwdField(JPasswordField pwdField) {
-        this.pwdField = pwdField;
-    }
-
     public JTextField getUserTxt() {
         return userTxt;
     }
 
-    public void setUserTxt(JTextField userTxt) {
-        this.userTxt = userTxt;
-    }
 }

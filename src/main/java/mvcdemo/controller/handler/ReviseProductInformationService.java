@@ -44,8 +44,8 @@ public class ReviseProductInformationService implements ActionListener {
         if ("确认修改".equals(text)) {
             JOptionPane.showMessageDialog(reviseProductInformation,"数据将更新上传至区块链，请等待几分钟。");
 
-            MysqlService mysqlService = new MysqlServiceImpl();
-            boolean addResult = mysqlService.ReviseProduct(productDTO);
+            MysqlService mysqlService = MysqlServiceImpl.getMysqlService();
+            boolean addResult = mysqlService.reviseProduct(productDTO);
 
             if (addResult) {
                 JOptionPane.showMessageDialog(reviseProductInformation, "修改成功！您的商品哈希为："+ productDTO.getProductHash());

@@ -20,7 +20,7 @@ public class ReportProduct {
     /** 举报产品的函数：前期准备  **/
     public void ReportProducts(){
         String Sql = "select * from product;";
-        new MysqlServiceImpl().PrintProduct(productDTO,Sql,0);
+        MysqlServiceImpl.getMysqlService().printProduct(productDTO,Sql,0);
 
 
         System.out.print("                                        请选择输入您要点赞或者举报的商品序号：");
@@ -32,7 +32,7 @@ public class ReportProduct {
         StringBuilder sql = new StringBuilder();
         sql.append("select * from product WHERE pid="+"'"+ productDTO.getProductId()+"' ;");
 
-        boolean result = new MysqlServiceImpl().PrintProduct(productDTO,sql.toString(),0);
+        boolean result = MysqlServiceImpl.getMysqlService().printProduct(productDTO,sql.toString(),0);
 
         if (result == false){
             System.out.println("                                    商品不存在");

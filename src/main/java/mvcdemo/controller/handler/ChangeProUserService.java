@@ -35,8 +35,8 @@ public class ChangeProUserService implements ActionListener{
         if ("确认修改".equals(text)) {
 
             //此处将数据传入MySQL的数据库同时返回boolean值判断是否成功
-            MysqlService mysqlService = new MysqlServiceImpl();
-            boolean addResult = mysqlService.addProUser(proUserDTO);
+            MysqlService mysqlService = MysqlServiceImpl.getMysqlService();
+            boolean addResult = mysqlService.modifyProUser(proUserDTO);
 
             if (addResult) {
                 JOptionPane.showMessageDialog(changeProUser, "修改成功！");

@@ -30,7 +30,7 @@ public class CheckProductByUser {
         Cleaner.getCleaner().Clean();
 
         String sql = "select * from product;";
-        new MysqlServiceImpl().PrintProduct(productDTO,sql,0);
+        MysqlServiceImpl.getMysqlService().printProduct(productDTO,sql,0);
 
         //这里是界面的一个分支操作
         System.out.print("                                        请选择输入您要进行的操作（ a.查询产品      b.购买产品      c.返回主菜单 ）：");
@@ -61,7 +61,7 @@ public class CheckProductByUser {
         StringBuilder sql = new StringBuilder();
         sql.append("select * from product where pname like"+"'%"+select+"%' ;");
         boolean number = true;
-        number = new MysqlServiceImpl().PrintProduct(productDTO,sql.toString(),0);
+        number = MysqlServiceImpl.getMysqlService().printProduct(productDTO,sql.toString(),0);
             if (number == false) {
                 System.out.println("没有找到哦，输入一个字进行查找试试？ ");
                 Cleaner.getCleaner().BackMain();
@@ -142,7 +142,7 @@ public class CheckProductByUser {
         proUserDTO.setProAlreadyPurchased(stringBuilder.toString());
 
         //把余额数据上传至MySQL
-        new MysqlServiceImpl().add(userDTO);
+        MysqlServiceImpl.getMysqlService().modifyUser(userDTO);
         Cleaner.getCleaner().BackMain();
     }
 

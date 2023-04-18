@@ -20,11 +20,11 @@ public class ProductClassification {
         char select =sc.next().charAt(0);
 
         String s = String.valueOf(select);
-        MysqlService mysqlService = new MysqlServiceImpl();
+        MysqlService mysqlService = MysqlServiceImpl.getMysqlService();
         ProductDTO productDTO = new ProductDTO();
         StringBuilder sql = new StringBuilder();
         sql.append("select * from product where pclass="+s+";");
-        mysqlService.PrintProduct(productDTO, sql.toString() ,0);
+        mysqlService.printProduct(productDTO, sql.toString() ,0);
 
         Cleaner.getCleaner().BackMain();
     }

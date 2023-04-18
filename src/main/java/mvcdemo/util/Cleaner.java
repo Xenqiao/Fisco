@@ -45,7 +45,7 @@ public class Cleaner {
 
 
     /** 打印产品的各种信息，一个通用的工具函数 **/
-    public void PrintProduct(ProductDTO productDTO){
+    public void printProduct(ProductDTO productDTO){
 
         System.out.println("商品序号："+ productDTO.getProductId());
         System.out.println("商品名称："+ productDTO.getProductName());
@@ -56,6 +56,11 @@ public class Cleaner {
 
     }
 
+    /***
+     * 用于加密信息的函数
+     * @param data
+     * @return
+     */
     public String EncryptedInformation(String data){
         Keccak256 keccak256 = new Keccak256();
         String encrypted = keccak256.hash(data);

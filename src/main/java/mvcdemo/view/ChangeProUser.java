@@ -2,6 +2,7 @@ package mvcdemo.view;
 
 import mvcdemo.dto.ProUserDTO;
 import mvcdemo.controller.handler.ChangeProUserService;
+import mvcdemo.util.Cleaner;
 import mvcdemo.util.CloseWindow;
 import mvcdemo.util.CopyJLabel;
 
@@ -14,7 +15,7 @@ import java.awt.*;
  */
 public class ChangeProUser extends JDialog{
 
-    //new FlowLayout(FlowLayout.CENTER,10,20)用于调节组件间的间隔距离
+    /** new FlowLayout(FlowLayout.CENTER,10,20)用于调节组件间的间隔距离 **/
     JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,10,20));
 
     JLabel newPwdLabel = new JLabel("新的密码：",JLabel.RIGHT);
@@ -96,7 +97,8 @@ public class ChangeProUser extends JDialog{
     public void SetManage(){
 
         //将输入的数据写入封装的对象内，通过单例模式实现单一对象重复读取
-        proUserDTO.setPwd(newPwdTxt.getText());
+        String encrypted = newPwdTxt.getText();
+        proUserDTO.setPwd( Cleaner.getCleaner().EncryptedInformation(encrypted) );
         proUserDTO.setProManager(nameTxt.getText());
         proUserDTO.setProHome(homeTxt.getText());
         proUserDTO.setProPhone(phoneTxt.getText());
